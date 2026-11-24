@@ -1,0 +1,5 @@
+# 客户端证书扩展：仅用于客户端认证（双向 TLS），不用于服务端
+[ client_req ]
+basicConstraints = CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = clientAuth

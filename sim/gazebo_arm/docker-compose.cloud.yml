@@ -1,0 +1,19 @@
+# 阶段 3：边端改连本机云端 broker（mTLS），叠加在 docker-compose.yml 之上使用：
+#   docker compose -f docker-compose.yml -f docker-compose.cloud.yml up -d
+#
+# 前提：
+#   - 本机云端栈已起（deploy/docker-compose.local.yml，mosquitto 映射到 127.0.0.1:8884）
+#   - 设备证书已签发：server/issue-edge-cert.ps1 -DeviceCode SIM-001
+#     （产物在 deploy/certs/edge/edge-SIM-001.{crt,key}，CN=SIM-001 对应 aclfile 的 user SIM-001）
+# broker 服务端证书 SAN 含 localhost / 127.0.0.1，所以用 localhost 连可通过主机名校验。
+services:
+  edge_node:
+    environment:
+      MQTT_BROKER_URL: "ssl://localhost:8884"
+      MQTT_CA_CERT: "/certs/ca.crt"
+      MQTT_CLIENT_CERT: "/certs/edge/edge-SIM-001.crt"
+      MQTT_CLIENT_KEY: "/certs/edge/edge-SIM-001.key"
+    volumes:
+      - ../../deploy/certs/ca.crt:/certs/ca.crt:ro
+      - ../../deploy/certs/edge/edge-SIM-001.crt:/certs/edge/edge-SIM-001.crt:ro
+      - ../../deploy/certs/edge/edge-SIM-001.key:/certs/edge/edge-SIM-001.key:ro

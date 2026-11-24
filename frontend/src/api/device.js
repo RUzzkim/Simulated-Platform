@@ -1,0 +1,15 @@
+import request from './request'
+
+export const getDevices = (params) => request.get('/devices', { params })
+export const getDevice = (id) => request.get(`/devices/${id}`)
+export const getDeviceStatus = (id) => request.get(`/devices/${id}/status`)
+export const registerDevice = (data) => request.post('/devices', data)
+export const renameDevice = (id, name) => request.put(`/devices/${id}`, { name })
+export const getLatestTelemetry = (id) => request.get(`/devices/${id}/telemetry/latest`)
+export const getTelemetryHistory = (id, params) => request.get(`/devices/${id}/telemetry`, { params })
+export const getTelemetrySeries = (id, params) => request.get(`/devices/${id}/telemetry/series`, { params })
+export const getFaultEvents = (params) => request.get('/fault-events', { params })
+export const getFaultEvent = (id) => request.get(`/fault-events/${id}`)
+export const getFaultStatistics = (params) => request.get('/fault-events/statistics', { params })
+export const getCommands = (id, params) => request.get(`/devices/${id}/commands`, { params })
+export const sendCommand = (id, data) => request.post(`/devices/${id}/commands`, data)

@@ -1,0 +1,36 @@
+# Local secrets and deployment credentials
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+deploy/certs/*
+!deploy/certs/*.sh
+!deploy/certs/*.ps1
+!deploy/certs/*.cnf
+deploy/mosquitto/passwordfile
+*.key
+*.p12
+*.pem
+
+# Generated dependencies and build outputs
+node_modules/
+frontend/dist/
+target/
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.py[cod]
+
+# Local editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local agent configuration, snapshots, and scratch patches
+.agents/
+.backup/
+.tmp*

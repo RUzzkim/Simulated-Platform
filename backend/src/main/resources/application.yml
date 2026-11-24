@@ -1,0 +1,56 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: robot-cloud-backend
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/robot_cloud?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=UTC}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+
+mqtt:
+  broker: ${MQTT_BROKER:ssl://localhost:8883}
+  # 自签/私有 CA 时指向 CA 证书（PEM），留空表示用 JVM 默认信任库
+  ca-cert: ${MQTT_CA_CERT:}
+  # 双向认证：broker 要求客户端证书时指向 PKCS12（deploy/certs/cloud-service.p12），留空表示不出示
+  client-keystore: ${MQTT_CLIENT_KEYSTORE:}
+  client-keystore-password: ${MQTT_CLIENT_KEYSTORE_PASSWORD:}
+  # 用 use_identity_as_username 时 broker 以证书 CN 作为用户名，这两个值就只是兜底/本地调试用
+  username: ${MQTT_USERNAME:cloud-service}
+  password: ${MQTT_PASSWORD:}
+  client-id: robot-cloud-${random.uuid}
+
+app:
+  jwt:
+    # 至少 32 字节；生产用 JWT_SECRET 覆盖
+    secret: ${JWT_SECRET:robot-cloud-dev-jwt-secret-change-me-please-32bytes}
+    user-ttl-minutes: ${JWT_USER_TTL_MINUTES:720}
+    edge-ttl-hours: ${JWT_EDGE_TTL_HOURS:720}
+  # 设备 MQTT 密码/边缘令牌的静态加密密钥，生产用 CREDENTIAL_KEY 覆盖
+  credential-key: ${CREDENTIAL_KEY:robot-cloud-dev-credential-key}
+  admin:
+    username: ${ADMIN_USERNAME:admin}
+    password: ${ADMIN_PASSWORD:}
+    seed-demo-users: ${ADMIN_SEED_DEMO_USERS:false}
+  edge:
+    # 设备接入凭据里回填的 broker 地址（给边缘端/仿真端直接抄）
+    broker-host: ${EDGE_BROKER_HOST:localhost}
+    broker-port: ${EDGE_BROKER_PORT:8883}
+  telemetry:
+    # 遥测归档：默认关闭，线上确认 dryRun 结果后再打开。开启后每天 03:30 把保留期之前的
+    # 明细按「设备 + 小时」聚合成均值写入 telemetry_hourly，然后删除明细。
+    archive-enabled: ${TELEMETRY_ARCHIVE_ENABLED:false}
+    archive-cron: ${TELEMETRY_ARCHIVE_CRON:0 30 3 * * *}
+    retention-days: ${TELEMETRY_RETENTION_DAYS:30}
+    archive-batch-size: ${TELEMETRY_ARCHIVE_BATCH_SIZE:5000}

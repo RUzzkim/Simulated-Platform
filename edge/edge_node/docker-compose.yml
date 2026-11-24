@@ -1,0 +1,36 @@
+# 边端节点 Docker Compose 编排
+# 用法:
+#   1. 修改下方 environment 中的 MQTT_BROKER_URL 等参数
+#   2. docker compose up -d --build
+#
+# 注意: 边端通过 host 网络与仿真端 ROS 2 通信，需确保仿真端在同一主机
+version: "3.8"
+
+services:
+  edge_node:
+    build: .
+    image: edge_node:latest
+    container_name: edge_node
+    network_mode: host          # ROS 2 DDS 需要 host 网络
+    restart: unless-stopped
+    environment:
+      # 边端身份（按实际仿真/机械臂修改）
+      EDGE_SIMULATION_ID: "SIM-001"
+      EDGE_ROBOT_ID: "ROBOT-001"
+      # MQTT Broker（云端地址）
+      MQTT_BROKER_URL: "tcp://localhost:1883"
+      MQTT_CLIENT_ID: "edge-node-SIM-001"
+      # 云端 MQTT 认证（如无认证留空）
+      MQTT_USERNAME: ""
+      MQTT_PASSWORD: ""
+      # 控制模式: pass_through | adaptive_nn
+      CONTROL_MODE: "adaptive_nn"
+      # 故障检测/容错开关
+      FAULT_DETECTION_ENABLED: "true"
+      FAULT_TOLERANCE_ENABLED: "true"
+      ACTIVE_REPLANNING: "true"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

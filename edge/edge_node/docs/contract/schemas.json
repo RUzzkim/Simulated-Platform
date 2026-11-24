@@ -1,0 +1,27 @@
+{
+  "RobotState": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["simulationId", "robotId", "timestamp", "jointPosition", "jointVelocity", "jointTorque", "status"],
+    "properties": {
+      "simulationId": {"type": "string", "pattern": "^SIM-\\d{3}$"},
+      "robotId": {"type": "string", "pattern": "^ROBOT-\\d{3}$"},
+      "timestamp": {"type": "integer", "minimum": 1000000000000, "maximum": 9999999999999},
+      "jointPosition": {"type": "array", "length": 6, "items": {"type": "number"}},
+      "jointVelocity": {"type": "array", "length": 6, "items": {"type": "number"}},
+      "jointTorque": {"type": "array", "length": 6, "items": {"type": "number"}},
+      "status": {"type": "string", "enum": ["RUNNING", "STOPPED", "ERROR"]}
+    }
+  },
+  "Heartbeat": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["simulationId", "robotId", "timestamp", "status"],
+    "properties": {
+      "simulationId": {"type": "string", "pattern": "^SIM-\\d{3}$"},
+      "robotId": {"type": "string", "pattern": "^ROBOT-\\d{3}$"},
+      "timestamp": {"type": "integer", "minimum": 1000000000000, "maximum": 9999999999999},
+      "status": {"type": "string", "enum": ["ONLINE", "OFFLINE"]}
+    }
+  }
+}

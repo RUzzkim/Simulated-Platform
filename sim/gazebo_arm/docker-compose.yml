@@ -1,0 +1,37 @@
+# 端 + 边 一起起：ROS2 闭环（端发 joint_states / 收 joint_command，边端做镜像）。
+# 两个容器都用 host 网络 + 同一 ROS_DOMAIN_ID，DDS 才能互相发现。
+#
+# 用法（在 sim/gazebo_arm 目录）:
+#   docker compose up --build
+# 只看端↔边 ROS2 闭环时，边端连云端 MQTT 失败可忽略（会重试并打日志）；
+# 要连云端就把 MQTT_BROKER_URL 改成云端 broker 地址。
+services:
+  sim_end:                         # 「端」：轻量实时仿真端
+    build: .
+    image: gazebo_arm:latest
+    container_name: sim_end
+    network_mode: host
+    ipc: host                      # 与边端共享 /dev/shm：FastDDS 默认走共享内存传输，
+                                   # 两容器不共享 /dev/shm 时话题能被发现但收不到数据
+    environment:
+      EDGE_SIMULATION_ID: "SIM-001"
+      ROS_DOMAIN_ID: "0"
+    restart: unless-stopped
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
+
+  edge_node:                       # 「边」：ROS2 边端（rclpy 可用即自动进 ROS2 模式）
+    build: ../../edge/edge_node
+    image: edge_node:latest
+    container_name: edge_node
+    network_mode: host
+    ipc: host                      # 见 sim_end：共享 /dev/shm 让 FastDDS SHM 传输跨容器可达
+    depends_on: [sim_end]
+    environment:
+      EDGE_SIMULATION_ID: "SIM-001"
+      EDGE_ROBOT_ID: "ROBOT-001"
+      MQTT_BROKER_URL: "tcp://localhost:1883"   # 可选：改成云端 broker 才上云
+      CONTROL_MODE: "adaptive_nn"
+      FAULT_DETECTION_ENABLED: "true"
+      ROS_DOMAIN_ID: "0"
+    restart: unless-stopped
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }

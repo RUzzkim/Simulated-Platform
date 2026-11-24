@@ -1,0 +1,14 @@
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = localhost
+DNS.2 = mqtt
+DNS.3 = nginx
+DNS.4 = robot-backend
+IP.1 = 127.0.0.1
+IP.2 = ::1
+IP.3 = 106.15.43.100

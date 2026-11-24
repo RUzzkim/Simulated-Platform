@@ -1,0 +1,89 @@
+# 说明：本机（2C4G 无 Swap）复用宿主机已有的 xinqing-mysql（在 xinqing_default 网络上），
+# 不再自带 mysql 服务。backend 同时接入本项目网络（连 mqtt）与 xinqing_default（连 xinqing-mysql）。
+# 首次部署需在 xinqing-mysql 里建 robot_cloud 库 + robot 账号并导入 schema，见 deploy/README.md。
+services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: robot-mosquitto
+    restart: unless-stopped
+    # mosquitto 启动后会丢掉补充组，无法直接读绑定挂载里的私钥：先拷进容器并 chown 给 mosquitto
+    command: ["sh", "-c", "mkdir -p /mosquitto/certs /mosquitto/conf && cp /mosquitto/config/certs/*.crt /mosquitto/config/certs/*.key /mosquitto/certs/ && cp /mosquitto/config/passwordfile /mosquitto/config/aclfile /mosquitto/conf/ && chown -R mosquitto:mosquitto /mosquitto/certs /mosquitto/conf && chmod 600 /mosquitto/certs/*.key /mosquitto/conf/passwordfile /mosquitto/conf/aclfile && exec mosquitto -c /mosquitto/config/mosquitto.conf"]
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/passwordfile:/mosquitto/config/passwordfile:ro
+      - ./mosquitto/aclfile:/mosquitto/config/aclfile:ro
+      - ./certs:/mosquitto/config/certs:ro
+    ports:
+      - "8883:8883"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+  backend:
+    image: robot-backend:latest
+    container_name: robot-backend
+    restart: unless-stopped
+    environment:
+      # 复用宿主机 xinqing-mysql（同在 xinqing_default 网络，容器名即主机名）
+      DB_URL: jdbc:mysql://xinqing-mysql:3306/robot_cloud?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      DB_USERNAME: robot
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      MQTT_BROKER: ssl://mqtt:8883
+      MQTT_CA_CERT: /certs/ca.crt
+      MQTT_CLIENT_KEYSTORE: /certs/cloud-service.p12
+      MQTT_CLIENT_KEYSTORE_PASSWORD: ${MQTT_CLIENT_KEYSTORE_PASSWORD:?set MQTT_CLIENT_KEYSTORE_PASSWORD}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD}
+      ADMIN_SEED_DEMO_USERS: "false"
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET}
+      CREDENTIAL_KEY: ${CREDENTIAL_KEY:?set CREDENTIAL_KEY}
+      # 设备凭据里回填给边缘端/仿真端的 broker 地址（公网域名 + 443/8883）
+      EDGE_BROKER_HOST: ${EDGE_BROKER_HOST:?set EDGE_BROKER_HOST}
+      EDGE_BROKER_PORT: "8883"
+      MQTT_USERNAME: ${MQTT_SERVICE_USERNAME:?set MQTT_SERVICE_USERNAME}
+      MQTT_PASSWORD: ${MQTT_SERVICE_PASSWORD:?set MQTT_SERVICE_PASSWORD}
+      TZ: Asia/Shanghai
+      JAVA_TOOL_OPTIONS: "-Xms256m -Xmx512m"
+    volumes:
+      - ./certs/ca.crt:/certs/ca.crt:ro
+      - ./certs/cloud-service.p12:/certs/cloud-service.p12:ro
+    depends_on:
+      mqtt:
+        condition: service_started
+    networks:
+      - default
+      - xinqing
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+  nginx:
+    image: nginx:stable
+    container_name: robot-nginx
+    restart: unless-stopped
+    environment:
+      # 无域名/无证书：默认 0（HTTP 入口直接提供页面）；设为 1 恢复 80 -> 443 的 301 跳转
+      NGINX_HTTP_REDIRECT: ${NGINX_HTTP_REDIRECT:-0}
+      NGINX_HTTPS_PORT: "443"
+    # 宿主机 80 被 xinqing-frontend 占用，改用 8082 做 HTTP；443 空闲留给 HTTPS
+    ports:
+      - "8082:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ../frontend/dist:/usr/share/nginx/html:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+# xinqing_default 是宿主机上 xinqing 那套 compose 建的网络，这里作为外部网络引入，
+# 让 backend 能用容器名 xinqing-mysql 直连它的 3306。名字若不同按 `docker network ls` 改。
+networks:
+  default:
+  xinqing:
+    external: true
+    name: xinqing_default

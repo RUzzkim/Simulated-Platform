@@ -1,0 +1,31 @@
+# ros2_control 控制器配置（gazebo_ros2_control 插件加载）
+# - joint_state_broadcaster：发布 /joint_states（关节 position/velocity/effort）
+# - arm_controller：JointTrajectoryController，对目标做时间插值 → 关节平滑运动
+#   （之前用 ForwardCommandController 直发位置，GazeboSystem 直接 SetPosition 近乎瞬移，看不清；
+#    改成轨迹控制器后，桥接把目标包成带时长的轨迹，臂按时长平滑到位）
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz，与边端 100Hz 控制循环对齐
+    use_sim_time: true
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    allow_partial_joints_goal: false

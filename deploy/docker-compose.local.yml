@@ -1,0 +1,113 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: robot-mysql-local
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: robot_cloud
+      MYSQL_USER: robot
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD}
+      TZ: Asia/Shanghai
+    command:
+      - --innodb-buffer-pool-size=256M
+      - --max-connections=100
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+08:00
+    volumes:
+      - mysql-local-data:/var/lib/mysql
+      - ../docs/database-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    ports:
+      - "127.0.0.1:3307:3306"
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: robot-mosquitto-local
+    restart: unless-stopped
+    # mosquitto 启动后会丢掉补充组，无法直接读绑定挂载里的私钥：先拷进容器并 chown 给 mosquitto
+    command: ["sh", "-c", "mkdir -p /mosquitto/certs /mosquitto/conf && cp /mosquitto/config/certs/*.crt /mosquitto/config/certs/*.key /mosquitto/config/certs/edge/*.crt /mosquitto/config/certs/edge/*.key /mosquitto/certs/ && cp /mosquitto/config/passwordfile /mosquitto/config/aclfile /mosquitto/conf/ && chown -R mosquitto:mosquitto /mosquitto/certs /mosquitto/conf && chmod 600 /mosquitto/certs/*.key /mosquitto/conf/passwordfile /mosquitto/conf/aclfile && exec mosquitto -c /mosquitto/config/mosquitto.conf"]
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto:/mosquitto/config:rw
+      - ./certs:/mosquitto/config/certs:ro
+    ports:
+      - "127.0.0.1:8884:8883"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  backend:
+    image: robot-backend:local
+    container_name: robot-backend-local
+    restart: unless-stopped
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/robot_cloud?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      DB_USERNAME: robot
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      MQTT_BROKER: ssl://mqtt:8883
+      MQTT_CA_CERT: /certs/ca.crt
+      MQTT_CLIENT_KEYSTORE: /certs/cloud-service.p12
+      MQTT_CLIENT_KEYSTORE_PASSWORD: ${MQTT_CLIENT_KEYSTORE_PASSWORD:?set MQTT_CLIENT_KEYSTORE_PASSWORD}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD}
+      ADMIN_SEED_DEMO_USERS: "true"
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET}
+      CREDENTIAL_KEY: ${CREDENTIAL_KEY:?set CREDENTIAL_KEY}
+      EDGE_BROKER_HOST: "127.0.0.1"
+      EDGE_BROKER_PORT: "8884"
+      MQTT_USERNAME: ${MQTT_SERVICE_USERNAME:?set MQTT_SERVICE_USERNAME}
+      MQTT_PASSWORD: ${MQTT_SERVICE_PASSWORD:?set MQTT_SERVICE_PASSWORD}
+      TZ: Asia/Shanghai
+      JAVA_TOOL_OPTIONS: "-Xms256m -Xmx512m"
+    volumes:
+      - ./certs/ca.crt:/certs/ca.crt:ro
+      - ./certs/cloud-service.p12:/certs/cloud-service.p12:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mqtt:
+        condition: service_started
+    ports:
+      - "127.0.0.1:8090:8080"
+    build:
+      context: ../backend
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+
+  nginx:
+    image: nginx:stable
+    container_name: robot-nginx-local
+    restart: unless-stopped
+    environment:
+      # 无域名/无证书：默认 0（HTTP 入口直接提供页面）；设为 1 恢复 80 -> 443 的 301 跳转
+      NGINX_HTTP_REDIRECT: ${NGINX_HTTP_REDIRECT:-0}
+      NGINX_HTTPS_PORT: "8443"
+    ports:
+      - "127.0.0.1:8091:80"
+      - "127.0.0.1:8443:443"
+    volumes:
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ../frontend/dist:/usr/share/nginx/html:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+volumes:
+  mysql-local-data:

@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  title: 工业机械臂仿真平台-对接契约（不可修改）
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/simulations:
+    get: { summary: 获取所有仿真实例列表, responses: {'200': { content: { application/json: { schema: { type: array, items: {$ref: '#/components/schemas/Simulation'} } } } } } }
+    post: { summary: 新建仿真实例, requestBody: { required: true, content: { application/json: { schema: {$ref: '#/components/schemas/SimulationCreate'} } } }, responses: {'200': {}} }
+  /api/simulations/{simulationId}:
+    get: { summary: 获取单个仿真实例, parameters: [{name: simulationId, in: path, required: true, schema: {type: string, pattern: '^SIM-\\d{3}$'}}], responses: {'200': {}} }
+    put: { summary: 编辑仿真实例, parameters: [{name: simulationId, in: path, required: true, schema: {type: string, pattern: '^SIM-\\d{3}$'}}], requestBody: { required: true, content: { application/json: { schema: {$ref: '#/components/schemas/SimulationCreate'} } } } }
+    delete: { summary: 删除仿真实例, parameters: [{name: simulationId, in: path, required: true, schema: {type: string, pattern: '^SIM-\\d{3}$'}}] }
+  /api/simulations/{simulationId}/robots:
+    get: { summary: 【1:N必加】获取仿真绑定的所有robotId数组, parameters: [{name: simulationId, in: path, required: true, schema: {type: string, pattern: '^SIM-\\d{3}$'}}], responses: {'200': { content: { application/json: { schema: { type: array, items: {type: string, pattern: '^ROBOT-\\d{3}$'} } } } }} }
+    put: { summary: '【1:N必加】全量替换仿真绑定的robotId数组（幂等；仿真不存在返回404）', parameters: [{name: simulationId, in: path, required: true, schema: {type: string, pattern: '^SIM-\\d{3}$'}}], requestBody: { required: true, content: { application/json: { schema: {$ref: '#/components/schemas/RobotBindRequest'} } } }, responses: {'200': { content: { application/json: { schema: {$ref: '#/components/schemas/Simulation'} } } }, '404': {}} }
+  /api/simulations/{simulationId}/state:
+    get: { summary: 获取【指定/所有】机械臂的最新状态, parameters: [{name: simulationId, in: path, required: true, schema: {type: string, pattern: '^SIM-\\d{3}$'}}, {name: robotId, in: query, required: false, schema: {type: string, pattern: '^ROBOT-\\d{3}$'}}], responses: {'200': { content: { application/json: { schema: { oneOf: [{$ref: '#/components/schemas/RobotState'}, {type: array, items: {$ref: '#/components/schemas/RobotState'}}] } } } } } }
+  /api/simulations/{simulationId}/heartbeats:
+    get: { summary: 获取仿真下所有机械臂的最新心跳数组, parameters: [{name: simulationId, in: path, required: true, schema: {type: string, pattern: '^SIM-\\d{3}$'}}], responses: {'200': { content: { application/json: { schema: { type: array, items: {$ref: '#/components/schemas/Heartbeat'} } } } } } }
+  /api/simulations/{simulationId}/command:
+    post:
+      summary: 【控制】向指定机械臂发送控制指令（后端通过 MQTT 发布到 simulation/{simulationId}/command）
+      parameters:
+        - name: simulationId
+          in: path
+          required: true
+          schema: {type: string, pattern: '^SIM-\\d{3}$'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RobotCommand'}
+      responses:
+        '200':
+          description: 指令已发布
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/CommandAck'}
+components:
+  schemas:
+    RobotState:
+      type: object
+      required: [simulationId, robotId, timestamp, jointPosition, jointVelocity, jointTorque, status]
+      properties:
+        simulationId: {type: string, pattern: '^SIM-\\d{3}$'}
+        robotId: {type: string, pattern: '^ROBOT-\\d{3}$'}
+        timestamp: {type: integer, format: int64, description: '【强制】Unix毫秒时间戳，禁止改秒/ISO'}
+        jointPosition: {type: array, minItems: 6, maxItems: 6, items: {type: number}, description: '【强制】长度6，单位rad'}
+        jointVelocity: {type: array, minItems: 6, maxItems: 6, items: {type: number}, description: '【强制】长度6，单位rad/s'}
+        jointTorque: {type: array, minItems: 6, maxItems: 6, items: {type: number}, description: '【强制】长度6，单位N·m'}
+        status: {type: string, enum: [RUNNING, STOPPED, ERROR], description: '【强制】固定枚举'}
+    Heartbeat:
+      type: object
+      required: [simulationId, robotId, timestamp, status]
+      properties:
+        simulationId: {type: string, pattern: '^SIM-\\d{3}$'}
+        robotId: {type: string, pattern: '^ROBOT-\\d{3}$'}
+        timestamp: {type: integer, format: int64, description: '【强制】Unix毫秒时间戳'}
+        status: {type: string, enum: [ONLINE, OFFLINE], description: '【强制】固定枚举'}
+    Simulation:
+      type: object
+      required: [simulationId, robotIds, createTime, status]
+      properties:
+        simulationId: {type: string, pattern: '^SIM-\\d{3}$'}
+        robotIds: {type: array, items: {type: string, pattern: '^ROBOT-\\d{3}$'}, description: '【强制】1:N绑定，存储所有绑定的robotId'}
+        createTime: {type: integer, format: int64, description: '【强制】Unix毫秒时间戳'}
+        status: {type: string, enum: [RUNNING, STOPPED, ERROR]}
+    SimulationCreate:
+      type: object
+      required: [simulationId]
+      properties:
+        simulationId: {type: string, pattern: '^SIM-\\d{3}$', description: '【强制】格式SIM-001/SIM-002，禁止修改'}
+        robotIds: {type: array, items: {type: string, pattern: '^ROBOT-\\d{3}$'}, description: '【可选】创建/编辑时直接绑定；不传保持原绑定不变，传空数组解除全部绑定（自动去重）'}
+    RobotBindRequest:
+      type: object
+      required: [robotIds]
+      properties:
+        robotIds: {type: array, minItems: 1, items: {type: string, pattern: '^ROBOT-\\d{3}$'}, description: '【强制】全量替换目标绑定列表（自动去重）'}
+    RobotCommand:
+      type: object
+      required: [robotId, cmdType, timestamp]
+      properties:
+        robotId: {type: string, pattern: '^ROBOT-\\d{3}$'}
+        cmdType: {type: string, enum: [START, STOP, MOVE_HOME, MOVE_JOINT], description: '控制指令类型'}
+        jointTarget: {type: array, minItems: 6, maxItems: 6, items: {type: number}, description: 'MOVE_JOINT时必填，目标关节角度(rad)'}
+        speed: {type: number, minimum: 0, maximum: 5, description: '运动速度倍率 0-5'}
+        timestamp: {type: integer, format: int64, description: '【强制】Unix毫秒时间戳'}
+    CommandAck:
+      type: object
+      required: [success, commandId, timestamp]
+      properties:
+        success: {type: boolean}
+        commandId: {type: string}
+        message: {type: string}
+        timestamp: {type: integer, format: int64, description: '【强制】Unix毫秒时间戳'}

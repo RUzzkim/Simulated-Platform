@@ -1,0 +1,96 @@
+# 边端节点配置
+# 注意：所有字段名/单位/枚举必须与云端契约（openapi.yaml / schemas.json）保持一致
+
+# 边端身份（一节点对应一个仿真 + 一个机械臂）
+edge:
+  simulation_id: "SIM-001"     # 格式 ^SIM-\d{3}$
+  robot_id: "ROBOT-001"        # 格式 ^ROBOT-\d{3}$
+
+# ROS 2 通信
+ros2:
+  joint_states_topic: "/simulation/{simulation_id}/joint_states"
+  joint_command_topic: "/simulation/{simulation_id}/joint_command"
+  joint_count: 6                # 6 自由度，禁止修改
+
+# MQTT 通信（对齐云端 application.yml）
+mqtt:
+  broker_url: "tcp://localhost:1883"
+  client_id: "edge-node-SIM-001"
+  username: ""
+  password: ""
+  qos: 1
+  keepalive: 60
+  state_topic: "simulation/{simulation_id}/state"
+  # 无 ROS 2 模式：仿真端原始状态源主题（边端订阅后走故障检测/容错管线，
+  # 处理结果仍经 state_topic 上报云端 —— 与上报主题分离，避免自环）
+  upstream_state_topic: "simulation/{simulation_id}/sim_state"
+  heartbeat_topic: "simulation/{simulation_id}/heartbeat"
+  command_topic: "simulation/{simulation_id}/command"
+  config_topic: "simulation/{simulation_id}/config"
+
+# 运行参数
+runtime:
+  state_publish_hz: 10.0        # 状态上传频率（Hz），高频关节数据降频后上传
+  heartbeat_interval_sec: 5.0   # 心跳间隔（秒）
+  default_status: "RUNNING"     # phase1 默认运行状态：RUNNING/STOPPED/ERROR
+  max_torque: 50.0              # 单关节力矩上限（N·m），超限则状态置 ERROR
+  # v1.1：上云 state 携带可选 faults 故障明细数组（加法字段，旧云端自动忽略；
+  # EDGE_PUBLISH_FAULTS=false 可关闭，关闭后 faults 恒为空数组）
+  publish_faults: true
+
+# 信号预处理（状态处理管线最前端：MAD 离群点剔除 → 中值滤波 → EMA 平滑）
+# 在 StateProcessor / 故障检测之前清洗 position/velocity/effort，
+# 持续物理变化（如真实过载阶跃）可在 window 帧内穿透，不会被当作尖峰滤掉
+signal_filter:
+  enabled: true                # 关闭后原始信号直通（EDGE_SIGNAL_FILTER_ENABLED 可覆盖）
+  window_size: 3               # 中值/统计窗口（帧数）；100Hz 下 N 帧 ≈ 10N ms 延迟
+  outlier_k: 3.5               # MAD 倍数阈值（越大越宽松；正态数据 3.5 误报率极低）
+  alpha_position: 0.8          # EMA 系数（1=不平滑；位置取大值减小运动滞后）
+  alpha_velocity: 0.5
+  alpha_effort: 0.5
+  # MAD=0（完全静止窗口）时的退化尺度，防正常微小波动被误剔
+  min_sigma_position: 0.002    # rad
+  min_sigma_velocity: 0.01     # rad/s
+  min_sigma_effort: 0.1        # N·m
+
+# 控制算法（phase2: 自适应神经网络控制）
+control:
+  # pass_through: 透传云端指令（phase1 默认）
+  # adaptive_nn:  自适应神经网络闭环控制
+  control_mode: "adaptive_nn"
+  control_rate_hz: 100.0        # 闭环控制频率（Hz）
+  # 无 ROS 2 模式：故障时把容错补偿目标经 MQTT 下发仿真端（MOVE_JOINT_SAFE），
+  # 恢复后通知仿真端重新规划回原目标；false 时仅检测/上报，不干预仿真端运动
+  safe_command_enabled: true
+  # 自适应 NN 控制器参数
+  lambda_gain: 10.0             # 误差滤波增益 Λ
+  kd: 50.0                      # 阻尼增益 K_d
+  learning_rate: 0.1            # RBF 权重学习率 Γ
+  leakage: 0.001                # 权重泄漏项 σ_w（防漂移）
+  n_centers: 64                 # RBF 隐层神经元数
+  nominal_inertia: 1.0          # 名义关节惯量（力矩→位置转换用）
+  position_range: 3.14          # 关节位置归一化范围（rad）
+  velocity_range: 2.0           # 关节速度归一化范围（rad/s）
+
+# 故障检测（phase3）
+fault_detection:
+  enabled: true                 # 是否启用故障检测
+  window_size: 20               # 滑动窗口大小（帧数）
+  persistence: 5                # 非关键故障持续帧数阈值
+  max_velocity: 3.0             # 速度上限（rad/s），超限→VELOCITY_ANOMALY
+  position_limit: 6.28          # 位置绝对值上限（rad），超限→SENSOR_INVALID
+  torque_overload_threshold: 40.0  # 持续力矩过载阈值（N·m，窗口平均绝对值）
+  lock_position_threshold: 0.001   # 关节卡死位置极差阈值（rad）
+  lock_torque_threshold: 10.0      # 关节卡死力矩阈值（N·m，窗口平均绝对值）
+  comm_timeout_ms: 500          # 通信超时阈值（毫秒）
+
+# 故障容错控制（phase4）
+fault_tolerance:
+  enabled: true                 # 是否启用容错控制
+  torque_overload_scale: 0.3    # 力矩过载时位置误差缩放系数（0~1，越小越保守）
+  velocity_clamp: 0.05          # 速度异常关节单步最大位置变化量（rad）
+  recovery_frames: 10           # 连续无故障帧数阈值，超过则关节恢复正常控制
+  # 主动容错轨迹重规划（phase5）
+  active_replanning: true       # 是否启用主动轨迹重规划（锁定关节时用健康关节补偿末端）
+  replanning_damping: 0.05      # DLS 阻尼系数 λ
+  replanning_step: 0.5          # 重规划单步修正步长（0~1）
