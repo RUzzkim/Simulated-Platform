@@ -1,24 +1,40 @@
 # 成员 B · 单关节卡滞任务恢复实验
 
-2026-11-25，开发集首轮。分支为 `feature/member-b-task-recovery`。正式验证集和评分阈值待三人共同冻结。
+![通用六轴机械臂关节与单关节卡滞恢复算法对应示意图](assets/arm-joint-algorithm-map.svg)
+
+2026-11-25，成员 B 开发集、探索集与预先冻结验证集记录。分支为 `feature/member-b-task-recovery`。验证目标和注入时刻在本轮验证运行前已固定，但制定时已查看开发集和探索集结果，因此不是独立盲测。
 
 ## 在仓库根目录复现
 
-Python 3.11 可以直接运行本实验。每次执行生成一份 summary.json，每个 run_id 对应一份 800 帧的压缩 CSV。
+Python 3.11 可以直接运行本实验。每次执行生成一份 summary.json，每个 run_id 对应一份 800 帧的压缩 CSV。V2 的恢复指令使用 1.0 rad/s 速度上限、2.0 rad/s² 加速度上限，控制周期与 100 Hz 仿真一致。边缘节点从 `fault_tolerance` YAML 配置读取这两个上限。
 
 ~~~powershell
 python edge/edge_node/test/benchmarks/run_task_recovery.py --output-dir edge/edge_node/test/reports/task_recovery/my-run
 ~~~
 
-命令尾加 `--scenario "LOCK-J1#s1T1"` 可只跑肩关节案例。复核轨迹位于 `edge/edge_node/test/reports/task_recovery/member-b-validation-r2/`。大型轨迹目录已加入 Git 忽略规则。[最终逐次结果和代码校验值](member-b-pilot.json)
+加 `--scenario "LOCK-J1#s1T1"` 可只跑开发集肩关节案例。验证集复现命令如下：
+
+~~~powershell
+python edge/edge_node/test/benchmarks/run_task_recovery.py --split validation --output-dir edge/edge_node/test/reports/task_recovery/member-b-validation-frozen-r1 --json edge/edge_node/test/reports/task_recovery/member-b-validation-frozen-r1/summary.json
+~~~
+
+旧版 pilot 轨迹位于 `edge/edge_node/test/reports/task_recovery/member-b-validation-r2/`，限速开发集复跑位于 `edge/edge_node/test/reports/task_recovery/member-b-locktorque-r1/`，限速探索集复跑位于 `edge/edge_node/test/reports/task_recovery/member-b-locktorque-exp-r1/`，验证集轨迹位于 `edge/edge_node/test/reports/task_recovery/member-b-validation-frozen-r1/`。大型轨迹目录已加入 Git 忽略规则。[pilot 逐次结果](member-b-pilot.json)；[限速开发集结果与代码校验值](member-b-limited-r3.json)；[限速探索集结果](member-b-limited-exploratory.json)；[冻结验证集逐次结果与代码校验值](member-b-validation-frozen-r1.json)；[失败模式分析](member-b-failure-analysis.md)。
+
+新增探索性实验划分：
+
+~~~powershell
+python edge/edge_node/test/benchmarks/run_task_recovery.py --split exploratory --output-dir edge/edge_node/test/reports/task_recovery/member-b-exploratory --json edge/edge_node/test/reports/task_recovery/member-b-exploratory/summary.json
+~~~
+
+`development` 使用早期目标，`exploratory` 使用另外两组目标，`validation` 使用第三组目标和 0.40、0.80、1.20 秒三个注入时刻。validation 目标与前两组不重合，场景种子标记为 300、301、302。当前被控对象是确定性的，未使用随机数。验证目标在该验证集运行前已固定，不过制定时已能查看开发和探索结果，因此只作为预先冻结的留出集结果报告，不称独立盲测或确认性验证。summary 记录算法、场景、被控对象和配置的 SHA-256。
 
 ## 方法和判据
 
-4 个故障关节 × 3 个注入时刻 × 2 个点到点任务，共 24 个开发集确定性场景。正式验证集和判据冻结后需重新跑测。每个场景用同一六轴 Python plant 和位置伺服，三种策略各跑一次。每次仿真 8 秒，步长 0.01 秒。s1、s2、s3 分别在 0.30、0.45、0.60 秒注入。关节编号从 0 起。
+4 个故障关节 × 3 个注入时刻 × 2 个点到点任务，共 24 个场景。开发集在 0.30、0.45、0.60 秒注入，冻结验证集在 0.40、0.80、1.20 秒注入。每个场景用同一六轴 Python plant 和位置伺服，容错关闭、V1、V2 三种策略各运行一次。每次仿真 8 秒，步长 0.01 秒。关节编号从 0 起。
 
 检测器确认卡滞后，V2 固定故障关节，以原任务终点的三维位置为目标，对健康关节做带限位的阻尼最小二乘搜索。先从当前关节位置搜索，必要时从满足锁定约束的原任务关节目标再试一次。规划位置误差容差为 0.02 m。搜索失败时记录 NO_FEASIBLE_PLAN，根据关节速度估算制动目标并锁存停止决策。目标的几何可达性需独立标注。
 
-| 首轮判据 | 计算方法 |
+| 当前仿真评分判据 | 计算方法 |
 |---|---|
 | 恢复 | 卡滞期间实测末端距目标 ≤ 0.05 m，连续至少 0.25 s 并保持至结束。停止决策另计。 |
 | 停稳 | 从 STOP 下发开始 2 s 内，所有关节实测速度均 ≤ 0.05 rad/s 并保持至少 0.25 s，之后至结束均维持。stop_time_s 计至持续满足速度阈值的首帧。 |
@@ -27,16 +43,40 @@ python edge/edge_node/test/benchmarks/run_task_recovery.py --output-dir edge/edg
 
 ## 结果
 
-| 策略 | 稳定到达原目标 / 24 | 发出 STOP 并实测停稳 / 24 |
-|---|---:|---:|
-| 容错关闭 | 0 | 0 |
-| V1 | 3 | 0 |
-| V2 | 6 | 6 |
+V2 根据规划出的关节恢复目标生成速度、加速度受限指令。开发集算法修订复跑结果如下。
 
-按该判据，V2 在 24 组中 6 组稳定恢复、6 组发出停止并实测停稳。基座卡滞均选择停止，发出指令后 0.11–0.29 s 进入停稳速度范围。肘腕组中，已到达位置目标的部分因健康关节速度或峰值力矩达到执行器限幅而未计恢复成功。关闭容错和 V1 均无显式 STOP 策略。实验评价末端位置，姿态和带载抓取仍待验证。
+| 限速版开发集策略 | 稳定到达原目标 / 24 | 发出 STOP 并实测停稳 / 24 |
+|---|---:|---:|
+| 容错关闭 | 3 | 0 |
+| V1 | 15 | 0 |
+| V2 | 18 | 6 |
+
+卡滞期间，仿真将故障关节的测量反作用力矩设为 12.5 N·m，不向被控对象额外施力。该值高于检测阈值 10 N·m，且低于故障关节平均力矩评分上限 15 N·m。按故障关节分组，V2 的 J0 为 0/6 恢复、6/6 停稳，J1、J2、J3 各 6/6 恢复。恢复评分通过的 V2 运行峰值关节速度不超过 0.99 rad/s、峰值力矩为 12.5 N·m。逐次结果和源码 SHA-256 见 `member-b-limited-r3.json`。
+
+对已使用过的探索目标运行限速版诊断复跑，结果不属于独立盲测。
+
+| 限速版探索集策略 | 达到轨迹恢复评分 / 24 | 发出 STOP 并实测停稳 / 24 |
+|---|---:|---:|
+| 容错关闭 | 6 | 0 |
+| V1 | 18 | 0 |
+| V2 | 19 | 5 |
+
+逐次结果和源码 SHA-256 见 `member-b-limited-exploratory.json`。限速版 V2 的 24 个探索样本均记录到故障确认；J2 六个样本均记录到确认和恢复动作。J3 有 1 个样本没有故障确认或恢复动作记录但达到轨迹位置评分，不能归因于算法决策。
+
+validation 场景在本轮运行前冻结，三策略配对结果如下。由于目标是在先前实验结果可见后制定，该结果不代表独立盲测。
+
+| 预先冻结验证集策略 | 达到轨迹恢复评分 / 24 | 发出 STOP 并实测停稳 / 24 |
+|---|---:|---:|
+| 容错关闭 | 11 | 0 |
+| V1 | 19 | 0 |
+| 限速 V2 | 21 | 3 |
+
+逐次结果与源码 SHA-256 见 `member-b-validation-frozen-r1.json`。V2 的 24 个场景均记录故障确认及动作，其中 21 个作出 RECOVER 并达到恢复评分，3 个作出 STOP 并通过停稳评分。按关节分组，J0 为 3/6 恢复、3/6 停稳，J1、J2、J3 各 6/6 恢复。
+
+限速且加入卡滞反作用测量后的上一轮清单保留在同名 `member-b-limited-*.json` 的历史文件版本中，未限速 pilot 逐次数字保留在 [member-b-pilot.json](member-b-pilot.json)，早期探索数据保留在 [member-b-exploratory.json](member-b-exploratory.json)。逐次 CSV 位于 summary 中 `raw_directory` 指定的本地目录，按 `run_id` 关联。探索集目标在查看开发结果后构造，不能作为独立盲测或确认性验证。规划器搜索失败的 `NO_FEASIBLE_PLAN` 不等价于数学证明目标不可达。实验评价末端位置，不覆盖姿态与抓取。
 
 ## A、C 联调
 
 - A 可回放 `LOCK-J1#s1T1` 的肩关节恢复。0.30 s 注入，0.54 s 作出恢复决策，末帧误差 0.011438 m。该运行达到健康关节速度上限，按本说明冻结的裕度判据不能计作成功。基座停止用 `LOCK-J0#s1T1`，0.66 s 下发停止目标，0.11 s 后进入停稳速度范围。
 - C 可按 run_id 关联汇总与 CSV。command_t_s 对应采样与下发时刻，t_s 对应积分后的实测时刻。ref0…5 是轨迹参考，cmd0…5 是实际指令，q、qd、tau 是位置、速度和力矩。action 记录决策，recovered 和 safe_stopped 记录评分结果。
-- 边缘配置通过 TASK_RECOVERY_ENABLED=true 启用，离线脚本按策略选择控制器。Docker、ROS 2 和 MQTT 的联合演示另行验收。
+- 边缘配置通过 TASK_RECOVERY_ENABLED=true 启用，离线脚本按策略选择控制器。显式 STOP 在 ROS 2 路径发布当前位置目标，在 MQTT 路径发布 STOP 消息并让仿真端退出安全伺服。2026-11-25 本机 MQTT broker 已运行，`python edge/edge_node/test/test_status_e2e.py` 成功连接并发布 STOPPED、RUNNING、ERROR 三种状态，边缘测试目录 119 项通过。该脚本没有订阅端断言，云端消费者收消息和 Docker、ROS 2、MQTT 联合演示仍待验证。

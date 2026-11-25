@@ -96,6 +96,9 @@ def main(args=None):
             replanning_damping=cfg.ft_replanning_damping,
             replanning_step=cfg.ft_replanning_step,
             task_recovery=cfg.ft_task_recovery,
+            control_dt=cfg.control_dt,
+            recovery_max_velocity=cfg.ft_recovery_max_velocity,
+            recovery_max_acceleration=cfg.ft_recovery_max_acceleration,
         )
         logger.info("容错控制已启用 (torque_scale=%.2f vel_clamp=%.3f active_replan=%s task_recovery=%s)",
                     cfg.ft_torque_overload_scale, cfg.ft_velocity_clamp,
@@ -131,6 +134,7 @@ def main(args=None):
     latest_fault: dict = {'value': None}
     # 云端最近一次位置目标（无 ROS 2 容错闭环的参考目标）；None=无活动目标
     active_target: dict = {'value': None}
+    safe_command_active: dict = {'value': False}
     state_lock = threading.Lock()
 
     # ---- 状态处理管线（ROS 2 joint_states 与 MQTT sim_state 共用）----
@@ -214,9 +218,25 @@ def main(args=None):
         with state_lock:
             if cmd.cmd_type == 'STOP':
                 active_target['value'] = None
+                safe_command_active['value'] = False
             elif target is not None:
                 active_target['value'] = list(target)
-        if nn_controller is not None:
+                safe_command_active['value'] = False
+        if target is not None and ftc is not None:
+            ftc.reset()
+        if cmd.cmd_type == 'STOP':
+            if nn_controller is not None:
+                nn_controller.reset()
+            if ros2_available and command_publisher is not None:
+                with state_lock:
+                    cur_state = latest_state['value']
+                if cur_state is not None:
+                    command_publisher.publish_position(cur_state.joint_position)
+            if not ros2_available:
+                mqtt_client.publish_stop_command(robot_id)
+            if ftc is not None:
+                ftc.reset()
+        elif nn_controller is not None:
             # 自适应 NN 模式：把云端目标设为 setpoint，由控制循环闭环跟踪
             if target is not None:
                 nn_controller.set_setpoint(target)
@@ -364,6 +384,7 @@ def main(args=None):
                         state: Optional[RobotState] = latest_state['value']
                         raw_target = active_target['value']
                         raw_target = list(raw_target) if raw_target is not None else None
+                        new_command_received = not safe_command_active['value']
                     if state is not None and raw_target is not None:
                         if nn_controller is not None:
                             q_target = nn_controller.compute_target_position(
@@ -380,11 +401,15 @@ def main(args=None):
                                 logger.warning("容错激活：下发安全目标 %s",
                                                [round(t, 3) for t in safe_target])
                             safe_active = True
-                        elif safe_active:
+                            with state_lock:
+                                safe_command_active['value'] = True
+                        elif safe_active and not new_command_received:
                             mqtt_client.publish_safe_command(robot_id, resume=True)
                             logger.info("容错解除：通知仿真端恢复原目标轨迹 %s",
                                         [round(t, 3) for t in raw_target])
                             safe_active = False
+                            with state_lock:
+                                safe_command_active['value'] = False
                 except Exception as e:
                     logger.error("安全指令循环失败: %s", e)
                 time.sleep(interval)

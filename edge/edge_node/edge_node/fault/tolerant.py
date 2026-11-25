@@ -61,6 +61,9 @@ class FaultTolerantController:
         recovery_tolerance: float = 0.02,
         recovery_max_iterations: int = 160,
         recovery_max_deceleration: float = 2.0,
+        control_dt: float = 0.01,
+        recovery_max_velocity: float = 1.0,
+        recovery_max_acceleration: float = 2.0,
     ):
         self.n_joints = n_joints
         self.torque_overload_scale = float(torque_overload_scale)
@@ -68,6 +71,11 @@ class FaultTolerantController:
         self.recovery_frames = int(recovery_frames)
         self.active_replanning = bool(active_replanning)
         self.task_recovery = bool(task_recovery)
+        if control_dt <= 0 or recovery_max_velocity <= 0 or recovery_max_acceleration <= 0:
+            raise ValueError("recovery trajectory limits must be positive")
+        self.control_dt = float(control_dt)
+        self.recovery_max_velocity = float(recovery_max_velocity)
+        self.recovery_max_acceleration = float(recovery_max_acceleration)
         self._recovery_planner: Optional[RecoveryPlanner] = (
             RecoveryPlanner(
                 position_tolerance=recovery_tolerance,
@@ -78,6 +86,8 @@ class FaultTolerantController:
         )
         self._last_recovery_decision: Optional[RecoveryDecision] = None
         self._last_task_goal: Optional[List[float]] = None
+        self._recovery_command: Optional[List[float]] = None
+        self._recovery_velocity: List[float] = [0.0] * n_joints
         self._stuck_joints: Set[int] = set()
 
         # 主动容错轨迹重规划器
@@ -182,7 +192,7 @@ class FaultTolerantController:
             self._last_recovery_decision = None
 
         if self._last_recovery_decision is not None:
-            self._last_target = list(self._last_recovery_decision.target_q)
+            self._last_target = self._next_recovery_command(q)
             return list(self._last_target)
 
         if (
@@ -200,8 +210,10 @@ class FaultTolerantController:
             )
             self._last_recovery_decision = decision
             self._last_task_goal = normalized_goal
-            self._last_target = list(decision.target_q)
-            return list(decision.target_q)
+            self._recovery_command = list(q)
+            self._recovery_velocity = [0.0] * self.n_joints
+            self._last_target = self._next_recovery_command(q)
+            return list(self._last_target)
 
         # 主动容错：有关节锁定时，重规划健康关节目标以补偿末端误差
         if locked and self._replanner is not None:
@@ -220,6 +232,41 @@ class FaultTolerantController:
 
         self._last_target = list(safe_target)
         return safe_target
+
+    def _next_recovery_command(self, current_q: List[float]) -> List[float]:
+        decision = self._last_recovery_decision
+        if decision is None or decision.action != 'RECOVER':
+            return list(decision.target_q) if decision is not None else list(current_q)
+
+        if self._recovery_command is None:
+            self._recovery_command = list(current_q)
+            self._recovery_velocity = [0.0] * self.n_joints
+
+        next_command = list(self._recovery_command)
+        next_velocity = list(self._recovery_velocity)
+        max_velocity_step = self.recovery_max_acceleration * self.control_dt
+        for index, target in enumerate(decision.target_q):
+            if index in self._stuck_joints:
+                next_command[index] = current_q[index]
+                next_velocity[index] = 0.0
+                continue
+            distance = target - self._recovery_command[index]
+            stopping_velocity = math.sqrt(
+                2.0 * self.recovery_max_acceleration * abs(distance)
+            )
+            desired_velocity = math.copysign(
+                min(self.recovery_max_velocity, stopping_velocity), distance
+            ) if abs(distance) > 1e-12 else 0.0
+            velocity_change = max(
+                -max_velocity_step,
+                min(max_velocity_step, desired_velocity - self._recovery_velocity[index]),
+            )
+            next_velocity[index] = self._recovery_velocity[index] + velocity_change
+            next_command[index] = self._recovery_command[index] + next_velocity[index] * self.control_dt
+
+        self._recovery_command = next_command
+        self._recovery_velocity = next_velocity
+        return list(next_command)
 
     def _locked_joints(self) -> List[int]:
         """返回当前被锁定的关节索引（卡死或传感器失效）"""
@@ -297,5 +344,7 @@ class FaultTolerantController:
         self._last_target = None
         self._last_recovery_decision = None
         self._last_task_goal = None
+        self._recovery_command = None
+        self._recovery_velocity = [0.0] * self.n_joints
         self._stuck_joints.clear()
         self._comm_timeout = False

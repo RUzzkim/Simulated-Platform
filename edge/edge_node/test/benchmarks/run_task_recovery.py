@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import gzip
 import json
 import math
@@ -18,7 +19,7 @@ from edge_node.fault.detector import CompositeFaultDetector
 from edge_node.fault.tolerant import FaultTolerantController
 from edge_node.model.messages import RobotState, ROBOT_STATUS_RUNNING
 from run_comparison import DT, HOME, TS, EE_TOL, _ee_dist, _plant_for
-from scenarios import TrajectoryReference, build_scenarios
+from scenarios import TrajectoryReference, build_task_recovery_scenarios
 
 DWELL_S = 0.25
 STOP_DEADLINE_S = 2.0
@@ -26,6 +27,8 @@ STOP_SPEED_RAD_S = 0.05
 MAX_TAU_NM = 50.0
 MAX_SAFE_SPEED_RAD_S = 2.0 * 0.98
 MAX_FAULT_TORQUE_MEAN_NM = 15.0
+RECOVERY_MAX_VELOCITY_RAD_S = 1.0
+RECOVERY_MAX_ACCELERATION_RAD_S2 = 2.0
 TRACE_FIELDS = (
     'run_id', 'scenario', 'strategy', 'step', 'command_t_s', 't_s',
     'fault_active', 'event_type', 'event_joint', 'action', 'reason',
@@ -94,7 +97,12 @@ def run_case(sc, strategy, output_dir):
     plant = _plant_for(sc)
     ref = TrajectoryReference('p2p', q0=HOME, q1=sc.target, v_max=sc.ref_vmax)
     detector = CompositeFaultDetector()
-    ftc = FaultTolerantController(task_recovery=True) if strategy == 'v2' else (
+    ftc = FaultTolerantController(
+        task_recovery=True,
+        control_dt=DT,
+        recovery_max_velocity=RECOVERY_MAX_VELOCITY_RAD_S,
+        recovery_max_acceleration=RECOVERY_MAX_ACCELERATION_RAD_S2,
+    ) if strategy == 'v2' else (
         FaultTolerantController(task_recovery=False) if strategy == 'v1' else None
     )
     j = sc.fault_joint
@@ -128,6 +136,7 @@ def run_case(sc, strategy, output_dir):
                     lock_position = plant.q[j]
                 plant.q[j] = lock_position
                 plant.qd[j] = 0.0
+                plant.tau[j] = sc.lock_reaction_torque
             else:
                 lock_position = None
             action = ftc.last_recovery_decision.action if ftc and ftc.last_recovery_decision else None
@@ -162,28 +171,40 @@ def run_case(sc, strategy, output_dir):
     return result
 
 
-def main():
-    parser = argparse.ArgumentParser(description='单关节卡滞三策略任务恢复基准')
-    parser.add_argument('--output-dir', default=str(Path(__file__).parents[1] / 'reports' / 'task_recovery'))
-    parser.add_argument('--json', default=None)
-    parser.add_argument('--scenario', default=None, help='指定一个场景名，默认运行全部 JOINT_LOCKED 场景')
-    args = parser.parse_args()
-    scenarios = [sc for sc in build_scenarios()[1] if sc.fault_type == 'JOINT_LOCKED']
-    if args.scenario:
-        scenarios = [sc for sc in scenarios if sc.name == args.scenario]
-        if not scenarios:
-            parser.error(f'unknown JOINT_LOCKED scenario: {args.scenario}')
-    rows = [run_case(sc, strategy, args.output_dir)
-            for sc in scenarios for strategy in ('off', 'v1', 'v2')]
-    result = {
+def build_summary(rows, split, scenario_count, output_dir):
+    source_root = Path(__file__).parents[2]
+    repository_root = source_root.parents[1]
+    source_files = {
+        'edge_node/fault/recovery.py': source_root / 'edge_node' / 'fault' / 'recovery.py',
+        'edge_node/fault/tolerant.py': source_root / 'edge_node' / 'fault' / 'tolerant.py',
+        'benchmarks/run_task_recovery.py': Path(__file__),
+        'benchmarks/scenarios.py': Path(__file__).with_name('scenarios.py'),
+        'benchmarks/plant.py': Path(__file__).with_name('plant.py'),
+        'benchmarks/run_comparison.py': Path(__file__).with_name('run_comparison.py'),
+        'config/edge_config.yaml': source_root / 'config' / 'edge_config.yaml',
+    }
+    source_hashes = {
+        name: hashlib.sha256(path.read_bytes()).hexdigest()
+        for name, path in source_files.items()
+    }
+    try:
+        raw_directory = Path(output_dir).resolve().relative_to(repository_root).as_posix()
+    except ValueError:
+        raw_directory = str(Path(output_dir).resolve())
+    return {
         'meta': {
-            'sample_rate_hz': int(1 / DT), 'scenarios': len(scenarios),
-            'paired_runs': len(scenarios), 'stop_deadline_s': STOP_DEADLINE_S,
+            'sample_rate_hz': int(1 / DT), 'scenarios': scenario_count,
+            'split': split,
+            'paired_runs': scenario_count, 'stop_deadline_s': STOP_DEADLINE_S,
             'stop_speed_rad_s': STOP_SPEED_RAD_S, 'dwell_s': DWELL_S,
             'ee_position_tolerance_m': EE_TOL, 'max_joint_torque_nm': MAX_TAU_NM,
             'plant_velocity_limit_rad_s': 2.0,
             'max_scored_velocity_rad_s': MAX_SAFE_SPEED_RAD_S,
             'max_fault_joint_mean_torque_nm': MAX_FAULT_TORQUE_MEAN_NM,
+            'recovery_max_velocity_rad_s': RECOVERY_MAX_VELOCITY_RAD_S,
+            'recovery_max_acceleration_rad_s2': RECOVERY_MAX_ACCELERATION_RAD_S2,
+            'raw_directory': raw_directory,
+            'source_sha256': source_hashes,
         },
         'summary': {
             strategy: {
@@ -194,6 +215,24 @@ def main():
         },
         'runs': rows,
     }
+
+
+def main():
+    parser = argparse.ArgumentParser(description='单关节卡滞三策略任务恢复基准')
+    parser.add_argument('--output-dir', default=str(Path(__file__).parents[1] / 'reports' / 'task_recovery'))
+    parser.add_argument('--json', default=None)
+    parser.add_argument('--split', choices=('development', 'exploratory', 'validation'), default='development',
+                        help='实验划分。validation 在本轮运行前冻结，不代表盲测。')
+    parser.add_argument('--scenario', default=None, help='指定一个场景名，默认运行所选划分的全部场景')
+    args = parser.parse_args()
+    scenarios = build_task_recovery_scenarios(args.split)
+    if args.scenario:
+        scenarios = [sc for sc in scenarios if sc.name == args.scenario]
+        if not scenarios:
+            parser.error(f'unknown JOINT_LOCKED scenario: {args.scenario}')
+    rows = [run_case(sc, strategy, args.output_dir)
+            for sc in scenarios for strategy in ('off', 'v1', 'v2')]
+    result = build_summary(rows, args.split, len(scenarios), args.output_dir)
     output = Path(args.json) if args.json else Path(args.output_dir) / 'summary.json'
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')

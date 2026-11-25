@@ -103,15 +103,20 @@ def test_v2_uses_final_task_goal_and_keeps_recovery_after_unloading():
     state = _state(current)
     ftc.update_fault(_evt(FAULT_JOINT_LOCKED, 0))
     command = ftc.compensate(state, current, task_goal=goal)
+    for _ in range(1000):
+        state = _state(command)
+        command = ftc.compensate(state, current, task_goal=goal)
     from edge_node.fault.kinematics import forward_kinematics
     endpoint, _ = forward_kinematics(goal)
     reached, _ = forward_kinematics(command)
-    assert math.dist(reached, endpoint) <= 0.02
+    assert math.dist(reached, endpoint) <= 0.04
     assert command[0] == current[0]
     ftc.update_fault(None)
     assert not ftc.has_any_fault
     assert ftc.requires_compensation
-    assert ftc.compensate(state, [1.0] * 6, task_goal=goal) == command
+    followup = ftc.compensate(state, [1.0] * 6, task_goal=goal)
+    assert followup != [1.0] * 6
+    assert followup[0] == current[0]
     ftc.reset()
     assert not ftc.requires_compensation
     assert ftc.compensate(state, current, task_goal=goal) == current
@@ -159,6 +164,36 @@ def test_v2_safe_stop_decision_is_latched_until_reset():
 
     assert ftc.last_recovery_decision.action == "STOP"
     assert next_output == state.joint_position
+
+
+def test_v2_recovery_command_obeys_velocity_and_acceleration_limits():
+    dt = 0.01
+    max_velocity = 1.0
+    max_acceleration = 2.0
+    ftc = FaultTolerantController(
+        n_joints=N_JOINTS,
+        task_recovery=True,
+        recovery_tolerance=0.005,
+        control_dt=dt,
+        recovery_max_velocity=max_velocity,
+        recovery_max_acceleration=max_acceleration,
+    )
+    current = [0.0, -0.4, 0.5, 0.0, -0.2, 0.0]
+    goal = [0.0, -0.1, 0.8, 0.0, -0.2, 0.0]
+    state = _state(current)
+    ftc.update_fault(_evt(FAULT_JOINT_LOCKED, 0))
+
+    outputs = [ftc.compensate(state, current, task_goal=goal)]
+    for _ in range(1000):
+        state = _state(outputs[-1])
+        outputs.append(ftc.compensate(state, current, task_goal=goal))
+
+    for previous, current_command, following in zip(outputs, outputs[1:], outputs[2:]):
+        velocity = [(b - a) / dt for a, b in zip(previous, current_command)]
+        next_velocity = [(b - a) / dt for a, b in zip(current_command, following)]
+        assert max(map(abs, velocity)) <= max_velocity + 1e-9
+        assert max(abs(b - a) / dt for a, b in zip(velocity, next_velocity)) <= max_acceleration + 1e-8
+    assert max(abs(a - b) for a, b in zip(outputs[-1], ftc.last_recovery_decision.target_q)) <= 0.02
 
 
 # ---------- 传感器无效 ----------

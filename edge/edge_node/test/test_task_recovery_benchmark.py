@@ -70,6 +70,20 @@ def test_paired_runs_preserve_legacy_metrics_and_export_frame_alignment(tmp_path
     assert rows[2]['fault_detection_latency_ms'] >= 0.0
 
 
+def test_joint_lock_fault_has_detectable_reaction_torque_without_exceeding_score_limit(tmp_path):
+    from run_task_recovery import run_case
+    from scenarios import build_task_recovery_scenarios
+
+    sc = next(
+        scenario for scenario in build_task_recovery_scenarios('exploratory')
+        if scenario.name == 'EXPLORATORY-LOCK-J2#s1T2'
+    )
+    result = run_case(sc, 'v2', tmp_path)
+
+    assert result['fault_detection_latency_ms'] is not None
+    assert 10.0 < result['mean_fault_joint_torque_nm'] < 15.0
+
+
 def test_scoring_checks_position_and_only_counts_post_stop_samples():
     from run_task_recovery import score
     sc = build_scenarios()[1][0]
@@ -80,3 +94,51 @@ def test_scoring_checks_position_and_only_counts_post_stop_samples():
     assert not score(sc, samples)['recovered']
     samples[0]['q'][2] = float('nan')
     assert not score(sc, samples)['recovered']
+
+
+def test_exploratory_scenarios_are_separate_from_development_targets():
+    from scenarios import build_task_recovery_scenarios
+
+    development = build_task_recovery_scenarios('development')
+    exploratory = build_task_recovery_scenarios('exploratory')
+
+    assert len(development) == len(exploratory) == 24
+    assert {tuple(sc.target) for sc in development}.isdisjoint(
+        {tuple(sc.target) for sc in exploratory}
+    )
+    assert {sc.fault_joint for sc in exploratory} == {0, 1, 2, 3}
+    assert len({sc.name for sc in exploratory}) == len(exploratory)
+
+
+def test_validation_scenarios_are_frozen_and_separate_from_prior_targets():
+    from scenarios import build_task_recovery_scenarios
+
+    development = build_task_recovery_scenarios('development')
+    exploratory = build_task_recovery_scenarios('exploratory')
+    validation = build_task_recovery_scenarios('validation')
+
+    assert len(validation) == 24
+    assert {tuple(sc.target) for sc in validation}.isdisjoint(
+        {tuple(sc.target) for sc in development + exploratory}
+    )
+    assert {sc.fault_joint for sc in validation} == {0, 1, 2, 3}
+    assert {sc.fault_onset for sc in validation} == {0.4, 0.8, 1.2}
+    assert all(sc.lock_reaction_torque == 12.5 for sc in validation)
+
+
+def test_summary_records_hashes_for_algorithm_and_benchmark_sources(tmp_path):
+    from run_task_recovery import build_summary
+
+    summary = build_summary([], 'development', 0, tmp_path)
+
+    assert set(summary['meta']['source_sha256']) == {
+        'edge_node/fault/recovery.py',
+        'edge_node/fault/tolerant.py',
+        'benchmarks/run_task_recovery.py',
+        'benchmarks/scenarios.py',
+        'benchmarks/plant.py',
+        'benchmarks/run_comparison.py',
+        'config/edge_config.yaml',
+    }
+    assert all(len(value) == 64 for value in summary['meta']['source_sha256'].values())
+    assert summary['meta']['raw_directory'] == str(tmp_path.resolve())

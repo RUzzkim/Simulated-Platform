@@ -415,6 +415,8 @@ class RobotSimulator:
             # 刹车：清除规划，目标置为当前位置，Kd 阻尼自然减速
             with self._lock:
                 self._plan = None
+                self._safe_mode = False
+                self._safe_live = None
                 self._cmd_target = [j.q for j in self.joints]
             print('[SIM] 收到 STOP（阻尼刹车）', flush=True)
         elif cmd_type == 'START':

@@ -244,3 +244,17 @@ class MqttClient:
         with self._lock:
             self._client.publish(self._command_topic, payload=body, qos=self._qos)
         logger.debug("发布安全指令 %s", body)
+
+    def publish_stop_command(self, robot_id: str) -> None:
+        """Publish the existing simulator STOP command to cancel safe servo mode."""
+        payload = {
+            'commandId': f'EDGE-STOP-{int(time.time() * 1000)}',
+            'simulationId': self._simulation_id,
+            'robotId': robot_id,
+            'cmdType': 'STOP',
+            'timestamp': int(time.time() * 1000),
+        }
+        body = json.dumps(payload, ensure_ascii=False)
+        with self._lock:
+            self._client.publish(self._command_topic, payload=body, qos=self._qos)
+        logger.debug("发布仿真停止指令 %s", body)

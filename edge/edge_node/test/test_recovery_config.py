@@ -19,3 +19,25 @@ def test_task_recovery_defaults_to_disabled():
     manager = ConfigManager()
 
     assert manager.ft_task_recovery is False
+
+
+def test_recovery_trajectory_limits_have_safe_defaults():
+    manager = ConfigManager()
+
+    assert manager.ft_recovery_max_velocity == 1.0
+    assert manager.ft_recovery_max_acceleration == 2.0
+
+
+def test_recovery_trajectory_limits_are_read_from_yaml(tmp_path):
+    config = tmp_path / "edge.yaml"
+    config.write_text(
+        "fault_tolerance:\n"
+        "  recovery_max_velocity: 0.6\n"
+        "  recovery_max_acceleration: 1.4\n",
+        encoding="utf-8",
+    )
+
+    manager = ConfigManager(str(config))
+
+    assert manager.ft_recovery_max_velocity == 0.6
+    assert manager.ft_recovery_max_acceleration == 1.4

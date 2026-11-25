@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Six-axis robot arm joint and fault-recovery algorithm map</title>
+  <desc id="desc">Technical schematic of a generic six-axis industrial robot. Joint numbers J0 to J5 map to DH J1 to J6. Blue marks joints covered by current single-joint lock experiments, gray marks joints not yet covered.
+  </desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5f8fc"/>
+      <stop offset="1" stop-color="#e9f0f7"/>
+    </linearGradient>
+    <linearGradient id="arm" x1="0" y1="0" x2="0.1" y2="1">
+      <stop offset="0" stop-color="#d9e5ef"/>
+      <stop offset="1" stop-color="#8ea6bc"/>
+    </linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#18334a" flood-opacity=".12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#168e91"/>
+    </marker>
+    <style>
+      text { font-family: 'Inter', 'Segoe UI', 'Noto Sans SC', sans-serif; fill: #17324a; }
+      .eyebrow { font-size: 17px; font-weight: 700; letter-spacing: 3px; fill: #168e91; }
+      .title { font-size: 40px; font-weight: 750; }
+      .subtitle { font-size: 18px; fill: #5b7184; }
+      .joint-title { font-size: 20px; font-weight: 750; }
+      .joint-name { font-size: 17px; fill: #526b7f; }
+      .mapping { font-size: 15px; fill: #698093; }
+      .chip { font-size: 14px; font-weight: 700; letter-spacing: .4px; }
+      .note { font-size: 16px; fill: #50677b; }
+      .legend { font-size: 16px; font-weight: 600; }
+      .outline { stroke: #496982; stroke-width: 3; }
+      .joint-covered { fill: #ecffff; stroke: #087f83; stroke-width: 6; }
+      .joint-open { fill: #f1f5f8; stroke: #8195a7; stroke-width: 5; }
+      .leader-covered { fill: none; stroke: #087f83; stroke-width: 2.5; }
+      .leader-open { fill: none; stroke: #91a3b2; stroke-width: 2.5; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" rx="30" fill="url(#bg)"/>
+  <text x="82" y="78" class="eyebrow">V2.0 · JOINT-LOCK RECOVERY</text>
+  <text x="82" y="132" class="title">故障关节定位与任务恢复算法对应图</text>
+  <text x="82" y="170" class="subtitle">通用六轴机械臂示意 · 当前实验注入单关节卡滞，评估任务恢复或安全停止</text>
+
+  <!-- Base and articulated six-axis arm -->
+  <g filter="url(#shadow)">
+    <path d="M270 760 L770 760 L730 818 L310 818 Z" fill="#36546c"/>
+    <path d="M340 735 L700 735 L770 760 L270 760 Z" fill="#56768f"/>
+    <path d="M425 625 L615 625 L695 735 L345 735 Z" fill="url(#arm)" class="outline"/>
+    <path d="M489 650 L552 650 L590 715 L450 715 Z" fill="#dce7ef" opacity=".65"/>
+    <path d="M518 510 L1050 430 L1095 492 L535 570 Z" fill="url(#arm)" class="outline"/>
+    <path d="M570 529 L1018 462 L1040 484 L585 550 Z" fill="#e8eff5" opacity=".7"/>
+    <path d="M1050 430 L1320 350 L1350 405 L1095 492 Z" fill="#9bb0c2" class="outline"/>
+    <path d="M1100 447 L1300 385 L1312 401 L1107 467 Z" fill="#e5edf3" opacity=".8"/>
+    <path d="M1317 348 L1380 329 L1400 365 L1342 388 Z" fill="#546f85" stroke="#355269" stroke-width="3"/>
+    <path d="M1382 329 L1442 311 L1456 340 L1398 361 Z" fill="#d6e0e8" stroke="#496982" stroke-width="3"/>
+    <path d="M1445 312 L1490 300 L1501 322 L1455 337 Z" fill="#168e91" stroke="#087f83" stroke-width="3"/>
+    <!-- Wrist links and tool -->
+    <path d="M1495 301 L1520 294 L1530 313 L1501 322 Z" fill="#087f83"/>
+  </g>
+
+  <!-- Joint markers: J0..J3 covered by the current lock-fault experiment -->
+  <g>
+    <circle cx="520" cy="680" r="35" class="joint-covered"/>
+    <circle cx="520" cy="680" r="14" fill="#087f83"/>
+    <path d="M491 695 A35 35 0 0 0 548 687" fill="none" stroke="#087f83" stroke-width="5" marker-end="url(#arrow)"/>
+
+    <circle cx="535" cy="540" r="34" class="joint-covered"/>
+    <circle cx="535" cy="540" r="14" fill="#087f83"/>
+    <path d="M507 527 A32 32 0 0 1 554 514" fill="none" stroke="#087f83" stroke-width="5" marker-end="url(#arrow)"/>
+
+    <circle cx="1068" cy="462" r="32" class="joint-covered"/>
+    <circle cx="1068" cy="462" r="13" fill="#087f83"/>
+    <path d="M1041 450 A30 30 0 0 1 1084 437" fill="none" stroke="#087f83" stroke-width="5" marker-end="url(#arrow)"/>
+
+    <circle cx="1340" cy="369" r="29" class="joint-covered"/>
+    <circle cx="1340" cy="369" r="12" fill="#087f83"/>
+    <path d="M1315 360 A27 27 0 0 1 1355 348" fill="none" stroke="#087f83" stroke-width="4" marker-end="url(#arrow)"/>
+
+    <circle cx="1400" cy="345" r="23" class="joint-open"/>
+    <circle cx="1400" cy="345" r="9" fill="#8195a7"/>
+
+    <circle cx="1450" cy="324" r="20" class="joint-open"/>
+    <circle cx="1450" cy="324" r="8" fill="#8195a7"/>
+  </g>
+
+  <!-- Callouts -->
+  <g>
+    <path d="M492 682 L325 682 L290 642" class="leader-covered"/>
+    <rect x="70" y="573" width="265" height="104" rx="15" fill="#ffffff" stroke="#b5d8d9" stroke-width="2"/>
+    <text x="92" y="608" class="joint-title">J0 · 基座回转</text>
+    <text x="92" y="637" class="joint-name">DH J1 · 已纳入卡滞实验</text>
+    <rect x="92" y="648" width="116" height="22" rx="11" fill="#d9f4f2"/>
+    <text x="104" y="664" class="chip" fill="#087f83">已覆盖 · 卡滞</text>
+
+    <path d="M510 520 L416 438 L330 438" class="leader-covered"/>
+    <rect x="70" y="379" width="265" height="104" rx="15" fill="#ffffff" stroke="#b5d8d9" stroke-width="2"/>
+    <text x="92" y="414" class="joint-title">J1 · 肩部 / 大臂俯仰</text>
+    <text x="92" y="443" class="joint-name">DH J2 · 已纳入卡滞实验</text>
+    <rect x="92" y="454" width="116" height="22" rx="11" fill="#d9f4f2"/>
+    <text x="104" y="470" class="chip" fill="#087f83">已覆盖 · 卡滞</text>
+
+    <path d="M1088 450 L1155 401 L1194 401" class="leader-covered"/>
+    <rect x="1185" y="347" width="330" height="100" rx="15" fill="#ffffff" stroke="#b5d8d9" stroke-width="2"/>
+    <text x="1207" y="382" class="joint-title">J2 · 肘部 / 小臂俯仰</text>
+    <text x="1207" y="411" class="joint-name">DH J3 · 已纳入卡滞实验</text>
+    <rect x="1207" y="419" width="116" height="22" rx="11" fill="#d9f4f2"/>
+    <text x="1219" y="435" class="chip" fill="#087f83">已覆盖 · 卡滞</text>
+
+    <path d="M1359 366 L1380 540 L1174 573" class="leader-covered"/>
+    <rect x="1025" y="530" width="319" height="100" rx="15" fill="#ffffff" stroke="#b5d8d9" stroke-width="2"/>
+    <text x="1047" y="565" class="joint-title">J3 · 腕部回转</text>
+    <text x="1047" y="594" class="joint-name">DH J4 · 已纳入卡滞实验</text>
+    <rect x="1047" y="602" width="116" height="22" rx="11" fill="#d9f4f2"/>
+    <text x="1059" y="618" class="chip" fill="#087f83">已覆盖 · 卡滞</text>
+
+    <path d="M1417 345 L1436 526 L1428 548" class="leader-open"/>
+    <rect x="1347" y="548" width="225" height="96" rx="15" fill="#ffffff" stroke="#c6d1da" stroke-width="2"/>
+    <text x="1367" y="583" class="joint-title">J4 · 腕部摆动</text>
+    <text x="1367" y="612" class="joint-name">DH J5 · 待扩展</text>
+    <rect x="1367" y="619" width="94" height="20" rx="10" fill="#e9eef2"/>
+    <text x="1379" y="634" class="chip" fill="#657c8e">未覆盖</text>
+
+    <path d="M1460 324 L1490 664 L1432 686" class="leader-open"/>
+    <rect x="1287" y="677" width="285" height="96" rx="15" fill="#ffffff" stroke="#c6d1da" stroke-width="2"/>
+    <text x="1307" y="712" class="joint-title">J5 · 末端工具安装</text>
+    <text x="1307" y="741" class="joint-name">DH J6 · 待扩展</text>
+    <rect x="1307" y="749" width="94" height="20" rx="10" fill="#e9eef2"/>
+    <text x="1319" y="764" class="chip" fill="#657c8e">未覆盖</text>
+  </g>
+
+  <!-- compact algorithm flow -->
+  <g>
+    <rect x="80" y="860" width="1440" height="92" rx="18" fill="#ffffff" stroke="#d4e0e9" stroke-width="2"/>
+    <text x="110" y="897" class="eyebrow" font-size="14">ALGORITHM RESPONSE</text>
+    <text x="110" y="929" font-size="19" font-weight="650">故障检测定位到关节</text>
+    <path d="M380 908 L458 908" stroke="#168e91" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="480" y="897" class="eyebrow" font-size="14">TASK RECOVERY</text>
+    <text x="480" y="929" font-size="19" font-weight="650">锁定故障关节 · 搜索健康关节解</text>
+    <path d="M870 908 L948 908" stroke="#168e91" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="972" y="897" class="eyebrow" font-size="14">DECISION</text>
+    <text x="972" y="929" font-size="19" font-weight="650">可行则恢复 · 搜索失败则制动停止</text>
+  </g>
+
+  <circle cx="94" cy="979" r="8" fill="#087f83"/>
+  <text x="112" y="985" class="note">当前开发与探索实验覆盖 J0–J3</text>
+  <circle cx="510" cy="979" r="8" fill="#8195a7"/>
+  <text x="528" y="985" class="note">J4–J5 尚未进入这组对照实验</text>
+  <text x="1120" y="985" class="note">通用仿真模型示意图 · 非真实设备 CAD</text>
+</svg>
