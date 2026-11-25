@@ -37,6 +37,36 @@ def test_recovery_requires_final_dwell_and_safe_joint_states():
     assert not score(sc, samples)['recovered']
 
 
+def test_score_flags_detector_events_before_the_physical_fault_starts():
+    from run_task_recovery import score
+
+    sc = build_scenarios()[1][0]
+    samples = [frame(k, error=0.2) for k in range(35)]
+    samples[10]['event_type'] = 'JOINT_LOCKED'
+    samples[10]['event_joint'] = sc.fault_joint
+
+    result = score(sc, samples)
+
+    assert result['false_alarm_during_nominal'] is True
+    assert result['first_false_alarm_type'] == 'JOINT_LOCKED'
+
+
+def test_sensor_noise_changes_only_the_detected_torque_reading():
+    import random
+    from run_task_recovery import sensor_torque_readings
+
+    physical_torque = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+    measured = sensor_torque_readings(physical_torque, 2, 12.5, True, 0.5, random.Random(42))
+
+    assert physical_torque == [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+    assert measured[:2] == [1.0, 2.0]
+    assert measured[2] != 12.5
+    assert measured[3:] == [4.0, 5.0, 6.0]
+    assert sensor_torque_readings(physical_torque, 2, 12.5, True, 0.5, random.Random(42)) == measured
+    nominal = sensor_torque_readings(physical_torque, 2, 12.5, False, 0.0, random.Random(42))
+    assert nominal == physical_torque
+
+
 def test_stop_requires_timely_measured_settling_and_excludes_recovery():
     from run_task_recovery import score
     sc = build_scenarios()[1][0]
@@ -68,6 +98,30 @@ def test_paired_runs_preserve_legacy_metrics_and_export_frame_alignment(tmp_path
         assert all(float(rec['qd0']) == 0.0 for rec in trace if rec['fault_active'] == 'True')
     assert rows[2]['fault_detection_latency_ms'] is not None
     assert rows[2]['fault_detection_latency_ms'] >= 0.0
+
+
+def test_sensor_noise_does_not_change_open_loop_plant_dynamics(tmp_path):
+    from run_task_recovery import run_case
+
+    scenario = build_scenarios()[1][0]
+    baseline = run_case(scenario, 'off', tmp_path, 0.0, 42)
+    noisy = run_case(scenario, 'off', tmp_path, 0.5, 42)
+
+    def read_trace(result):
+        with gzip.open(tmp_path / result['trace'], 'rt', encoding='utf-8', newline='') as stream:
+            return list(csv.DictReader(stream))
+
+    baseline_trace = read_trace(baseline)
+    noisy_trace = read_trace(noisy)
+
+    for physical_field in ('q0', 'q1', 'q2', 'q3', 'q4', 'q5',
+                           'qd0', 'qd1', 'qd2', 'qd3', 'qd4', 'qd5',
+                           'tau0', 'tau1', 'tau2', 'tau3', 'tau4', 'tau5'):
+        assert [row[physical_field] for row in noisy_trace] == [
+            row[physical_field] for row in baseline_trace
+        ]
+    assert any(row['sensor_tau0'] != baseline_row['sensor_tau0']
+               for row, baseline_row in zip(noisy_trace, baseline_trace))
 
 
 def test_joint_lock_fault_has_detectable_reaction_torque_without_exceeding_score_limit(tmp_path):
@@ -143,33 +197,65 @@ def test_run_records_lock_reaction_torque_and_summary_groups_sensitivity_levels(
     assert summary['summary_by_lock_reaction_torque']['11.0']['v2']['runs'] == 1
 
 
-def test_sensitivity_summary_keeps_torque_levels_and_strategies_separate(tmp_path):
+def test_sensitivity_summary_keeps_torque_noise_conditions_and_strategies_separate(tmp_path):
     from run_task_recovery import build_summary
 
     rows = [
-        {'lock_reaction_torque_nm': 11.0, 'strategy': 'off',
+        {'scenario': 'fault-a', 'fault_injected': True, 'fault_detection_latency_ms': None,
+         'false_alarm_during_nominal': False, 'recovery_time_s': None,
+         'lock_reaction_torque_nm': 11.0, 'sensor_torque_noise_sigma_nm': 0.0, 'strategy': 'off',
          'recovered': False, 'safe_stopped': False},
-        {'lock_reaction_torque_nm': 11.0, 'strategy': 'v2',
+        {'scenario': 'fault-b', 'fault_injected': True, 'fault_detection_latency_ms': 105.0,
+         'false_alarm_during_nominal': True, 'recovery_time_s': 1.3,
+         'lock_reaction_torque_nm': 11.0, 'sensor_torque_noise_sigma_nm': 1.0, 'strategy': 'v2',
          'recovered': True, 'safe_stopped': False},
-        {'lock_reaction_torque_nm': 14.0, 'strategy': 'v1',
+        {'scenario': 'control-a', 'fault_injected': False, 'fault_detection_latency_ms': None,
+         'false_alarm_during_nominal': True, 'recovery_time_s': None,
+         'lock_reaction_torque_nm': 11.0, 'sensor_torque_noise_sigma_nm': 1.0, 'strategy': 'v2',
+         'recovered': False, 'safe_stopped': False},
+        {'scenario': 'control-b', 'fault_injected': False, 'fault_detection_latency_ms': None,
+         'false_alarm_during_nominal': False, 'recovery_time_s': None,
+         'lock_reaction_torque_nm': 11.0, 'sensor_torque_noise_sigma_nm': 1.0, 'strategy': 'v2',
+         'recovered': False, 'safe_stopped': False},
+        {'scenario': 'fault-c', 'fault_injected': True, 'fault_detection_latency_ms': None,
+         'false_alarm_during_nominal': False, 'recovery_time_s': None,
+         'lock_reaction_torque_nm': 14.0, 'sensor_torque_noise_sigma_nm': 0.0, 'strategy': 'v1',
          'recovered': True, 'safe_stopped': False},
-        {'lock_reaction_torque_nm': 14.0, 'strategy': 'v2',
+        {'scenario': 'fault-d', 'fault_injected': True, 'fault_detection_latency_ms': 112.0,
+         'false_alarm_during_nominal': False, 'recovery_time_s': None,
+         'lock_reaction_torque_nm': 14.0, 'sensor_torque_noise_sigma_nm': 1.0, 'strategy': 'v2',
          'recovered': False, 'safe_stopped': True},
     ]
     summary = build_summary(rows, 'validation', 2, tmp_path)
 
     assert summary['meta']['lock_reaction_torque_levels_nm'] == [11.0, 14.0]
+    assert summary['meta']['sensor_torque_noise_sigma_levels_nm'] == [0.0, 1.0]
     grouped = summary['summary_by_lock_reaction_torque']
-    assert grouped['11.0'] == {
-        'off': {'runs': 1, 'recovered': 0, 'safely_stopped': 0},
-        'v1': {'runs': 0, 'recovered': 0, 'safely_stopped': 0},
-        'v2': {'runs': 1, 'recovered': 1, 'safely_stopped': 0},
-    }
-    assert grouped['14.0'] == {
-        'off': {'runs': 0, 'recovered': 0, 'safely_stopped': 0},
-        'v1': {'runs': 1, 'recovered': 1, 'safely_stopped': 0},
-        'v2': {'runs': 1, 'recovered': 0, 'safely_stopped': 1},
-    }
+    assert grouped['11.0']['v2']['runs'] == 3
+    assert grouped['11.0']['v2']['fault_runs'] == 1
+    assert grouped['11.0']['v2']['no_fault_control_runs'] == 2
+    assert grouped['11.0']['v2']['recovered'] == 1
+    assert grouped['14.0']['v1']['fault_runs'] == 1
+    assert grouped['14.0']['v1']['recovered'] == 1
+    assert grouped['14.0']['v2']['safely_stopped'] == 1
+    joint_groups = summary['summary_by_lock_torque_and_noise_sigma']
+    assert joint_groups['11.0']['0.0']['off']['runs'] == 1
+    noisy_v2 = joint_groups['11.0']['1.0']['v2']
+    assert noisy_v2['runs'] == 3
+    assert noisy_v2['fault_runs'] == 1
+    assert noisy_v2['faults_detected'] == 1
+    assert noisy_v2['faults_missed'] == 0
+    assert noisy_v2['false_alarms'] == 2
+    assert noisy_v2['no_fault_control_runs'] == 2
+    assert noisy_v2['no_fault_false_alarms'] == 1
+    assert noisy_v2['false_alarm_rate'] == 0.5
+    assert noisy_v2['mean_fault_detection_latency_ms'] == 105.0
+    assert noisy_v2['mean_recovery_time_s'] == 1.3
+    assert joint_groups['14.0']['0.0']['v1']['recovered'] == 1
+    assert joint_groups['14.0']['1.0']['v2']['safely_stopped'] == 1
+    overall_v2 = summary['summary']['v2']
+    assert overall_v2['fault_runs'] == 2
+    assert overall_v2['faults_missed'] == 0
 
 
 def test_summary_records_hashes_for_algorithm_and_benchmark_sources(tmp_path):

@@ -8,6 +8,8 @@ import gzip
 import json
 import math
 import os
+import random
+import statistics
 import sys
 import uuid
 from dataclasses import replace
@@ -37,6 +39,8 @@ TRACE_FIELDS = (
     'ee_error_m', 'q0', 'q1', 'q2', 'q3', 'q4', 'q5',
     'qd0', 'qd1', 'qd2', 'qd3', 'qd4', 'qd5',
     'tau0', 'tau1', 'tau2', 'tau3', 'tau4', 'tau5',
+    'sensor_tau0', 'sensor_tau1', 'sensor_tau2',
+    'sensor_tau3', 'sensor_tau4', 'sensor_tau5',
 )
 
 
@@ -52,6 +56,9 @@ def score(sc, samples):
     stop = next((row['command_t_s'] for row in samples if row['action'] == 'STOP'), None)
     confirmed = next((row['command_t_s'] for row in samples if row['fault_active']
                       and row['event_type'] == 'JOINT_LOCKED' and row['event_joint'] == sc.fault_joint), None)
+    nominal_end = sc.fault_onset if sc.fault_duration > 0.0 else sc.duration
+    false_alarm = next((row for row in samples if row['command_t_s'] < nominal_end
+                        and row['event_type'] is not None), None)
     recovery_start = stop_start = None
     for row in samples:
         if row['fault_active'] and row['ee_error_m'] <= EE_TOL:
@@ -75,6 +82,8 @@ def score(sc, samples):
                     and end - stop_start >= DWELL_S - 1e-9)
     return {
         'fault_detection_latency_ms': None if confirmed is None else round((confirmed - sc.fault_onset) * 1000, 3),
+        'false_alarm_during_nominal': false_alarm is not None,
+        'first_false_alarm_type': None if false_alarm is None else false_alarm['event_type'],
         'decision_s': next((r['command_t_s'] for r in samples if r['action']), None),
         'action': samples[-1]['action'] if samples else None,
         'recovery_time_s': round(recovery_start + DWELL_S - sc.fault_onset, 4) if recovered else None,
@@ -89,7 +98,20 @@ def score(sc, samples):
     }
 
 
-def run_case(sc, strategy, output_dir):
+def sensor_torque_readings(base_readings, joint_index, lock_reading_nm, fault_active,
+                           noise_sigma_nm, rng, nominal_reading_nm=None):
+    readings = list(base_readings)
+    if fault_active:
+        readings[joint_index] = lock_reading_nm
+    elif nominal_reading_nm is not None:
+        readings[joint_index] = nominal_reading_nm
+    if noise_sigma_nm:
+        readings[joint_index] += rng.gauss(0.0, noise_sigma_nm)
+    return readings
+
+
+def run_case(sc, strategy, output_dir, sensor_torque_noise_sigma_nm=0.0, noise_seed=0,
+             nominal_sensor_torque_nm=None):
     if strategy not in {'off', 'v1', 'v2'}:
         raise ValueError('strategy must be off, v1 or v2')
     output_dir = Path(output_dir)
@@ -108,6 +130,11 @@ def run_case(sc, strategy, output_dir):
     )
     j = sc.fault_joint
     onset, off = sc.fault_onset, sc.fault_onset + sc.fault_duration
+    base_scenario_name = sc.name.split('#TQ', 1)[0].split('#NOFAULT', 1)[0]
+    scenario_seed = int.from_bytes(
+        hashlib.sha256(base_scenario_name.encode('utf-8')).digest()[:8], 'big'
+    )
+    rng = random.Random(scenario_seed ^ int(noise_seed))
     lock_position = None
     samples = []
     trace_path = output_dir / f'{run_id}.csv.gz'
@@ -119,8 +146,13 @@ def run_case(sc, strategy, output_dir):
             t = (k + 1) * DT
             q_d, _ = ref.sample(command_time)
             fault_active = onset <= command_time < off
+            measurement_fault_active = (k > 0 and onset <= (k - 1) * DT < off)
+            sensor_tau = sensor_torque_readings(
+                plant.tau, j, sc.lock_reaction_torque, measurement_fault_active,
+                sensor_torque_noise_sigma_nm, rng, nominal_sensor_torque_nm,
+            )
             state = RobotState('SIM-001', 'ROBOT-001', TS, list(plant.q), list(plant.qd),
-                               list(plant.tau), ROBOT_STATUS_RUNNING)
+                               sensor_tau, ROBOT_STATUS_RUNNING)
             event = detector.detect_event(state) if ftc is not None else None
             if ftc is not None:
                 ftc.update_fault(event)
@@ -151,12 +183,14 @@ def run_case(sc, strategy, output_dir):
                 'action': action, 'reason': reason,
                 'ee_error_m': _ee_dist(plant.q, sc.target),
                 'q': list(plant.q), 'qd': list(plant.qd), 'tau': list(plant.tau),
+                'sensor_tau': sensor_tau,
             }
             samples.append(sample)
             record = {key: sample.get(key) for key in TRACE_FIELDS if key in sample}
             record.update({f'q{i}': sample['q'][i] for i in range(6)})
             record.update({f'qd{i}': sample['qd'][i] for i in range(6)})
             record.update({f'tau{i}': sample['tau'][i] for i in range(6)})
+            record.update({f'sensor_tau{i}': sample['sensor_tau'][i] for i in range(6)})
             record.update({f'cmd{i}': safe_target[i] for i in range(6)})
             record.update({f'ref{i}': q_d[i] for i in range(6)})
             writer.writerow(record)
@@ -167,10 +201,67 @@ def run_case(sc, strategy, output_dir):
         'run_id': run_id, 'scenario': sc.name, 'description': sc.description,
         'fault_joint': j, 'fault_onset_s': onset, 'seed': sc.seed, 'task_goal_rad': sc.target,
         'lock_reaction_torque_nm': sc.lock_reaction_torque,
+        'sensor_torque_noise_sigma_nm': sensor_torque_noise_sigma_nm,
+        'noise_seed': noise_seed,
+        'nominal_sensor_torque_nm': nominal_sensor_torque_nm,
+        'fault_injected': sc.fault_duration > 0.0 and onset < sc.duration,
         'strategy': strategy, 'trace': trace_path.name, **score(sc, samples),
         'ee_final_m': round(legacy_ee_rms, 5),
     }
     return result
+
+
+def summarize_runs(rows, strategy):
+    strategy_rows = [row for row in rows if row['strategy'] == strategy]
+    fault_rows = [
+        row for row in strategy_rows
+        if row.get('fault_injected', '#NOFAULT' not in row.get('scenario', ''))
+    ]
+    control_rows = [
+        row for row in strategy_rows
+        if not row.get('fault_injected', '#NOFAULT' not in row.get('scenario', ''))
+    ]
+    detected_rows = [row for row in fault_rows if row.get('fault_detection_latency_ms') is not None]
+    recovered_rows = [row for row in fault_rows if row.get('recovered', False)]
+    stopped_rows = [row for row in fault_rows if row.get('safe_stopped', False)]
+    no_fault_false_alarms = sum(row.get('false_alarm_during_nominal', False)
+                                for row in control_rows)
+    all_false_alarms = sum(row.get('false_alarm_during_nominal', False)
+                           for row in strategy_rows)
+    detector_available = strategy in {'v1', 'v2'}
+
+    def mean(rows_to_average, field, digits=3):
+        values = [row[field] for row in rows_to_average if row.get(field) is not None]
+        return round(sum(values) / len(values), digits) if values else None
+
+    def median(rows_to_average, field, digits=3):
+        values = [row[field] for row in rows_to_average if row.get(field) is not None]
+        return round(statistics.median(values), digits) if values else None
+
+    return {
+        'runs': len(strategy_rows),
+        'fault_runs': len(fault_rows),
+        'no_fault_control_runs': len(control_rows),
+        'recovered': sum(row.get('recovered', False) for row in fault_rows),
+        'recovery_rate': round(len(recovered_rows) / len(fault_rows), 4) if fault_rows else None,
+        'safely_stopped': sum(row.get('safe_stopped', False) for row in fault_rows),
+        'safe_stop_rate': round(len(stopped_rows) / len(fault_rows), 4) if fault_rows else None,
+        'faults_detected': len(detected_rows) if detector_available else None,
+        'faults_missed': len(fault_rows) - len(detected_rows) if detector_available else None,
+        'detection_rate': round(len(detected_rows) / len(fault_rows), 4)
+        if detector_available and fault_rows else None,
+        'false_alarms': all_false_alarms if detector_available else None,
+        'false_alarm_rate': round(no_fault_false_alarms / len(control_rows), 4)
+        if detector_available and control_rows else None,
+        'no_fault_false_alarms': no_fault_false_alarms if detector_available else None,
+        'pre_fault_false_alarms': sum(row.get('false_alarm_during_nominal', False)
+                                      for row in fault_rows) if detector_available else None,
+        'mean_fault_detection_latency_ms': mean(detected_rows, 'fault_detection_latency_ms'),
+        'median_fault_detection_latency_ms': median(detected_rows, 'fault_detection_latency_ms'),
+        'mean_recovery_time_s': mean(recovered_rows, 'recovery_time_s'),
+        'median_recovery_time_s': median(recovered_rows, 'recovery_time_s'),
+        'mean_safe_stop_time_s': mean(stopped_rows, 'stop_time_s'),
+    }
 
 
 def build_summary(rows, split, scenario_count, output_dir):
@@ -196,18 +287,28 @@ def build_summary(rows, split, scenario_count, output_dir):
     lock_torque_levels = sorted({
         float(row['lock_reaction_torque_nm']) for row in rows
     })
+    noise_levels = sorted({
+        float(row.get('sensor_torque_noise_sigma_nm', 0.0)) for row in rows
+    })
+    noise_seeds = sorted({int(row.get('noise_seed', 0)) for row in rows})
     summary_by_lock_torque = {
         str(torque): {
-            strategy: {
-                'runs': sum(row['lock_reaction_torque_nm'] == torque
-                            and row['strategy'] == strategy for row in rows),
-                'recovered': sum(row['lock_reaction_torque_nm'] == torque
-                                 and row['strategy'] == strategy and row['recovered']
-                                 for row in rows),
-                'safely_stopped': sum(row['lock_reaction_torque_nm'] == torque
-                                      and row['strategy'] == strategy and row['safe_stopped']
-                                      for row in rows),
-            } for strategy in ('off', 'v1', 'v2')
+            strategy: summarize_runs(
+                [row for row in rows if float(row['lock_reaction_torque_nm']) == torque],
+                strategy,
+            ) for strategy in ('off', 'v1', 'v2')
+        } for torque in lock_torque_levels
+    }
+    summary_by_torque_and_noise = {
+        str(torque): {
+            str(noise): {
+                strategy: summarize_runs(
+                    [row for row in rows
+                     if float(row['lock_reaction_torque_nm']) == torque
+                     and float(row.get('sensor_torque_noise_sigma_nm', 0.0)) == noise],
+                    strategy,
+                ) for strategy in ('off', 'v1', 'v2')
+            } for noise in noise_levels
         } for torque in lock_torque_levels
     }
     return {
@@ -221,19 +322,18 @@ def build_summary(rows, split, scenario_count, output_dir):
             'max_scored_velocity_rad_s': MAX_SAFE_SPEED_RAD_S,
             'max_fault_joint_mean_torque_nm': MAX_FAULT_TORQUE_MEAN_NM,
             'lock_reaction_torque_levels_nm': lock_torque_levels,
+            'sensor_torque_noise_sigma_levels_nm': noise_levels,
+            'sensor_torque_noise_seeds': noise_seeds,
             'recovery_max_velocity_rad_s': RECOVERY_MAX_VELOCITY_RAD_S,
             'recovery_max_acceleration_rad_s2': RECOVERY_MAX_ACCELERATION_RAD_S2,
             'raw_directory': raw_directory,
             'source_sha256': source_hashes,
         },
         'summary': {
-            strategy: {
-                'runs': sum(row['strategy'] == strategy for row in rows),
-                'recovered': sum(row['strategy'] == strategy and row['recovered'] for row in rows),
-                'safely_stopped': sum(row['strategy'] == strategy and row['safe_stopped'] for row in rows),
-            } for strategy in ('off', 'v1', 'v2')
+            strategy: summarize_runs(rows, strategy) for strategy in ('off', 'v1', 'v2')
         },
         'summary_by_lock_reaction_torque': summary_by_lock_torque,
+        'summary_by_lock_torque_and_noise_sigma': summary_by_torque_and_noise,
         'runs': rows,
     }
 
@@ -244,19 +344,30 @@ def main():
     parser.add_argument('--json', default=None)
     parser.add_argument('--split', choices=('development', 'exploratory', 'validation'), default='development',
                         help='实验划分。validation 在本轮运行前冻结，不代表盲测。')
-    parser.add_argument('--scenario', default=None, help='指定一个场景名，默认运行所选划分的全部场景')
+    parser.add_argument('--scenario', nargs='+', default=None,
+                        help='指定一个或多个场景名，默认运行所选划分的全部场景')
     parser.add_argument('--lock-reaction-torques', nargs='+', type=float, default=None,
-                        help='合成卡滞力矩读数敏感性扫值（严格介于 10 与 15 N·m）')
+                        help='合成卡滞力矩读数敏感性扫值（0 至 15 N·m）')
+    parser.add_argument('--sensor-torque-noise-sigmas', nargs='+', type=float, default=[0.0],
+                        help='故障关节力矩传感器高斯噪声标准差（N·m）')
+    parser.add_argument('--sensor-noise-seeds', nargs='+', type=int, default=[42],
+                        help='传感器噪声随机种子，用于配对复现实验')
+    parser.add_argument('--include-no-fault-controls', action='store_true',
+                        help='增加相同轨迹但不注入故障的误报对照')
     args = parser.parse_args()
     scenarios = build_task_recovery_scenarios(args.split)
     if args.scenario:
-        scenarios = [sc for sc in scenarios if sc.name == args.scenario]
-        if not scenarios:
-            parser.error(f'unknown JOINT_LOCKED scenario: {args.scenario}')
+        requested_scenarios = set(args.scenario)
+        available_scenarios = {scenario.name for scenario in scenarios}
+        unknown_scenarios = sorted(requested_scenarios - available_scenarios)
+        if unknown_scenarios:
+            parser.error(f'unknown JOINT_LOCKED scenarios: {", ".join(unknown_scenarios)}')
+        scenarios = [scenario for scenario in scenarios if scenario.name in requested_scenarios]
     if args.lock_reaction_torques is not None:
         torque_levels = sorted(set(args.lock_reaction_torques))
-        if any(not 10.0 < torque < MAX_FAULT_TORQUE_MEAN_NM for torque in torque_levels):
-            parser.error('lock reaction torques must be greater than 10 and less than 15 N·m')
+        if any(not math.isfinite(torque) or not 0.0 < torque < MAX_FAULT_TORQUE_MEAN_NM
+               for torque in torque_levels):
+            parser.error('lock reaction torques must be finite and between 0 and 15 N·m')
         scenarios = [
             replace(
                 scenario,
@@ -265,9 +376,25 @@ def main():
             )
             for torque in torque_levels for scenario in scenarios
         ]
-    rows = [run_case(sc, strategy, args.output_dir)
-            for sc in scenarios for strategy in ('off', 'v1', 'v2')]
-    result = build_summary(rows, args.split, len(scenarios), args.output_dir)
+    if args.include_no_fault_controls:
+        scenarios += [
+            replace(
+                scenario, name=f'{scenario.name}#NOFAULT',
+                fault_onset=scenario.duration + 1.0, fault_duration=0.0,
+            )
+            for scenario in scenarios
+        ]
+    noise_levels = sorted(set(args.sensor_torque_noise_sigmas))
+    if any(not math.isfinite(sigma) or sigma < 0.0 for sigma in noise_levels):
+        parser.error('sensor torque noise sigmas must be finite and non-negative')
+    noise_seeds = sorted(set(args.sensor_noise_seeds))
+    rows = [
+        run_case(sc, strategy, args.output_dir, sigma, seed)
+        for sc in scenarios for sigma in noise_levels for seed in noise_seeds
+        for strategy in ('off', 'v1', 'v2')
+    ]
+    scenario_count = len(scenarios) * len(noise_levels) * len(noise_seeds)
+    result = build_summary(rows, args.split, scenario_count, args.output_dir)
     output = Path(args.json) if args.json else Path(args.output_dir) / 'summary.json'
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
