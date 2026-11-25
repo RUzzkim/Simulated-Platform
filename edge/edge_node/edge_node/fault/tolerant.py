@@ -24,6 +24,7 @@ import math
 from typing import Dict, List, Optional, Set
 
 from edge_node.fault.replanner import TrajectoryReplanner
+from edge_node.fault.recovery import RecoveryDecision, RecoveryPlanner
 from edge_node.model.messages import (
     FAULT_COMM_TIMEOUT,
     FAULT_JOINT_LOCKED,
@@ -56,12 +57,28 @@ class FaultTolerantController:
         active_replanning: bool = True,
         replanning_damping: float = 0.05,
         replanning_step: float = 0.5,
+        task_recovery: bool = False,
+        recovery_tolerance: float = 0.02,
+        recovery_max_iterations: int = 160,
+        recovery_max_deceleration: float = 2.0,
     ):
         self.n_joints = n_joints
         self.torque_overload_scale = float(torque_overload_scale)
         self.velocity_clamp = float(velocity_clamp)
         self.recovery_frames = int(recovery_frames)
         self.active_replanning = bool(active_replanning)
+        self.task_recovery = bool(task_recovery)
+        self._recovery_planner: Optional[RecoveryPlanner] = (
+            RecoveryPlanner(
+                position_tolerance=recovery_tolerance,
+                max_iterations=recovery_max_iterations,
+                max_deceleration=recovery_max_deceleration,
+            )
+            if self.task_recovery else None
+        )
+        self._last_recovery_decision: Optional[RecoveryDecision] = None
+        self._last_task_goal: Optional[List[float]] = None
+        self._stuck_joints: Set[int] = set()
 
         # 主动容错轨迹重规划器
         self._replanner: Optional[TrajectoryReplanner] = None
@@ -107,6 +124,11 @@ class FaultTolerantController:
             return
 
         self._active_faults[joint].add(fault.fault_type)
+        if self.task_recovery and fault.fault_type == FAULT_JOINT_LOCKED:
+            if joint not in self._stuck_joints and self._last_recovery_decision is not None:
+                if self._last_recovery_decision.action == 'RECOVER':
+                    self._last_recovery_decision = None
+            self._stuck_joints.add(joint)
         self._clean_frames[joint] = 0
 
         # 传感器无效时记录当前位置为最后已知有效位置
@@ -130,6 +152,7 @@ class FaultTolerantController:
         self,
         state: RobotState,
         raw_target: List[float],
+        task_goal: Optional[List[float]] = None,
     ) -> List[float]:
         """对基础控制器输出的目标位置做故障安全补偿
 
@@ -148,6 +171,37 @@ class FaultTolerantController:
 
         q = state.joint_position
         locked = self._locked_joints()
+
+        normalized_goal = list(task_goal) if task_goal is not None else None
+        if (
+            self._last_recovery_decision is not None
+            and self._last_recovery_decision.action == 'RECOVER'
+            and normalized_goal is not None
+            and normalized_goal != self._last_task_goal
+        ):
+            self._last_recovery_decision = None
+
+        if self._last_recovery_decision is not None:
+            self._last_target = list(self._last_recovery_decision.target_q)
+            return list(self._last_target)
+
+        if (
+            self._recovery_planner is not None
+            and self._stuck_joints
+        ):
+            decision = self._recovery_planner.plan(
+                current_q=q,
+                current_qd=state.joint_velocity,
+                target_pose=self._recovery_planner.target_pose(
+                    normalized_goal if normalized_goal is not None else raw_target
+                ),
+                locked_joints=sorted(self._stuck_joints),
+                preferred_q=normalized_goal,
+            )
+            self._last_recovery_decision = decision
+            self._last_task_goal = normalized_goal
+            self._last_target = list(decision.target_q)
+            return list(decision.target_q)
 
         # 主动容错：有关节锁定时，重规划健康关节目标以补偿末端误差
         if locked and self._replanner is not None:
@@ -220,8 +274,17 @@ class FaultTolerantController:
         return {i: set(s) for i, s in self._active_faults.items()}
 
     @property
+    def last_recovery_decision(self) -> Optional[RecoveryDecision]:
+        return self._last_recovery_decision
+
+    @property
     def has_any_fault(self) -> bool:
         return self._comm_timeout or any(s for s in self._active_faults.values())
+
+    @property
+    def requires_compensation(self) -> bool:
+        """Whether an active fault or latched V2 task decision needs output handling."""
+        return self.has_any_fault or self._last_recovery_decision is not None
 
     def is_joint_faulty(self, joint: int) -> bool:
         return bool(self._active_faults.get(joint))
@@ -232,4 +295,7 @@ class FaultTolerantController:
             self._clean_frames[i] = 0
             self._last_good_position[i] = 0.0
         self._last_target = None
+        self._last_recovery_decision = None
+        self._last_task_goal = None
+        self._stuck_joints.clear()
         self._comm_timeout = False

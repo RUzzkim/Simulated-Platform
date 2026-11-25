@@ -34,3 +34,6 @@ Thumbs.db
 .agents/
 .backup/
 .tmp*
+
+# Local V2 simulation traces and run manifests
+/edge/edge_node/test/reports/task_recovery/

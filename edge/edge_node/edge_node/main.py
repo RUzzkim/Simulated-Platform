@@ -95,10 +95,11 @@ def main(args=None):
             active_replanning=cfg.ft_active_replanning,
             replanning_damping=cfg.ft_replanning_damping,
             replanning_step=cfg.ft_replanning_step,
+            task_recovery=cfg.ft_task_recovery,
         )
-        logger.info("容错控制已启用 (torque_scale=%.2f vel_clamp=%.3f active_replan=%s)",
+        logger.info("容错控制已启用 (torque_scale=%.2f vel_clamp=%.3f active_replan=%s task_recovery=%s)",
                     cfg.ft_torque_overload_scale, cfg.ft_velocity_clamp,
-                    cfg.ft_active_replanning)
+                    cfg.ft_active_replanning, cfg.ft_task_recovery)
     else:
         ftc = None
         logger.info("容错控制未启用")
@@ -228,11 +229,12 @@ def main(args=None):
         else:
             # 透传模式：直接转发到仿真端（故障时做容错补偿）
             if target is not None and command_publisher is not None:
-                if ftc is not None and ftc.has_any_fault:
+                if ftc is not None and ftc.requires_compensation:
                     with state_lock:
                         cur_state = latest_state['value']
                     if cur_state is not None:
-                        target = ftc.compensate(cur_state, target)
+                        task_goal = target if ftc.task_recovery else None
+                        target = ftc.compensate(cur_state, target, task_goal=task_goal)
                         logger.info("容错补偿后目标: %s",
                                     [round(t, 3) for t in target])
                 command_publisher.publish_position(target)
@@ -317,9 +319,9 @@ def main(args=None):
     state_thread = threading.Thread(target=state_publish_loop, daemon=True)
     state_thread.start()
 
-    # ---- 闭环控制循环（仅 adaptive_nn 模式）----
+    # ---- ROS 2 控制循环（NN 控制，或 V2 容错任务目标保持）----
     def control_loop():
-        if nn_controller is None:
+        if nn_controller is None and not (ftc is not None and ftc.task_recovery):
             return
         interval = cfg.control_dt
         logger.info("自适应 NN 控制循环启动，频率=%.1fHz", cfg.control_rate_hz)
@@ -327,13 +329,19 @@ def main(args=None):
             try:
                 with state_lock:
                     state: Optional[RobotState] = latest_state['value']
-                if state is not None and command_publisher is not None:
+                    task_goal = active_target['value']
+                    task_goal = list(task_goal) if task_goal is not None else None
+                if state is not None and command_publisher is not None and task_goal is not None:
                     q = state.joint_position
                     q_dot = state.joint_velocity
-                    q_target = nn_controller.compute_target_position(q, q_dot)
+                    if nn_controller is not None:
+                        q_target = nn_controller.compute_target_position(q, q_dot)
+                    else:
+                        q_target = list(task_goal)
                     # 容错补偿：故障时对目标做安全修正
                     if ftc is not None:
-                        q_target = ftc.compensate(state, q_target)
+                        final_goal = task_goal if ftc.task_recovery else None
+                        q_target = ftc.compensate(state, q_target, task_goal=final_goal)
                     command_publisher.publish_position(q_target)
             except Exception as e:
                 logger.error("控制循环失败: %s", e)
@@ -362,8 +370,11 @@ def main(args=None):
                                 state.joint_position, state.joint_velocity)
                         else:
                             q_target = raw_target
-                        if ftc.has_any_fault:
-                            safe_target = ftc.compensate(state, q_target)
+                        if ftc.requires_compensation:
+                            final_goal = raw_target if ftc.task_recovery else None
+                            safe_target = ftc.compensate(
+                                state, q_target, task_goal=final_goal
+                            )
                             mqtt_client.publish_safe_command(robot_id, target=safe_target)
                             if not safe_active:
                                 logger.warning("容错激活：下发安全目标 %s",
