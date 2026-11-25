@@ -109,3 +109,7 @@ py -m pytest -q edge/edge_node/test
 ## 力矩传感器噪声敏感性探索
 
 2026-11-25 完成探索集噪声试验，覆盖 J0–J3、9/11/13 N·m 合成卡滞读数、三档高斯读数噪声和两个随机种子，共 864 次仿真。V1、V2 共用检测器，整体均为 109/144 故障检出，漏检 35 次。11 与 13 N·m 条件三档噪声下均为 16/16 检出，平均确认延迟 240 ms。9 N·m 低于检测阈值，σ=0、1.5、3 N·m 时分别为 0/16、1/16、12/16 检出，检出会延迟至数秒。V1、V2 在 144 次无故障对照中均未观察到误报。读数和噪声为合成输入，实验不代表传感器标定或实体机械臂验证。方法、分档结果、复现命令和适用范围见 [传感器噪声敏感性实验记录](member-b-sensor-noise-exploratory-r1.md) 与 [逐次结果数据](member-b-sensor-noise-exploratory-r1.json)。
+
+随后将 `edge_config.yaml` 中在线启用的 `RobotSignalFilter` 加入离线任务恢复基准，滤波状态同时送入检测器和控制器。相同探索矩阵下 V1/V2 检出 112/144，漏检 32 次，无故障误报 0/144；9 N·m、σ=3 N·m 检出 15/16，但平均延迟仍为 1.865 s。由于滤波改变闭环状态与轨迹，该组结果单独记录，不把计数变化归因为检测器改进。复现方法与完整分档结果见 [在线滤波噪声敏感性记录](member-b-sensor-noise-online-filter-r1.md) 和 [逐次结果数据](member-b-sensor-noise-online-filter-r1.json)。
+
+基准脚本现支持 `--lock-torque-threshold` 记录候选检测阈值，默认仍为 10.0 N·m。8.5 N·m 在线滤波复核在 validation 的 24 个故障场景中实现 24/24 故障确认，V2 为 21/24 恢复、3/24 安全停稳。该结果与早期阈值探针一致，但验证集没有无故障对照，8.5 N·m 只作为候选配置，不替换默认值。详见 [8.5 N·m 阈值复核记录](member-b-validation-threshold85-r1.md) 和 [逐次结果数据](member-b-validation-threshold85-r1.json)。

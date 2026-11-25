@@ -124,6 +124,43 @@ def test_sensor_noise_does_not_change_open_loop_plant_dynamics(tmp_path):
                for row, baseline_row in zip(noisy_trace, baseline_trace))
 
 
+def test_online_signal_filter_mode_records_filtered_state_and_preserves_raw_sensor_values(tmp_path):
+    from run_task_recovery import run_case
+
+    scenario = build_scenarios()[1][0]
+    result = run_case(
+        scenario, 'v1', tmp_path, sensor_torque_noise_sigma_nm=3.0, noise_seed=42,
+        signal_filter_enabled=True,
+    )
+
+    assert result['signal_filter_enabled'] is True
+    with gzip.open(tmp_path / result['trace'], 'rt', encoding='utf-8', newline='') as stream:
+        trace = list(csv.DictReader(stream))
+
+    joint = scenario.fault_joint
+    assert trace[0][f'state_tau{joint}'] == trace[0][f'sensor_tau{joint}']
+    assert any(row[f'state_tau{joint}'] != row[f'sensor_tau{joint}'] for row in trace[1:])
+    assert any(row[f'state_q{joint}'] != row[f'q{joint}'] for row in trace[1:])
+
+
+def test_run_records_configured_lock_torque_threshold(tmp_path):
+    from run_task_recovery import run_case
+
+    scenario = build_scenarios()[1][0]
+    result = run_case(scenario, 'v1', tmp_path, lock_torque_threshold=8.5)
+
+    assert result['lock_torque_threshold_nm'] == 8.5
+
+
+def test_run_rejects_non_positive_lock_torque_threshold(tmp_path):
+    import pytest
+    from run_task_recovery import run_case
+
+    scenario = build_scenarios()[1][0]
+    with pytest.raises(ValueError, match='lock_torque_threshold'):
+        run_case(scenario, 'v1', tmp_path, lock_torque_threshold=0.0)
+
+
 def test_joint_lock_fault_has_detectable_reaction_torque_without_exceeding_score_limit(tmp_path):
     from run_task_recovery import run_case
     from scenarios import build_task_recovery_scenarios
@@ -264,8 +301,10 @@ def test_summary_records_hashes_for_algorithm_and_benchmark_sources(tmp_path):
     summary = build_summary([], 'development', 0, tmp_path)
 
     assert set(summary['meta']['source_sha256']) == {
+        'edge_node/config/config_manager.py',
         'edge_node/fault/recovery.py',
         'edge_node/fault/tolerant.py',
+        'edge_node/processor/signal_filter.py',
         'benchmarks/run_task_recovery.py',
         'benchmarks/scenarios.py',
         'benchmarks/plant.py',

@@ -20,7 +20,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
 
 from edge_node.fault.detector import CompositeFaultDetector
 from edge_node.fault.tolerant import FaultTolerantController
+from edge_node.config.config_manager import ConfigManager
 from edge_node.model.messages import RobotState, ROBOT_STATUS_RUNNING
+from edge_node.processor.signal_filter import RobotSignalFilter
 from run_comparison import DT, HOME, TS, EE_TOL, _ee_dist, _plant_for
 from scenarios import TrajectoryReference, build_task_recovery_scenarios
 
@@ -39,6 +41,8 @@ TRACE_FIELDS = (
     'ee_error_m', 'q0', 'q1', 'q2', 'q3', 'q4', 'q5',
     'qd0', 'qd1', 'qd2', 'qd3', 'qd4', 'qd5',
     'tau0', 'tau1', 'tau2', 'tau3', 'tau4', 'tau5',
+    *(f'state_q{i}' for i in range(6)), *(f'state_qd{i}' for i in range(6)),
+    *(f'state_tau{i}' for i in range(6)),
     'sensor_tau0', 'sensor_tau1', 'sensor_tau2',
     'sensor_tau3', 'sensor_tau4', 'sensor_tau5',
 )
@@ -110,16 +114,41 @@ def sensor_torque_readings(base_readings, joint_index, lock_reading_nm, fault_ac
     return readings
 
 
+def create_edge_signal_filter():
+    config_path = Path(__file__).parents[2] / 'config' / 'edge_config.yaml'
+    config = ConfigManager(str(config_path))
+    if not config.signal_filter_enabled:
+        return None, None
+    parameters = {
+        'n_joints': config.joint_count,
+        'window_size': config.sf_window_size,
+        'outlier_k': config.sf_outlier_k,
+        'alpha_position': config.sf_alpha_position,
+        'alpha_velocity': config.sf_alpha_velocity,
+        'alpha_effort': config.sf_alpha_effort,
+        'min_sigma_position': config.sf_min_sigma_position,
+        'min_sigma_velocity': config.sf_min_sigma_velocity,
+        'min_sigma_effort': config.sf_min_sigma_effort,
+    }
+    return RobotSignalFilter(**parameters), parameters
+
+
 def run_case(sc, strategy, output_dir, sensor_torque_noise_sigma_nm=0.0, noise_seed=0,
-             nominal_sensor_torque_nm=None):
+             nominal_sensor_torque_nm=None, signal_filter_enabled=False,
+             lock_torque_threshold=10.0):
     if strategy not in {'off', 'v1', 'v2'}:
         raise ValueError('strategy must be off, v1 or v2')
+    if not math.isfinite(lock_torque_threshold) or lock_torque_threshold <= 0.0:
+        raise ValueError('lock_torque_threshold must be finite and positive')
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     run_id = uuid.uuid4().hex
     plant = _plant_for(sc)
+    signal_filter, signal_filter_parameters = (
+        create_edge_signal_filter() if signal_filter_enabled else (None, None)
+    )
     ref = TrajectoryReference('p2p', q0=HOME, q1=sc.target, v_max=sc.ref_vmax)
-    detector = CompositeFaultDetector()
+    detector = CompositeFaultDetector(lock_torque_threshold=lock_torque_threshold)
     ftc = FaultTolerantController(
         task_recovery=True,
         control_dt=DT,
@@ -151,8 +180,14 @@ def run_case(sc, strategy, output_dir, sensor_torque_noise_sigma_nm=0.0, noise_s
                 plant.tau, j, sc.lock_reaction_torque, measurement_fault_active,
                 sensor_torque_noise_sigma_nm, rng, nominal_sensor_torque_nm,
             )
-            state = RobotState('SIM-001', 'ROBOT-001', TS, list(plant.q), list(plant.qd),
-                               sensor_tau, ROBOT_STATUS_RUNNING)
+            state_q = list(plant.q)
+            state_qd = list(plant.qd)
+            state_tau = list(sensor_tau)
+            if signal_filter is not None:
+                state_q, state_qd, state_tau, _ = signal_filter.filter(
+                    state_q, state_qd, state_tau)
+            state = RobotState('SIM-001', 'ROBOT-001', TS, state_q, state_qd,
+                               state_tau, ROBOT_STATUS_RUNNING)
             event = detector.detect_event(state) if ftc is not None else None
             if ftc is not None:
                 ftc.update_fault(event)
@@ -183,6 +218,7 @@ def run_case(sc, strategy, output_dir, sensor_torque_noise_sigma_nm=0.0, noise_s
                 'action': action, 'reason': reason,
                 'ee_error_m': _ee_dist(plant.q, sc.target),
                 'q': list(plant.q), 'qd': list(plant.qd), 'tau': list(plant.tau),
+                'state_q': state_q, 'state_qd': state_qd, 'state_tau': state_tau,
                 'sensor_tau': sensor_tau,
             }
             samples.append(sample)
@@ -190,6 +226,9 @@ def run_case(sc, strategy, output_dir, sensor_torque_noise_sigma_nm=0.0, noise_s
             record.update({f'q{i}': sample['q'][i] for i in range(6)})
             record.update({f'qd{i}': sample['qd'][i] for i in range(6)})
             record.update({f'tau{i}': sample['tau'][i] for i in range(6)})
+            record.update({f'state_q{i}': sample['state_q'][i] for i in range(6)})
+            record.update({f'state_qd{i}': sample['state_qd'][i] for i in range(6)})
+            record.update({f'state_tau{i}': sample['state_tau'][i] for i in range(6)})
             record.update({f'sensor_tau{i}': sample['sensor_tau'][i] for i in range(6)})
             record.update({f'cmd{i}': safe_target[i] for i in range(6)})
             record.update({f'ref{i}': q_d[i] for i in range(6)})
@@ -201,9 +240,12 @@ def run_case(sc, strategy, output_dir, sensor_torque_noise_sigma_nm=0.0, noise_s
         'run_id': run_id, 'scenario': sc.name, 'description': sc.description,
         'fault_joint': j, 'fault_onset_s': onset, 'seed': sc.seed, 'task_goal_rad': sc.target,
         'lock_reaction_torque_nm': sc.lock_reaction_torque,
+        'lock_torque_threshold_nm': lock_torque_threshold,
         'sensor_torque_noise_sigma_nm': sensor_torque_noise_sigma_nm,
         'noise_seed': noise_seed,
         'nominal_sensor_torque_nm': nominal_sensor_torque_nm,
+        'signal_filter_enabled': signal_filter is not None,
+        'signal_filter_parameters': signal_filter_parameters,
         'fault_injected': sc.fault_duration > 0.0 and onset < sc.duration,
         'strategy': strategy, 'trace': trace_path.name, **score(sc, samples),
         'ee_final_m': round(legacy_ee_rms, 5),
@@ -268,8 +310,10 @@ def build_summary(rows, split, scenario_count, output_dir):
     source_root = Path(__file__).parents[2]
     repository_root = source_root.parents[1]
     source_files = {
+        'edge_node/config/config_manager.py': source_root / 'edge_node' / 'config' / 'config_manager.py',
         'edge_node/fault/recovery.py': source_root / 'edge_node' / 'fault' / 'recovery.py',
         'edge_node/fault/tolerant.py': source_root / 'edge_node' / 'fault' / 'tolerant.py',
+        'edge_node/processor/signal_filter.py': source_root / 'edge_node' / 'processor' / 'signal_filter.py',
         'benchmarks/run_task_recovery.py': Path(__file__),
         'benchmarks/scenarios.py': Path(__file__).with_name('scenarios.py'),
         'benchmarks/plant.py': Path(__file__).with_name('plant.py'),
@@ -289,6 +333,14 @@ def build_summary(rows, split, scenario_count, output_dir):
     })
     noise_levels = sorted({
         float(row.get('sensor_torque_noise_sigma_nm', 0.0)) for row in rows
+    })
+    signal_filter_parameters = next(
+        (row.get('signal_filter_parameters') for row in rows
+         if row.get('signal_filter_parameters') is not None),
+        None,
+    )
+    lock_torque_threshold_levels = sorted({
+        float(row.get('lock_torque_threshold_nm', 10.0)) for row in rows
     })
     noise_seeds = sorted({int(row.get('noise_seed', 0)) for row in rows})
     summary_by_lock_torque = {
@@ -322,8 +374,11 @@ def build_summary(rows, split, scenario_count, output_dir):
             'max_scored_velocity_rad_s': MAX_SAFE_SPEED_RAD_S,
             'max_fault_joint_mean_torque_nm': MAX_FAULT_TORQUE_MEAN_NM,
             'lock_reaction_torque_levels_nm': lock_torque_levels,
+            'lock_torque_threshold_levels_nm': lock_torque_threshold_levels,
             'sensor_torque_noise_sigma_levels_nm': noise_levels,
             'sensor_torque_noise_seeds': noise_seeds,
+            'signal_filter_enabled': signal_filter_parameters is not None,
+            'signal_filter_parameters': signal_filter_parameters,
             'recovery_max_velocity_rad_s': RECOVERY_MAX_VELOCITY_RAD_S,
             'recovery_max_acceleration_rad_s2': RECOVERY_MAX_ACCELERATION_RAD_S2,
             'raw_directory': raw_directory,
@@ -354,6 +409,10 @@ def main():
                         help='传感器噪声随机种子，用于配对复现实验')
     parser.add_argument('--include-no-fault-controls', action='store_true',
                         help='增加相同轨迹但不注入故障的误报对照')
+    parser.add_argument('--online-signal-filter', action='store_true',
+                        help='按 edge_config.yaml 的信号滤波配置预处理状态后再检测和控制')
+    parser.add_argument('--lock-torque-threshold', type=float, default=10.0,
+                        help='JOINT_LOCKED 检测的平均力矩阈值（N·m）')
     args = parser.parse_args()
     scenarios = build_task_recovery_scenarios(args.split)
     if args.scenario:
@@ -388,8 +447,12 @@ def main():
     if any(not math.isfinite(sigma) or sigma < 0.0 for sigma in noise_levels):
         parser.error('sensor torque noise sigmas must be finite and non-negative')
     noise_seeds = sorted(set(args.sensor_noise_seeds))
+    if not math.isfinite(args.lock_torque_threshold) or args.lock_torque_threshold <= 0.0:
+        parser.error('lock torque threshold must be finite and positive')
     rows = [
-        run_case(sc, strategy, args.output_dir, sigma, seed)
+        run_case(sc, strategy, args.output_dir, sigma, seed,
+                 signal_filter_enabled=args.online_signal_filter,
+                 lock_torque_threshold=args.lock_torque_threshold)
         for sc in scenarios for sigma in noise_levels for seed in noise_seeds
         for strategy in ('off', 'v1', 'v2')
     ]
