@@ -79,4 +79,29 @@ validation 场景在本轮运行前冻结，三策略配对结果如下。由于
 
 - A 可回放 `LOCK-J1#s1T1` 的肩关节恢复。0.30 s 注入，0.54 s 作出恢复决策，末帧误差 0.011438 m。该运行达到健康关节速度上限，按本说明冻结的裕度判据不能计作成功。基座停止用 `LOCK-J0#s1T1`，0.66 s 下发停止目标，0.11 s 后进入停稳速度范围。
 - C 可按 run_id 关联汇总与 CSV。command_t_s 对应采样与下发时刻，t_s 对应积分后的实测时刻。ref0…5 是轨迹参考，cmd0…5 是实际指令，q、qd、tau 是位置、速度和力矩。action 记录决策，recovered 和 safe_stopped 记录评分结果。
-- 边缘配置通过 TASK_RECOVERY_ENABLED=true 启用，离线脚本按策略选择控制器。显式 STOP 在 ROS 2 路径发布当前位置目标，在 MQTT 路径发布 STOP 消息并让仿真端退出安全伺服。2026-11-25 本机 MQTT broker 已运行，`python edge/edge_node/test/test_status_e2e.py` 成功连接并发布 STOPPED、RUNNING、ERROR 三种状态，边缘测试目录 119 项通过。该脚本没有订阅端断言，云端消费者收消息和 Docker、ROS 2、MQTT 联合演示仍待验证。
+- 边缘配置通过 TASK_RECOVERY_ENABLED=true 启用，离线脚本按策略选择控制器。显式 STOP 在 ROS 2 路径发布当前位置目标，在 MQTT 路径发布 STOP 消息并让仿真端退出安全伺服。2026-11-25 已将 `test_status_e2e.py` 改为 pytest 集成测试。真实 MQTT broker 转发指令和仿真原始状态，生产 `MqttClient` 与 `StateProcessor` 完成处理，独立 MQTT 客户端断言 STOPPED、ERROR、RUNNING 三种接收状态以及时间戳、关节数据和设备标识。每轮使用独立的 `test/status-e2e/<uuid>/...` 主题，等待订阅确认后发消息。云端应用消费者和 Docker、ROS 2 联合演示仍待验证。
+
+## 合成卡滞力矩读数敏感性实验
+
+2026-11-25，沿用 validation 的 24 个基础场景，将合成卡滞力矩读数分别设为 11、12.5、14 N·m，三种策略各跑一次，共 72 个场景变体、216 次运行。每档读数均高于 10 N·m 卡滞检测阈值，低于 15 N·m 故障关节平均读数评分上限。该参数表示人为指定的传感器读数，不由约束动力学计算，也不向被控对象额外施力。
+
+| 合成卡滞力矩读数 / N·m | 容错关闭恢复 | V1 恢复 | V2 恢复 | V2 安全停稳 |
+|---|---:|---:|---:|---:|
+| 11 | 11/24 | 19/24 | 21/24 | 3/24 |
+| 12.5 | 11/24 | 19/24 | 21/24 | 3/24 |
+| 14 | 11/24 | 19/24 | 21/24 | 3/24 |
+
+三档中，V1 和 V2 均确认了各自全部 24 个故障，确认延迟均为 240 ms。V2 恢复时间为 0.26–2.86 s，定义包含故障后至少 0.25 s 的最终持续达标时间。STOP 下发后 0.04–0.22 s 进入停稳速度范围，再满足至少 0.25 s 的保持判据。V2 全程峰值关节速度为 0.999968 rad/s，峰值力矩读数分别为 11、12.5、14 N·m。
+
+这三档无噪声读数均触发同一检测分支，恢复与停稳计数相同。实验覆盖阈值之间的三档读数，尚未覆盖检测阈值附近、读数噪声、约束反力动力学和额外负载变化，仍沿用先前结果可见后制定的验证目标。三档共享基础场景，不能作为 72 个独立目标或随机重复实验解释。逐次结果、分档汇总及七个源码/配置文件的 SHA-256 已保存，可按 run_id 找到原始轨迹。[敏感性实验数据](member-b-locktorque-sensitivity-r1.json)
+
+在仓库根目录运行以下命令可以复现。
+
+~~~powershell
+py edge/edge_node/test/benchmarks/run_task_recovery.py --split validation --lock-reaction-torques 11 12.5 14 --output-dir edge/edge_node/test/reports/task_recovery/member-b-locktorque-sensitivity-r1 --json docs/member-b-locktorque-sensitivity-r1.json
+py -m pytest -q edge/edge_node/test
+~~~
+
+本机 `py` 使用安装了项目依赖的 Python 3.11。PATH 中的独立 `pytest.exe` 指向旧 Python 3.8，因此使用 `py -m pytest`。broker 默认 `localhost:1883`，可通过 `MQTT_TEST_BROKER` 和 `MQTT_TEST_PORT` 设置测试地址。broker 拒绝连接时集成测试跳过，订阅或消息接收超时会使测试失败。
+
+本轮全量边缘测试为 122 项通过，包含真实 broker 集成测试。另以未监听端口验证了合理跳过，并在单独测试进程中临时禁用状态发布，确认独立订阅端因收不到消息而使测试失败。该负向检查不修改磁盘源码。当前 paho-mqtt 2.1.0 对 Callback API v1 产生 7 条弃用警告。216 份原始轨迹共 172800 帧已检查完整性、有限数值、故障关节锁定和合成力矩读数，七个清单校验值与当前源码一致。大型轨迹位于清单的 `meta.raw_directory` 所指本地目录，并已由 Git 忽略规则排除。

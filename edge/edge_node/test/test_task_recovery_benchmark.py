@@ -126,6 +126,52 @@ def test_validation_scenarios_are_frozen_and_separate_from_prior_targets():
     assert all(sc.lock_reaction_torque == 12.5 for sc in validation)
 
 
+def test_run_records_lock_reaction_torque_and_summary_groups_sensitivity_levels(tmp_path):
+    from dataclasses import replace
+    from run_task_recovery import build_summary, run_case
+    from scenarios import build_task_recovery_scenarios
+
+    scenario = replace(
+        build_task_recovery_scenarios('validation')[0],
+        lock_reaction_torque=11.0,
+    )
+    result = run_case(scenario, 'v2', tmp_path)
+
+    assert result['lock_reaction_torque_nm'] == 11.0
+    summary = build_summary([result], 'validation', 1, tmp_path)
+    assert summary['meta']['lock_reaction_torque_levels_nm'] == [11.0]
+    assert summary['summary_by_lock_reaction_torque']['11.0']['v2']['runs'] == 1
+
+
+def test_sensitivity_summary_keeps_torque_levels_and_strategies_separate(tmp_path):
+    from run_task_recovery import build_summary
+
+    rows = [
+        {'lock_reaction_torque_nm': 11.0, 'strategy': 'off',
+         'recovered': False, 'safe_stopped': False},
+        {'lock_reaction_torque_nm': 11.0, 'strategy': 'v2',
+         'recovered': True, 'safe_stopped': False},
+        {'lock_reaction_torque_nm': 14.0, 'strategy': 'v1',
+         'recovered': True, 'safe_stopped': False},
+        {'lock_reaction_torque_nm': 14.0, 'strategy': 'v2',
+         'recovered': False, 'safe_stopped': True},
+    ]
+    summary = build_summary(rows, 'validation', 2, tmp_path)
+
+    assert summary['meta']['lock_reaction_torque_levels_nm'] == [11.0, 14.0]
+    grouped = summary['summary_by_lock_reaction_torque']
+    assert grouped['11.0'] == {
+        'off': {'runs': 1, 'recovered': 0, 'safely_stopped': 0},
+        'v1': {'runs': 0, 'recovered': 0, 'safely_stopped': 0},
+        'v2': {'runs': 1, 'recovered': 1, 'safely_stopped': 0},
+    }
+    assert grouped['14.0'] == {
+        'off': {'runs': 0, 'recovered': 0, 'safely_stopped': 0},
+        'v1': {'runs': 1, 'recovered': 1, 'safely_stopped': 0},
+        'v2': {'runs': 1, 'recovered': 0, 'safely_stopped': 1},
+    }
+
+
 def test_summary_records_hashes_for_algorithm_and_benchmark_sources(tmp_path):
     from run_task_recovery import build_summary
 

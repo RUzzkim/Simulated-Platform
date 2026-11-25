@@ -10,6 +10,7 @@ import math
 import os
 import sys
 import uuid
+from dataclasses import replace
 
 from pathlib import Path
 
@@ -165,6 +166,7 @@ def run_case(sc, strategy, output_dir):
     result = {
         'run_id': run_id, 'scenario': sc.name, 'description': sc.description,
         'fault_joint': j, 'fault_onset_s': onset, 'seed': sc.seed, 'task_goal_rad': sc.target,
+        'lock_reaction_torque_nm': sc.lock_reaction_torque,
         'strategy': strategy, 'trace': trace_path.name, **score(sc, samples),
         'ee_final_m': round(legacy_ee_rms, 5),
     }
@@ -191,6 +193,23 @@ def build_summary(rows, split, scenario_count, output_dir):
         raw_directory = Path(output_dir).resolve().relative_to(repository_root).as_posix()
     except ValueError:
         raw_directory = str(Path(output_dir).resolve())
+    lock_torque_levels = sorted({
+        float(row['lock_reaction_torque_nm']) for row in rows
+    })
+    summary_by_lock_torque = {
+        str(torque): {
+            strategy: {
+                'runs': sum(row['lock_reaction_torque_nm'] == torque
+                            and row['strategy'] == strategy for row in rows),
+                'recovered': sum(row['lock_reaction_torque_nm'] == torque
+                                 and row['strategy'] == strategy and row['recovered']
+                                 for row in rows),
+                'safely_stopped': sum(row['lock_reaction_torque_nm'] == torque
+                                      and row['strategy'] == strategy and row['safe_stopped']
+                                      for row in rows),
+            } for strategy in ('off', 'v1', 'v2')
+        } for torque in lock_torque_levels
+    }
     return {
         'meta': {
             'sample_rate_hz': int(1 / DT), 'scenarios': scenario_count,
@@ -201,6 +220,7 @@ def build_summary(rows, split, scenario_count, output_dir):
             'plant_velocity_limit_rad_s': 2.0,
             'max_scored_velocity_rad_s': MAX_SAFE_SPEED_RAD_S,
             'max_fault_joint_mean_torque_nm': MAX_FAULT_TORQUE_MEAN_NM,
+            'lock_reaction_torque_levels_nm': lock_torque_levels,
             'recovery_max_velocity_rad_s': RECOVERY_MAX_VELOCITY_RAD_S,
             'recovery_max_acceleration_rad_s2': RECOVERY_MAX_ACCELERATION_RAD_S2,
             'raw_directory': raw_directory,
@@ -213,6 +233,7 @@ def build_summary(rows, split, scenario_count, output_dir):
                 'safely_stopped': sum(row['strategy'] == strategy and row['safe_stopped'] for row in rows),
             } for strategy in ('off', 'v1', 'v2')
         },
+        'summary_by_lock_reaction_torque': summary_by_lock_torque,
         'runs': rows,
     }
 
@@ -224,12 +245,26 @@ def main():
     parser.add_argument('--split', choices=('development', 'exploratory', 'validation'), default='development',
                         help='实验划分。validation 在本轮运行前冻结，不代表盲测。')
     parser.add_argument('--scenario', default=None, help='指定一个场景名，默认运行所选划分的全部场景')
+    parser.add_argument('--lock-reaction-torques', nargs='+', type=float, default=None,
+                        help='合成卡滞力矩读数敏感性扫值（严格介于 10 与 15 N·m）')
     args = parser.parse_args()
     scenarios = build_task_recovery_scenarios(args.split)
     if args.scenario:
         scenarios = [sc for sc in scenarios if sc.name == args.scenario]
         if not scenarios:
             parser.error(f'unknown JOINT_LOCKED scenario: {args.scenario}')
+    if args.lock_reaction_torques is not None:
+        torque_levels = sorted(set(args.lock_reaction_torques))
+        if any(not 10.0 < torque < MAX_FAULT_TORQUE_MEAN_NM for torque in torque_levels):
+            parser.error('lock reaction torques must be greater than 10 and less than 15 N·m')
+        scenarios = [
+            replace(
+                scenario,
+                name=f'{scenario.name}#TQ{torque:g}',
+                lock_reaction_torque=torque,
+            )
+            for torque in torque_levels for scenario in scenarios
+        ]
     rows = [run_case(sc, strategy, args.output_dir)
             for sc in scenarios for strategy in ('off', 'v1', 'v2')]
     result = build_summary(rows, args.split, len(scenarios), args.output_dir)
