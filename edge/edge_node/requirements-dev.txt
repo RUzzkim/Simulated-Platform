@@ -2,3 +2,6 @@
 
 # 仅测试使用：校验 docs/contract/*.schema.json 与测试夹具
 jsonschema>=4.18
+
+# 仅测试使用：test_status_e2e.py 为 pytest 风格（其余测试兼容 unittest）
+pytest>=8.0
