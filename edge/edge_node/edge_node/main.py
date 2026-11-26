@@ -135,7 +135,22 @@ def main(args=None):
     # 云端最近一次位置目标（无 ROS 2 容错闭环的参考目标）；None=无活动目标
     active_target: dict = {'value': None}
     safe_command_active: dict = {'value': False}
+    last_logged_recovery_decision: dict = {'value': None}
     state_lock = threading.Lock()
+
+    def log_task_recovery_decision() -> None:
+        decision = ftc.last_recovery_decision if ftc is not None else None
+        if decision is None or decision is last_logged_recovery_decision['value']:
+            return
+        last_logged_recovery_decision['value'] = decision
+        logger.warning(
+            "[任务恢复] action=%s reason=%s 末端位置误差=%.4fm iterations=%d target=%s",
+            decision.action,
+            decision.reason,
+            decision.position_error,
+            decision.iterations,
+            [round(value, 4) for value in decision.target_q],
+        )
 
     # ---- 状态处理管线（ROS 2 joint_states 与 MQTT sim_state 共用）----
     def handle_joint_state(position, velocity, effort, stamp_ns=None):
@@ -362,6 +377,7 @@ def main(args=None):
                     if ftc is not None:
                         final_goal = task_goal if ftc.task_recovery else None
                         q_target = ftc.compensate(state, q_target, task_goal=final_goal)
+                        log_task_recovery_decision()
                     command_publisher.publish_position(q_target)
             except Exception as e:
                 logger.error("控制循环失败: %s", e)

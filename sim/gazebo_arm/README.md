@@ -35,12 +35,13 @@
 
 ### 方式一:Docker(推荐,不用手装 ROS2)
 
-在一台 Ubuntu(或 Windows 的 WSL2 Ubuntu)上装好 Docker 后,一条命令把**端+边**一起起:
+在一台 Ubuntu(或 Windows 的 WSL2 Ubuntu)上装好 Docker 后,确认 MQTT broker 已在该环境的 `localhost:1883` 监听。Compose 不会启动 broker。随后把**端+边**一起起:
 
 ```bash
 cd sim/gazebo_arm
-docker compose up --build          # 起 sim_end(端) + edge_node(边),host 网络 + 同 ROS_DOMAIN_ID
-# 验证端在发关节状态:
+docker compose up --build -d      # 后台启动 sim_end(端) + edge_node(边)
+docker logs -f edge_node          # 查看边端的故障定位和恢复决策
+# 在另一个终端验证端在发关节状态:
 docker exec -it sim_end bash -lc 'source /opt/ros/humble/setup.bash && ros2 topic echo /simulation/SIM-001/joint_states'
 ```
 
@@ -150,7 +151,10 @@ wsl --import Ubuntu-22.04 E:\WSL\ubuntu-2204 <rootfs.tar.gz> --version 2
 **故障/扰动注入**（`plant.py` 的 `FaultInjector`，默认全关，逐关节可配，只改物理/读数不碰控制）：
 - `传感器漂移`：上报位置 = 真值 + 漂移速率·t + 噪声（高温粉尘信号漂移）；
 - `执行器磨损`：实际出力打折(gain<1) + 附加摩擦（欠驱动）；
-- `外部扰动`：动力学叠加外力矩（工件重量波动/碰撞）。
+- `外部扰动`：动力学叠加外力矩（工件重量波动/碰撞）；
+- `单关节卡滞`：到达指定仿真时间后冻结 J1..J6 中一个关节的位置和速度，其余关节继续运动。锁定轴 effort 报告可配置的合成反作用力矩读数，默认 12.5 N·m，用于触发现有边缘端卡滞检测阈值；它不是来自真实力传感器的测量。
+
+初始关节姿态可用 `initial_joint_positions` 配置，取 6 个逗号分隔的弧度值。默认保持原姿态 `[0, 0.35, -0.72, 0.20, 0, 0]`。卡滞关节编号使用 J1..J6，与状态数据中的 0..5 索引相差 1。
 
 用法（launch 参数）：
 ```bash
@@ -158,10 +162,25 @@ wsl --import Ubuntu-22.04 E:\WSL\ubuntu-2204 <rootfs.tar.gz> --version 2
 ros2 launch gazebo_arm sim_arm.launch.py rviz:=true scenario:=handling
 # 喷号场景 + 注入执行器磨损（喂边端容错 / 云端健康分析）
 ros2 launch gazebo_arm sim_arm.launch.py scenario:=marking fault_actuator_wear:=true
+# 从默认初始姿态开始，首次收到非初始目标 1 秒后注入 J2 卡滞
+ros2 launch gazebo_arm sim_arm.launch.py fault_joint_lock:=true fault_joint_lock_index:=2 fault_joint_lock_onset_s:=1.0 fault_joint_lock_after_first_command:=true
 # 也可单独细调：ros2 run gazebo_arm plant_node --ros-args -p fault_disturbance:=true -p fault_disturbance_torque:=10.0
 ```
-已本机验证：`python plant.py` 三类注入均生效且默认关时不影响正常收敛；native launch 跑
-`scenario:=handling` 关节按路点循环、叠加故障不崩。
+Docker 端边联调用法（在 `sim/gazebo_arm` 目录执行；Compose 默认启用 J2 卡滞、`pass_through` 控制和任务恢复。注入计时从边端首次下发运动目标后开始）：
+```powershell
+docker compose up --build -d
+```
+MQTT broker 必须已运行，并能从边端容器通过 `localhost:1883` 访问；Compose 不会启动 broker。启动后，在已有 broker 上下发恢复案例（关节角单位为弧度）：
+```bash
+mosquitto_pub -h localhost -t simulation/SIM-001/command -m '{"commandId":"CMD-FAULT-RECOVERY-001","simulationId":"SIM-001","robotId":"ROBOT-001","cmdType":"MOVE_JOINT","jointTarget":[0.2,-0.1,0.8,0.0,-0.2,0.0]}'
+```
+在另一个终端查看 `docker logs -f edge_node`，应看到 J2 的 `JOINT_LOCKED` 故障和 `RECOVER` 决策。STOP 搜索案例需与恢复案例分开运行，每次先执行 `docker compose down`，再重新执行 `docker compose up --build -d`，然后发送：
+```bash
+mosquitto_pub -h localhost -t simulation/SIM-001/command -m '{"commandId":"CMD-FAULT-STOP-001","simulationId":"SIM-001","robotId":"ROBOT-001","cmdType":"MOVE_JOINT","jointTarget":[-1.106891,-2.193779,0.948349,-2.686462,0.225453,-0.843902]}'
+```
+J2 卡滞后，该目标在当前搜索条件下应得到 `STOP / NO_FEASIBLE_PLAN`。这表示规划器未在其搜索范围内找到满足末端位置容差的方案，不构成数学上的不可达证明。结束后执行 `docker compose down`。
+
+已本机离线验证：在 Compose 默认初始姿态、首条运动指令启动注入计时的条件下，边缘检测器可定位到 J2；恢复案例得到 `RECOVER`，plant 闭环跟随后末端位置误差不超过 5 mm；STOP 案例得到 `STOP / NO_FEASIBLE_PLAN`，表示当前搜索条件下未找到可行方案。当前工作站 Docker daemon 未运行，Docker/ROS 2 在线端边联调尚未验证。
 
 ## Gazebo 物理仿真骨架（进行中，2026-09-26）
 

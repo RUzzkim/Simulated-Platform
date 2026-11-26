@@ -18,6 +18,7 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def _ros2_safe_id(sim_id: str) -> str:
@@ -43,7 +44,19 @@ def _launch_setup(context, *args, **kwargs):
                          "scenario": LaunchConfiguration("scenario"),
                          "fault_sensor_drift": LaunchConfiguration("fault_sensor_drift"),
                          "fault_actuator_wear": LaunchConfiguration("fault_actuator_wear"),
-                         "fault_disturbance": LaunchConfiguration("fault_disturbance")}],
+                         "fault_disturbance": LaunchConfiguration("fault_disturbance"),
+                         "fault_joint_lock": ParameterValue(
+                             LaunchConfiguration("fault_joint_lock"), value_type=bool),
+                         "fault_joint_lock_index": ParameterValue(
+                             LaunchConfiguration("fault_joint_lock_index"), value_type=int),
+                         "fault_joint_lock_onset_s": ParameterValue(
+                             LaunchConfiguration("fault_joint_lock_onset_s"), value_type=float),
+                         "fault_joint_lock_after_first_command": ParameterValue(
+                             LaunchConfiguration("fault_joint_lock_after_first_command"), value_type=bool),
+                         "fault_joint_lock_reaction_torque": ParameterValue(
+                             LaunchConfiguration("fault_joint_lock_reaction_torque"), value_type=float),
+                         "initial_joint_positions": ParameterValue(
+                             LaunchConfiguration("initial_joint_positions"), value_type=str)}],
             output="screen",
         ),
         Node(
@@ -76,6 +89,13 @@ def generate_launch_description():
         DeclareLaunchArgument("fault_sensor_drift", default_value="false"),
         DeclareLaunchArgument("fault_actuator_wear", default_value="false"),
         DeclareLaunchArgument("fault_disturbance", default_value="false"),
+        DeclareLaunchArgument("fault_joint_lock", default_value="false"),
+        DeclareLaunchArgument("fault_joint_lock_index", default_value="2"),
+        DeclareLaunchArgument("fault_joint_lock_onset_s", default_value="5.0"),
+        DeclareLaunchArgument("fault_joint_lock_after_first_command", default_value="false"),
+        DeclareLaunchArgument("fault_joint_lock_reaction_torque", default_value="12.5"),
+        DeclareLaunchArgument(
+            "initial_joint_positions", default_value="0.0,0.35,-0.72,0.2,0.0,0.0"),
         # 现场场景：地面/料线/钢管/型钢/钢坯/料框（Marker）
         DeclareLaunchArgument("scene", default_value="true"),
         OpaqueFunction(function=_launch_setup),
