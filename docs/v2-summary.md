@@ -1,7 +1,7 @@
 # V2.0 单关节卡滞实验 —— 阶段性汇总（成员 C）
 
 - 日期：2026-11-26
-- 分支：`develop-C`（本地领先 8 个提交，未推送）
+- 分支：`develop-C`（领先 `origin/develop-C`，未推送）
 - 契约版本：`2.0.0`（完成态冻结，另有实时辅助 schema）
 - 对齐基线：成员 B 的 validation-r1（24 场景、种子 300/301/302、恢复 0.05 m + 0.25 s、停止 2 s + 0.05 rad/s、规划容差 0.02 m、锁定检测 10 N·m、合成 12.5 N·m）
 
@@ -61,8 +61,11 @@ MQTT(mTLS 8884) --> 云端(Spring Boot) --> MySQL(experiment_run / experiment_ev
 | 项目 | 结果 |
 |---|---|
 | 契约测试 `test_v2_contract.py` | 11 例通过（Run/Frame/Event/Live 四套 schema + 交叉校验） |
+| 回放契约 `test_replay_contract.py` | 2 例通过（合成轨迹驱动 `build_run`/`build_events`，Run/Event 过 schema） |
+| 配置一致性 `test_experiment_config.py` | 3 例通过（默认值对齐契约、6 个环境变量覆盖、空值回退） |
 | 后端单测 `ExperimentServiceIngestTest` | 6 例通过（快照合并、完成态覆盖、事件回填、幂等） |
 | 优雅退出 e2e `test_graceful_exit_e2e.py` | 1 例通过（真实边端 payload 过 live schema，`IN_PROGRESS→INCOMPLETE`，退出码 0） |
+| 状态链路 e2e `test_status_e2e.py` | 1 例通过（pytest 运行；依赖 broker） |
 | 前端单测（Vitest） | 6 例通过（四个查询接口 + 两个导出） |
 | 前端构建 | `npm run build` 通过 |
 | 接口实测 | 导出 JSON 1806 B（`contract=2.0.0`、`INCOMPLETE`、`JOINT_LOCKED`、2 事件）；CSV 表头 + 2 行 |
@@ -96,10 +99,10 @@ docker compose -f docker-compose.local.yml up -d
 cd ..\edge\edge_node
 py -B -m edge_node.main --config config\edge_config.yaml
 
-# 测试
+# 测试（依赖见 requirements-dev.txt：jsonschema、pytest）
 py -B test/test_v2_contract.py -v
 py -B test/start_mqtt_broker.py        # 另开终端
-py -B test/test_graceful_exit_e2e.py -v
+py -B -m pytest test -q                # 全量，含状态链路与优雅退出 e2e
 cd ..\..\frontend; npm test
 ```
 
