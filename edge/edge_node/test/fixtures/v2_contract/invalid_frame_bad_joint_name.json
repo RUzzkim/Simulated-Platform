@@ -1,0 +1,64 @@
+{
+  "contract_version": "2.0.0",
+  "run_id": "e3529e787dd842be943f06eaa0087df8",
+  "step": 65,
+  "timestamp_ms": 1795658400660,
+  "sim_time_s": 0.66,
+  "command_time_s": 0.65,
+  "joints": [
+    {
+      "name": "J0",
+      "position_rad": 0.028223,
+      "velocity_rad_s": 0.0,
+      "torque_nm": 12.5
+    },
+    {
+      "name": "J1",
+      "position_rad": 0.154523,
+      "velocity_rad_s": 0.236687,
+      "torque_nm": 2.42523
+    },
+    {
+      "name": "J2",
+      "position_rad": -0.089913,
+      "velocity_rad_s": -0.121064,
+      "torque_nm": 5.98362
+    },
+    {
+      "name": "J3",
+      "position_rad": 0.05704,
+      "velocity_rad_s": 0.083723,
+      "torque_nm": -0.216894
+    },
+    {
+      "name": "J4",
+      "position_rad": -0.040587,
+      "velocity_rad_s": -0.067402,
+      "torque_nm": 1.444382
+    },
+    {
+      "name": "J6",
+      "position_rad": 0.023759,
+      "velocity_rad_s": 0.042308,
+      "torque_nm": -0.317778
+    }
+  ],
+  "end_effector": {
+    "position_m": [
+      0.564662,
+      -0.084017,
+      0.263545
+    ],
+    "rpy_rad": [
+      1.56582,
+      -0.145308,
+      0.069231
+    ]
+  },
+  "ee_error_m": 0.249877,
+  "fault_active": true,
+  "fault_type": "JOINT_LOCKED",
+  "fault_joint": 0,
+  "action": "RECOVER",
+  "reason": "TARGET_REACHED"
+}

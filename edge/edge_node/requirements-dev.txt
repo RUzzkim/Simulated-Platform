@@ -1,0 +1,4 @@
+-r requirements.txt
+
+# 仅测试使用：校验 docs/contract/*.schema.json 与测试夹具
+jsonschema>=4.18

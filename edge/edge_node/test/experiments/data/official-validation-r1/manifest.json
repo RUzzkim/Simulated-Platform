@@ -1,6 +1,8 @@
 {
   "batchId": "official-validation-r1-20261126",
   "generatedAt": "2026-11-26T02:38:06.017847+00:00",
+  "timeBaseMs": 1795660686017,
+  "timeBaseSource": "manifest.generatedAt（批次完成时刻；离线运行无精确启动日志时的保守时间基准，仅用于 sim_time→epoch 映射）",
   "kind": "single-joint-lock-task-recoverability",
   "protocol": {
     "sourceRepository": "RUzzkim/Simulated-Platform",

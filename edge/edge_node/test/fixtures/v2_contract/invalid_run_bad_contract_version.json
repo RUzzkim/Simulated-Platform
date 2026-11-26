@@ -1,0 +1,73 @@
+{
+  "contract_version": "2.0.1",
+  "run_id": "e3529e787dd842be943f06eaa0087df8",
+  "algorithm_version": "v2.0.0",
+  "started_at_ms": 1795658400000,
+  "simulation": {
+    "simulation_id": "SIM-001",
+    "robot_id": "ROBOT-001",
+    "plant": "python-6r",
+    "control_hz": 100,
+    "duration_s": 8.0
+  },
+  "scenario": {
+    "scenario_id": "VALIDATION-LOCK-J0#s1T1",
+    "split": "validation",
+    "seed": 300,
+    "task_goal_rad": [
+      0.35,
+      0.55,
+      -0.3,
+      0.2,
+      -0.15,
+      0.1
+    ],
+    "description": "基座回转轴执行器卡死（关节锁定）"
+  },
+  "fault": {
+    "type": "JOINT_LOCKED",
+    "joint_index": 0,
+    "joint_name": "J0",
+    "injected_at_s": 0.4,
+    "detected_at_s": 0.64,
+    "detection_latency_ms": 240.0,
+    "confirmed": true
+  },
+  "reachability": {
+    "status": "REACHABLE",
+    "reason": "TARGET_REACHED",
+    "planner_position_error_m": null
+  },
+  "strategy": "v2",
+  "decision": {
+    "action": "RECOVER",
+    "reason": "TARGET_REACHED",
+    "at_s": 0.64
+  },
+  "task": {
+    "status": "RECOVERED",
+    "final_ee_error_m": 0.016336,
+    "recovery_time_s": 2.86,
+    "stop_time_s": null,
+    "peak_fault_joint_torque_nm": 12.5,
+    "max_joint_speed_rad_s": 0.999967,
+    "max_joint_torque_nm": 12.5
+  },
+  "trace": {
+    "path": "e3529e787dd842be943f06eaa0087df8.csv.gz",
+    "sha256": "5027eb0da63cfb82a925963cac04159753ae62cb01b646d433b8deb71e3420e3",
+    "frame_count": 800,
+    "sample_rate_hz": 100
+  },
+  "source_sha256": {
+    "edge_node/config/config_manager.py": "6dbb48a2870c1c44f52409e7692441d677e7515eab1bd3043d7b28acea585a7f",
+    "edge_node/fault/recovery.py": "a5f3114fed7330cff081f86f7aceb89403ef14631537824d7c08303a653d6049",
+    "edge_node/fault/tolerant.py": "ed49edbcdc17613c738bc1fa7b3dd7af01975ff8e39b105737bf72fe3b045fd3",
+    "edge_node/processor/signal_filter.py": "52446586c69a61f23a1e4fbb0d23ac236f02bad6dc44ae10765450b6835ad497",
+    "benchmarks/run_task_recovery.py": "4853f8ab32632b1ef3ae85f3fd8d4d953810882cc2a29d920d996673e24e47d0",
+    "benchmarks/scenarios.py": "1e57d9aab1aaaf0ef816ee35e5aa51def3f038d99f158e2d727a378f981d7432",
+    "benchmarks/plant.py": "dab84fc5a0bf29e70161ce1a035d29d8a6e7279619e6ee3a243986914220e7b5",
+    "benchmarks/run_comparison.py": "b00654d941ec14b12a9c89ad26f2ae54a45f202677cf67d8dd6a920998e6dfcd",
+    "config/edge_config.yaml": "c56c825330905dda84504c40be2ff0a5fedc68004c9eff6aef03166db92de96f"
+  }
+}
