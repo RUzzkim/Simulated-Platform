@@ -255,6 +255,7 @@
 - 启动时发布一次部分 Run：`task.status=IN_PROGRESS`，`fault`/`decision` 为空，`trace.path=live://<run_id>`；退出时再发一次 `task.status=INCOMPLETE`。
 - `IN_PROGRESS`/`INCOMPLETE` 是实时存储状态，不在完成态 Run 的枚举内；因此实时 Run 不通过 `v2_run.schema.json` 校验，只有离线完成的 Run 才按 2.0.0 冻结。
 - 实时快照改用独立辅助 schema [`v2_live_run.schema.json`](../edge/edge_node/docs/contract/v2_live_run.schema.json) 校验：`task.status` 仅 `IN_PROGRESS`/`INCOMPLETE`，`fault`/`decision` 必须为空，`reachability.status=NOT_ASSESSED`，`trace.path=live://<run_id>`，`strategy` 为 `off`/`v1`/`v2`。**决策：不把实时状态并入完成态 schema，也不升级契约版本**；完成态契约仍冻结在 `2.0.0`，辅助 schema 只描述实时记录形状，双方互不替代（交叉校验见 `test_v2_contract.py`）。
+- 运行配置：`edge_config.yaml` 的 `experiment` 段维护 `run_id`/`scenario_id`/`split`/`seed`/`strategy`/`algorithm_version`，可分别用 `EDGE_RUN_ID`、`EDGE_SCENARIO_ID`、`EDGE_RUN_SPLIT`、`EDGE_RUN_SEED`、`EDGE_EXPERIMENT_STRATEGY`、`EDGE_ALGORITHM_VERSION` 覆盖；`run_id` 留空时启动生成新 uuid。一致性由 `test_experiment_config.py` 校验。
 - 故障/决策事件仍使用 [`v2_experiment_event.schema.json`](../edge/edge_node/docs/contract/v2_experiment_event.schema.json)，并自动关联 `run_id`。
 - 边端上下文可用环境变量覆盖：`EDGE_RUN_ID`（为空则启动生成 32 位 hex）、`EDGE_SCENARIO_ID`、`EDGE_RUN_SPLIT`、`EDGE_RUN_SEED`、`EDGE_EXPERIMENT_STRATEGY`、`EDGE_ALGORITHM_VERSION`。
 - 前端把 `IN_PROGRESS`/`INCOMPLETE` 显示为「运行中」/「未完成」，不参与离线验收统计。

@@ -6,6 +6,16 @@ edge:
   simulation_id: "SIM-001"     # 格式 ^SIM-\d{3}$
   robot_id: "ROBOT-001"        # 格式 ^ROBOT-\d{3}$
 
+# V2.0 实验运行记录（契约 2.0.0，字段见 docs/v2-experiment-contract.md）
+# run_id 留空时每次启动生成新的 32 位 uuid；需要固定追溯编号时填写
+experiment:
+  run_id: ""                    # EDGE_RUN_ID
+  scenario_id: "ONLINE-LOCK"    # EDGE_SCENARIO_ID
+  split: "online"               # EDGE_RUN_SPLIT（离线批次为 development/exploratory/validation）
+  seed: 0                       # EDGE_RUN_SEED
+  strategy: "v2"                # off / v1 / v2；EDGE_EXPERIMENT_STRATEGY
+  algorithm_version: "v2.0.0"   # EDGE_ALGORITHM_VERSION
+
 # ROS 2 通信
 ros2:
   joint_states_topic: "/simulation/{simulation_id}/joint_states"
