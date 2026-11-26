@@ -172,7 +172,7 @@ def main():
     ap.add_argument('--ca', required=True)
     ap.add_argument('--cert', required=True)
     ap.add_argument('--key', required=True)
-    ap.add_argument('--topic', default='simulation/SIM-001/sim_state')
+    ap.add_argument('--topic', help='遥测主题，默认 simulation/{simulationId}/state（云端订阅 /state，不订阅 sim_state）')
     ap.add_argument('--rate', type=float, default=100.0)
     ap.add_argument('--summary', help='官方实验 summary.json；提供后先发布 Run 与事件')
     ap.add_argument('--run-id', help='summary 中的 run_id')
@@ -193,6 +193,8 @@ def main():
         if run is None:
             raise SystemExit(f'run_id not found in summary: {args.run_id}')
     started_at_ms = args.started_at_ms or int(time.time() * 1000) - 8000
+    if not args.topic:
+        args.topic = f'simulation/{args.simulation_id}/state'
 
     host_port = args.broker.split('://', 1)[-1]
     host, _, port = host_port.partition(':')
@@ -223,10 +225,13 @@ def main():
     start = time.perf_counter()
     for k, row in enumerate(rows):
         # 边端要求毫秒级 Unix 时间戳；轨迹里的 t_s 是相对时间，叠加回放起始 epoch。
-        stamp_ns = (epoch_base_ms + int(float(row['t_s']) * 1000)) * 1_000_000
+        stamp_ms = epoch_base_ms + int(float(row['t_s']) * 1000)
+        stamp_ns = stamp_ms * 1_000_000
         payload = {
             'simulationId': args.simulation_id,
             'robotId': args.robot_id,
+            # 云端遥测按 timestamp 落库；缺省会回落到入库时刻，导致按 run_id 查曲线为空
+            'timestamp': stamp_ms,
             'jointPosition': [float(row[f'q{i}']) for i in range(6)],
             'jointVelocity': [float(row[f'qd{i}']) for i in range(6)],
             'jointTorque': [float(row[f'tau{i}']) for i in range(6)],
