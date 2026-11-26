@@ -1,7 +1,7 @@
 # V2.0 单关节卡滞实验 —— 阶段性汇总（成员 C）
 
 - 日期：2026-11-26
-- 分支：`develop-C`（本地领先 7 个提交，未推送）
+- 分支：`develop-C`（本地领先 8 个提交，未推送）
 - 契约版本：`2.0.0`（完成态冻结，另有实时辅助 schema）
 - 对齐基线：成员 B 的 validation-r1（24 场景、种子 300/301/302、恢复 0.05 m + 0.25 s、停止 2 s + 0.05 rad/s、规划容差 0.02 m、锁定检测 10 N·m、合成 12.5 N·m）
 
@@ -25,7 +25,7 @@ MQTT(mTLS 8884) --> 云端(Spring Boot) --> MySQL(experiment_run / experiment_ev
 | `simulation/{sim}/heartbeat` | 边→云 | 心跳与 LWT 下线通知 |
 | `simulation/{sim}/command`、`command_ack` | 云↔边 | 控制命令与应答 |
 | `simulation/{sim}/experiment_run` | 边→云 | 实验 Run（启动 `IN_PROGRESS`、退出 `INCOMPLETE`） |
-| `simulation/{sim}/experiment_event` | 边→云 | 故障/决策事件，幂等键 `run_id|event_type|timestamp|joint|action` |
+| `simulation/{sim}/experiment_event` | 边→云 | 故障/决策事件，幂等键 `run_id\|event_type\|timestamp\|joint\|action` |
 
 ## 3. 契约与 schema
 
@@ -88,12 +88,12 @@ MQTT(mTLS 8884) --> 云端(Spring Boot) --> MySQL(experiment_run / experiment_ev
 ## 8. 复现步骤
 
 ```powershell
-# 本地栈
+# 本地栈（仓库根目录）
 cd deploy
 docker compose -f docker-compose.local.yml up -d
 
 # 边端（无 ROS 2 模式）
-cd edge\edge_node
+cd ..\edge\edge_node
 py -B -m edge_node.main --config config\edge_config.yaml
 
 # 测试
