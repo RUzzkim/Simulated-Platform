@@ -14,10 +14,15 @@ FIXTURE_DIR = Path(__file__).resolve().parent / 'fixtures' / 'v2_contract'
 RUN_SCHEMA = CONTRACT_DIR / 'v2_run.schema.json'
 FRAME_SCHEMA = CONTRACT_DIR / 'v2_trace_frame.schema.json'
 EVENT_SCHEMA = CONTRACT_DIR / 'v2_experiment_event.schema.json'
+LIVE_SCHEMA = CONTRACT_DIR / 'v2_live_run.schema.json'
 VALID_RUN = FIXTURE_DIR / 'valid_run.json'
 VALID_RUN_STOP = FIXTURE_DIR / 'valid_run_safe_stopped.json'
 VALID_FRAME = FIXTURE_DIR / 'valid_trace_frame.json'
 VALID_EVENTS = [FIXTURE_DIR / 'valid_fault_event.json', FIXTURE_DIR / 'valid_decision_event.json']
+VALID_LIVE_RUNS = [
+    FIXTURE_DIR / 'valid_live_run_in_progress.json',
+    FIXTURE_DIR / 'valid_live_run_incomplete.json',
+]
 
 
 def _load(path: Path):
@@ -30,7 +35,8 @@ class V2ContractTest(unittest.TestCase):
         cls.run_schema = _load(RUN_SCHEMA)
         cls.frame_schema = _load(FRAME_SCHEMA)
         cls.event_schema = _load(EVENT_SCHEMA)
-        for schema in (cls.run_schema, cls.frame_schema, cls.event_schema):
+        cls.live_schema = _load(LIVE_SCHEMA)
+        for schema in (cls.run_schema, cls.frame_schema, cls.event_schema, cls.live_schema):
             self_check = Draft7Validator(schema)
             self_check.check_schema(schema)
 
@@ -45,6 +51,10 @@ class V2ContractTest(unittest.TestCase):
             with self.subTest(fixture=path.name):
                 event = _load(path)
                 self.assertEqual([], list(Draft7Validator(self.event_schema).iter_errors(event)))
+        for path in VALID_LIVE_RUNS:
+            with self.subTest(fixture=path.name):
+                live = _load(path)
+                self.assertEqual([], list(Draft7Validator(self.live_schema).iter_errors(live)))
 
     def test_invalid_fixtures_are_rejected(self):
         cases = [
@@ -55,6 +65,9 @@ class V2ContractTest(unittest.TestCase):
             ('invalid_frame_bad_joint_name.json', self.frame_schema),
             ('invalid_event_missing_run_id.json', self.event_schema),
             ('invalid_event_bad_type.json', self.event_schema),
+            ('invalid_live_run_completed_status.json', self.live_schema),
+            ('invalid_live_run_missing_run_id.json', self.live_schema),
+            ('invalid_live_run_with_decision.json', self.live_schema),
         ]
         for name, schema in cases:
             with self.subTest(fixture=name):
@@ -142,6 +155,20 @@ class V2ContractTest(unittest.TestCase):
         if frame['fault_active']:
             self.assertIsNotNone(frame['fault_type'])
             self.assertIsNotNone(frame['fault_joint'])
+
+    def test_live_run_is_separate_from_completion_run(self):
+        for path in VALID_LIVE_RUNS:
+            with self.subTest(fixture=path.name):
+                live = _load(path)
+                self.assertIn(live['task']['status'], {'IN_PROGRESS', 'INCOMPLETE'})
+                self.assertEqual(live['trace']['path'], f"live://{live['run_id']}")
+                self.assertIsNone(live['fault']['type'])
+                self.assertIsNone(live['decision']['action'])
+                self.assertEqual(live['reachability']['status'], 'NOT_ASSESSED')
+                # 完成态 schema 拒绝实时状态；实时 schema 拒绝完成态 Run
+                self.assertTrue(list(Draft7Validator(self.run_schema).iter_errors(live)))
+        completed = _load(VALID_RUN)
+        self.assertTrue(list(Draft7Validator(self.live_schema).iter_errors(completed)))
 
     def test_event_fixtures_link_to_run(self):
         run = _load(VALID_RUN)

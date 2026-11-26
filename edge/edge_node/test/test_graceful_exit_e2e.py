@@ -16,14 +16,17 @@ import threading
 import time
 import unittest
 import uuid
+from pathlib import Path
 from queue import Empty, Queue
 
 import paho.mqtt.client as mqtt
+from jsonschema import Draft7Validator
 
 BROKER = os.environ.get('MQTT_TEST_BROKER', 'localhost')
 PORT = int(os.environ.get('MQTT_TEST_PORT', '1883'))
 EDGE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 CONFIG = os.path.join(EDGE_DIR, 'config', 'edge_config.yaml')
+LIVE_SCHEMA = Path(EDGE_DIR) / 'docs' / 'contract' / 'v2_live_run.schema.json'
 RUN_TOPIC = 'simulation/SIM-001/experiment_run'
 SIM_STATE_TOPIC = 'simulation/SIM-001/sim_state'
 # Windows 下 CTRL_C_EVENT 无法定向到进程组，只有 CTRL_BREAK_EVENT 可定向
@@ -132,6 +135,11 @@ class GracefulExitE2ETest(unittest.TestCase):
                 self.assertEqual(incomplete['run_id'], run_id)
                 self.assertEqual(incomplete['contract_version'], '2.0.0')
                 self.assertEqual(incomplete['simulation']['simulation_id'], 'SIM-001')
+                # 实时部分 Run 必须符合独立的辅助 schema（契约 2.0.0 §10）
+                live_validator = Draft7Validator(
+                    json.loads(LIVE_SCHEMA.read_text(encoding='utf-8')))
+                self.assertEqual([], list(live_validator.iter_errors(running)))
+                self.assertEqual([], list(live_validator.iter_errors(incomplete)))
 
             log_text = _read(log_path)
             self.assertIn('边端节点已退出', log_text, 'edge did not reach the shutdown epilogue')
