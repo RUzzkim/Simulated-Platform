@@ -93,6 +93,7 @@ class Scenario:
     fault_onset: float = 2.5
     fault_duration: float = 2.0
     fault_magnitude: float = 60.0
+    lock_reaction_torque: float = 12.5
     seed: int = 42
 
 
@@ -159,4 +160,46 @@ def build_scenarios() -> tuple[list[Scenario], list[Scenario]]:
                     seed=100 + si,
                 ))
     return control, fault
+
+
+def build_task_recovery_scenarios(split: str = 'development') -> list[Scenario]:
+    """Return deterministic development, exploratory, or validation cases."""
+    targets = {
+        'development': _TARGETS[:2],
+        'exploratory': [
+            [-0.45, 0.35, 0.25, -0.30, 0.20, -0.15],
+            [0.55, -0.35, -0.20, 0.25, -0.25, 0.30],
+        ],
+        'validation': [
+            [0.35, 0.55, -0.30, 0.20, -0.15, 0.10],
+            [-0.60, 0.25, 0.45, -0.20, 0.30, -0.25],
+        ],
+    }
+    if split not in targets:
+        raise ValueError("split must be 'development', 'exploratory', or 'validation'")
+
+    if split == 'development':
+        return build_scenarios()[1]
+
+    scenarios = []
+    onsets = (0.4, 0.8, 1.2) if split == 'validation' else (0.3, 0.45, 0.6)
+    for joint in range(4):
+        description = _FAULT_TYPES[joint][2]
+        for onset_index, onset in enumerate(onsets):
+            for target_index, target in enumerate(targets[split]):
+                scenarios.append(Scenario(
+                    name=f'{split.upper()}-LOCK-J{joint}#s{onset_index + 1}T{target_index + 1}',
+                    category='fault',
+                    description=description,
+                    duration=8.0,
+                    ref_mode='p2p',
+                    target=list(target),
+                    ref_vmax=0.6,
+                    fault_type='JOINT_LOCKED',
+                    fault_joint=joint,
+                    fault_onset=onset,
+                    fault_duration=20.0,
+                    seed=(300 if split == 'validation' else 200) + onset_index,
+                ))
+    return scenarios
 

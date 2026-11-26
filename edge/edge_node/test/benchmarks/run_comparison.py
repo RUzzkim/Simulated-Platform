@@ -164,7 +164,8 @@ def run_fault(sc, ftc_on: bool) -> dict:
                 lock_pos = plant.q[j]
             plant.q[j] = lock_pos                     # 物理卡死：位置冻结
             plant.qd[j] = 0.0
-            # 力矩传感器读数 = 本帧伺服实际下发（OFF 会持续顶着卡死，ON 容错后松开）
+            # 模拟卡死关节的反作用力矩传感器读数，不改变被控对象的施加力矩。
+            plant.tau[j] = sc.lock_reaction_torque
         elif not fault_active:
             lock_pos = None
 

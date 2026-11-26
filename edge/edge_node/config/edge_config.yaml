@@ -99,5 +99,8 @@ fault_tolerance:
   recovery_frames: 10           # 连续无故障帧数阈值，超过则关节恢复正常控制
   # 主动容错轨迹重规划（phase5）
   active_replanning: true       # 是否启用主动轨迹重规划（锁定关节时用健康关节补偿末端）
+  task_recovery: false          # V2：卡滞后评估末端位置目标可行性，失败时减速停止
   replanning_damping: 0.05      # DLS 阻尼系数 λ
   replanning_step: 0.5          # 重规划单步修正步长（0~1）
+  recovery_max_velocity: 1.0    # V2 恢复轨迹健康关节速度上限（rad/s）
+  recovery_max_acceleration: 2.0 # V2 恢复轨迹健康关节加速度上限（rad/s²）

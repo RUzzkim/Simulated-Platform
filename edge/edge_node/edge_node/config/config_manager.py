@@ -31,6 +31,7 @@ _ENV_OVERRIDES = {
     'FAULT_DETECTION_ENABLED': ('fault_detection', 'enabled'),
     'FAULT_TOLERANCE_ENABLED': ('fault_tolerance', 'enabled'),
     'ACTIVE_REPLANNING': ('fault_tolerance', 'active_replanning'),
+    'TASK_RECOVERY_ENABLED': ('fault_tolerance', 'task_recovery'),
     'EDGE_HEARTBEAT_INTERVAL': ('runtime', 'heartbeat_interval_sec'),
     'EDGE_STATE_PUBLISH_HZ': ('runtime', 'state_publish_hz'),
     'EDGE_SAFE_COMMAND_ENABLED': ('control', 'safe_command_enabled'),
@@ -272,12 +273,24 @@ class ConfigManager:
         return bool(self.get('fault_tolerance', 'active_replanning', default=True))
 
     @property
+    def ft_task_recovery(self) -> bool:
+        return bool(self.get('fault_tolerance', 'task_recovery', default=False))
+
+    @property
     def ft_replanning_damping(self) -> float:
         return float(self.get('fault_tolerance', 'replanning_damping', default=0.05))
 
     @property
     def ft_replanning_step(self) -> float:
         return float(self.get('fault_tolerance', 'replanning_step', default=0.5))
+
+    @property
+    def ft_recovery_max_velocity(self) -> float:
+        return float(self.get('fault_tolerance', 'recovery_max_velocity', default=1.0))
+
+    @property
+    def ft_recovery_max_acceleration(self) -> float:
+        return float(self.get('fault_tolerance', 'recovery_max_acceleration', default=2.0))
 
     def render_topic(self, pattern: str) -> str:
         return pattern.replace('{simulation_id}', self.simulation_id)
