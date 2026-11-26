@@ -13,7 +13,7 @@
 | 端→边 | `/simulation/{sim_id}/joint_states` | `sensor_msgs/JointState` | position/velocity/effort[6] + stamp,100Hz |
 | 边→端 | `/simulation/{sim_id}/joint_command` | `std_msgs/Float64MultiArray` | 6 个目标关节角(rad) |
 
-关节名 `joint_1..joint_6`,`sim_id` 默认 `SIM-001`。
+关节名 `joint_1..joint_6`。设备 ID 默认 `SIM-001`，MQTT 主题沿用该 ID，ROS 2 话题段使用 `SIM_001`。
 
 ## 动力学与几何从哪来(复用,非新造)
 
@@ -42,7 +42,7 @@ cd sim/gazebo_arm
 docker compose up --build -d      # 后台启动 sim_end(端) + edge_node(边)
 docker logs -f edge_node          # 查看边端的故障定位和恢复决策
 # 在另一个终端验证端在发关节状态:
-docker exec -it sim_end bash -lc 'source /opt/ros/humble/setup.bash && ros2 topic echo /simulation/SIM-001/joint_states'
+docker exec -it sim_end bash -lc 'source /opt/ros/humble/setup.bash && ros2 topic echo /simulation/SIM_001/joint_states'
 ```
 
 只跑端(不带边):`docker build -t gazebo_arm:latest . && docker run --rm --network host -e EDGE_SIMULATION_ID=SIM-001 gazebo_arm:latest`。
@@ -180,7 +180,7 @@ mosquitto_pub -h localhost -t simulation/SIM-001/command -m '{"commandId":"CMD-F
 ```
 J2 卡滞后，该目标在当前搜索条件下应得到 `STOP / NO_FEASIBLE_PLAN`。这表示规划器未在其搜索范围内找到满足末端位置容差的方案，不构成数学上的不可达证明。结束后执行 `docker compose down`。
 
-已本机离线验证：在 Compose 默认初始姿态、首条运动指令启动注入计时的条件下，边缘检测器可定位到 J2；恢复案例得到 `RECOVER`，plant 闭环跟随后末端位置误差不超过 5 mm；STOP 案例得到 `STOP / NO_FEASIBLE_PLAN`，表示当前搜索条件下未找到可行方案。当前工作站 Docker daemon 未运行，Docker/ROS 2 在线端边联调尚未验证。
+离线闭环测试已覆盖默认初始姿态下的 J2 定位、恢复与停止。2026-11-26 在 Windows Docker Desktop 上使用独立 bridge 网络和宿主 MQTT broker，两个在线仿真案例均定位到 J2。恢复案例末端位置误差约 0.69 mm，停止案例最后一帧的最大关节速度约 0.00031 rad/s。运行命令和实测指标见[成员 B 任务恢复实验](../../docs/member-b-task-recovery.md#docker--ros-2-端边联调)。
 
 ## Gazebo 物理仿真骨架（进行中，2026-09-26）
 

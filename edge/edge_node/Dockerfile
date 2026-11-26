@@ -16,7 +16,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-colcon-common-extensions \
-    ros-humble-ament-python \
     && rm -rf /var/lib/apt/lists/*
 
 # 创建工作空间

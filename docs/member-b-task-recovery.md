@@ -79,7 +79,44 @@ validation 场景在本轮运行前冻结，三策略配对结果如下。由于
 
 - A 可回放 `LOCK-J1#s1T1` 的肩关节恢复。0.30 s 注入，0.54 s 作出恢复决策，末帧误差 0.011438 m。该运行达到健康关节速度上限，按本说明冻结的裕度判据不能计作成功。基座停止用 `LOCK-J0#s1T1`，0.66 s 下发停止目标，0.11 s 后进入停稳速度范围。
 - C 可按 run_id 关联汇总与 CSV。command_t_s 对应采样与下发时刻，t_s 对应积分后的实测时刻。ref0…5 是轨迹参考，cmd0…5 是实际指令，q、qd、tau 是位置、速度和力矩。action 记录决策，recovered 和 safe_stopped 记录评分结果。
-- 边缘配置通过 TASK_RECOVERY_ENABLED=true 启用，离线脚本按策略选择控制器。显式 STOP 在 ROS 2 路径发布当前位置目标，在 MQTT 路径发布 STOP 消息并让仿真端退出安全伺服。2026-11-25 已将 `test_status_e2e.py` 改为 pytest 集成测试。真实 MQTT broker 转发指令和仿真原始状态，生产 `MqttClient` 与 `StateProcessor` 完成处理，独立 MQTT 客户端断言 STOPPED、ERROR、RUNNING 三种接收状态以及时间戳、关节数据和设备标识。每轮使用独立的 `test/status-e2e/<uuid>/...` 主题，等待订阅确认后发消息。云端应用消费者和 Docker、ROS 2 联合演示仍待验证。
+- 边缘配置通过 TASK_RECOVERY_ENABLED=true 启用，离线脚本按策略选择控制器。显式 STOP 在 ROS 2 路径发布当前位置目标，在 MQTT 路径发布 STOP 消息并让仿真端退出安全伺服。2026-11-25 已将 `test_status_e2e.py` 改为 pytest 集成测试。真实 MQTT broker 转发指令和仿真原始状态，生产 `MqttClient` 与 `StateProcessor` 完成处理，独立 MQTT 客户端断言 STOPPED、ERROR、RUNNING 三种接收状态以及时间戳、关节数据和设备标识。每轮使用独立的 `test/status-e2e/<uuid>/...` 主题，等待订阅确认后发消息。云端应用消费者仍待验证。
+
+## Docker / ROS 2 端边联调
+
+2026-11-26 在 Windows Docker Desktop 上经现有 Mosquitto 发送 `MOVE_JOINT`，边端通过 ROS 2 驱动轻量仿真节点，并将滤波后的关节状态和故障信息发回 MQTT。两组各运行一次，使用同一初始姿态 `[0, 0.35, -0.72, 0.2, 0, 0]` rad 和 `pass_through` 控制。首条非初始姿态目标发出后，仿真在 1 s 时锁定肩关节 J2，合成力矩读数为 12.5 N·m。MQTT 设备 ID 为 `SIM-987`，ROS 2 话题使用 `SIM_987`。遥测中的 `jointIndex=1` 对应机械臂的 J2。
+
+| 案例 | 边端决策 | 首次故障距指令前最后一帧 | 末帧位置误差 | 末帧最大关节速度 |
+|---|---|---:|---:|---:|
+| 恢复目标 | `RECOVER / TARGET_REACHED` | 1.31 s | 0.690 mm | 0.000199 rad/s |
+| 停止目标 | `STOP / NO_FEASIBLE_PLAN` | 1.32 s | 588.193 mm | 0.000305 rad/s |
+
+每组采集约 9 s，共 89 帧。位置误差由末帧关节角的正运动学结果计算。在线规划器的位置容差为 20 mm，离线闭环回归测试用 5 mm 容差。STOP 日志中的 48.8 mm 是规划搜索得到的最佳残差，表中的 588.193 mm 是执行制动目标后距原任务目标的误差。
+
+在 PowerShell 中从仓库根目录复现。启动现有本机 broker 后，在容器内通过 `host.docker.internal:1883` 连接 Windows broker。确保测试编号 `SIM-987` 与网络、容器名称可用。
+
+~~~powershell
+docker compose -f sim/gazebo_arm/docker-compose.yml build
+docker network create codex-arm-validation
+docker run -d --name codex-arm-sim --network codex-arm-validation --ipc host -e ROS_DOMAIN_ID=43 -e EDGE_SIMULATION_ID=SIM-987 gazebo_arm:latest
+docker run -d --name codex-arm-edge --network codex-arm-validation --ipc host -e ROS_DOMAIN_ID=43 -e EDGE_SIMULATION_ID=SIM-987 -e EDGE_ROBOT_ID=ROBOT-987 -e MQTT_CLIENT_ID=edge-node-SIM-987 -e CONTROL_MODE=pass_through -e TASK_RECOVERY_ENABLED=true -e MQTT_BROKER_URL=tcp://host.docker.internal:1883 edge_node:latest
+~~~
+
+待边端显示 MQTT 已连接，并在 `simulation/SIM-987/state` 看到初始姿态后，通过 MQTT 客户端向 `simulation/SIM-987/command` 发送以下任一消息。跑第二组前执行 `docker stop codex-arm-edge codex-arm-sim`，再执行 `docker start codex-arm-sim codex-arm-edge`，并重新确认初始姿态。
+
+~~~json
+{"commandId":"CMD-ARM-RECOVER","simulationId":"SIM-987","robotId":"ROBOT-987","cmdType":"MOVE_JOINT","jointTarget":[0.2,-0.1,0.8,0.0,-0.2,0.0]}
+~~~
+
+~~~json
+{"commandId":"CMD-ARM-STOP","simulationId":"SIM-987","robotId":"ROBOT-987","cmdType":"MOVE_JOINT","jointTarget":[-1.106891,-2.193779,0.948349,-2.686462,0.225453,-0.843902]}
+~~~
+
+~~~powershell
+docker logs codex-arm-edge 2>&1 | Select-String 'action=|CMD-ARM-'
+docker stop codex-arm-edge codex-arm-sim
+docker rm codex-arm-edge codex-arm-sim
+docker network rm codex-arm-validation
+~~~
 
 ## 合成卡滞力矩读数敏感性实验
 

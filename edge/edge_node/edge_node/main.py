@@ -214,8 +214,8 @@ def main(args=None):
         rclpy.init(args=args)
         node = Node('edge_node')
 
-        joint_states_topic = cfg.render_topic(cfg.get('ros2', 'joint_states_topic'))
-        joint_command_topic = cfg.render_topic(cfg.get('ros2', 'joint_command_topic'))
+        joint_states_topic = cfg.render_ros2_topic(cfg.get('ros2', 'joint_states_topic'))
+        joint_command_topic = cfg.render_ros2_topic(cfg.get('ros2', 'joint_command_topic'))
 
         def on_joint_state(position, velocity, effort, stamp_ns=None):
             handle_joint_state(position, velocity, effort, stamp_ns)
