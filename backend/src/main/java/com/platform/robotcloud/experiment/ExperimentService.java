@@ -81,16 +81,29 @@ public class ExperimentService {
         run.setStartedAt(startedAt);
         run.setWindowEndAt(startedAt.plusNanos((long) (Math.max(durationS, 0.1) * 1_000_000_000L)));
 
-        run.setFaultType(Payloads.text(fault, "type", null));
-        run.setFaultJoint(integerOrNull(fault, "joint_index"));
-        run.setFaultInjectedAtS(doubleOrNull(fault, "injected_at_s"));
-        run.setFaultDetectedAtS(doubleOrNull(fault, "detected_at_s"));
-        run.setDetectionLatencyMs(doubleOrNull(fault, "detection_latency_ms"));
-        run.setReachabilityStatus(Payloads.text(reachability, "status", null));
-        run.setReachabilityReason(Payloads.text(reachability, "reason", null));
-        run.setDecisionAction(Payloads.text(decision, "action", null));
-        run.setDecisionReason(Payloads.text(decision, "reason", null));
-        run.setDecisionAtS(doubleOrNull(decision, "at_s"));
+        // 实时边端会重复上报同一 run_id 的部分 Run（IN_PROGRESS → INCOMPLETE），
+        // 快照里 fault/decision/reachability 始终为空，不能覆盖已由事件写入的索引列
+        boolean liveSnapshot = "IN_PROGRESS".equals(run.getStatus()) || "INCOMPLETE".equals(run.getStatus());
+        String faultType = Payloads.text(fault, "type", null);
+        if (!liveSnapshot || faultType != null) {
+            run.setFaultType(faultType);
+            run.setFaultJoint(integerOrNull(fault, "joint_index"));
+            run.setFaultInjectedAtS(doubleOrNull(fault, "injected_at_s"));
+            run.setFaultDetectedAtS(doubleOrNull(fault, "detected_at_s"));
+            run.setDetectionLatencyMs(doubleOrNull(fault, "detection_latency_ms"));
+        }
+        String reachStatus = Payloads.text(reachability, "status", null);
+        if (!liveSnapshot || (reachStatus != null && !"NOT_ASSESSED".equals(reachStatus))
+                || run.getReachabilityStatus() == null) {
+            run.setReachabilityStatus(reachStatus);
+            run.setReachabilityReason(Payloads.text(reachability, "reason", null));
+        }
+        String decisionAction = Payloads.text(decision, "action", null);
+        if (!liveSnapshot || decisionAction != null) {
+            run.setDecisionAction(decisionAction);
+            run.setDecisionReason(Payloads.text(decision, "reason", null));
+            run.setDecisionAtS(doubleOrNull(decision, "at_s"));
+        }
         run.setFinalEeErrorM(doubleOrNull(task, "final_ee_error_m"));
         run.setRecoveryTimeS(doubleOrNull(task, "recovery_time_s"));
         run.setStopTimeS(doubleOrNull(task, "stop_time_s"));
