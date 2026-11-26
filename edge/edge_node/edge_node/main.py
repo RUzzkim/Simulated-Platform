@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import argparse
+import signal
 import threading
 import time
 import uuid
@@ -34,6 +35,11 @@ def main(args=None):
     parser = argparse.ArgumentParser(description='工业机械臂仿真平台 - 边端节点')
     parser.add_argument('--config', type=str, required=True, help='edge_config.yaml 路径')
     parsed, _ = parser.parse_known_args(args)
+
+    # Windows：服务停止/自动化测试发送 CTRL_BREAK_EVENT（SIGBREAK），
+    # 注册为与 Ctrl+C 相同的处理，统一走 finally 的优雅收尾
+    if hasattr(signal, 'SIGBREAK'):
+        signal.signal(signal.SIGBREAK, signal.default_int_handler)
 
     cfg = ConfigManager(parsed.config)
     sim_id = cfg.simulation_id
