@@ -23,6 +23,10 @@ _ENV_OVERRIDES = {
     'MQTT_USERNAME': ('mqtt', 'username'),
     'MQTT_PASSWORD': ('mqtt', 'password'),
     'MQTT_QOS': ('mqtt', 'qos'),
+    'EDGE_MQTT_CA_CERTS': ('mqtt', 'tls', 'ca_certs'),
+    'EDGE_MQTT_CERTFILE': ('mqtt', 'tls', 'certfile'),
+    'EDGE_MQTT_KEYFILE': ('mqtt', 'tls', 'keyfile'),
+    'EDGE_MQTT_TLS_INSECURE': ('mqtt', 'tls', 'insecure'),
     'CONTROL_MODE': ('control', 'control_mode'),
     'FAULT_DETECTION_ENABLED': ('fault_detection', 'enabled'),
     'FAULT_TOLERANCE_ENABLED': ('fault_tolerance', 'enabled'),
@@ -41,6 +45,7 @@ class ConfigManager:
     def __init__(self, config_path: Optional[str] = None):
         self._static: Dict[str, Any] = {}
         self._runtime = EdgeConfig()
+        self._path: Optional[str] = None
         if config_path:
             self.load_static(config_path)
 
@@ -48,6 +53,7 @@ class ConfigManager:
     def load_static(self, config_path: str) -> None:
         if not os.path.exists(config_path):
             raise FileNotFoundError(f"配置文件不存在: {config_path}")
+        self._path = os.path.abspath(config_path)
         with open(config_path, 'r', encoding='utf-8') as f:
             self._static = yaml.safe_load(f) or {}
         self._apply_env_overrides()
@@ -275,6 +281,33 @@ class ConfigManager:
 
     def render_topic(self, pattern: str) -> str:
         return pattern.replace('{simulation_id}', self.simulation_id)
+
+    def resolve_path(self, path: Optional[str]) -> Optional[str]:
+        """把配置里的相对路径按 YAML 所在目录解析（证书路径随配置走）"""
+        if not path:
+            return path
+        path = os.path.expanduser(path)
+        if os.path.isabs(path):
+            return path
+        base = os.path.dirname(self._path) if self._path else os.getcwd()
+        return os.path.normpath(os.path.join(base, path))
+
+    # ---- MQTT TLS（双向认证）----
+    @property
+    def mqtt_tls_ca_certs(self) -> Optional[str]:
+        return self.resolve_path(self.get('mqtt', 'tls', 'ca_certs'))
+
+    @property
+    def mqtt_tls_certfile(self) -> Optional[str]:
+        return self.resolve_path(self.get('mqtt', 'tls', 'certfile'))
+
+    @property
+    def mqtt_tls_keyfile(self) -> Optional[str]:
+        return self.resolve_path(self.get('mqtt', 'tls', 'keyfile'))
+
+    @property
+    def mqtt_tls_insecure(self) -> bool:
+        return bool(self.get('mqtt', 'tls', 'insecure', default=False))
 
     # ---- 动态配置（云端 config topic 下发）----
     def update_runtime(self, config: EdgeConfig) -> None:

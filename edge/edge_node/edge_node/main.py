@@ -206,40 +206,48 @@ def main(args=None):
 
     # ---- 云端指令回调 ----
     def on_command(cmd: RobotCommand):
-        # 状态推断：根据指令类型更新运行状态（STOP→STOPPED，其余→RUNNING）
-        processor.set_command_status(cmd.cmd_type)
-        target = pass_through.command_to_target(cmd)
-        # 记录活动目标（无 ROS 2 容错闭环参考）；STOP 后清空，避免对刹车中的臂下发补偿
-        with state_lock:
-            if cmd.cmd_type == 'STOP':
-                active_target['value'] = None
-            elif target is not None:
-                active_target['value'] = list(target)
-        if nn_controller is not None:
-            # 自适应 NN 模式：把云端目标设为 setpoint，由控制循环闭环跟踪
-            if target is not None:
-                nn_controller.set_setpoint(target)
-                logger.info("NN setpoint 已更新 commandId=%s cmdType=%s target=%s",
-                            cmd.command_id, cmd.cmd_type,
-                            [round(t, 3) for t in target])
+        try:
+            # 状态推断：根据指令类型更新运行状态（STOP→STOPPED，其余→RUNNING）
+            processor.set_command_status(cmd.cmd_type)
+            target = pass_through.command_to_target(cmd)
+            # 记录活动目标（无 ROS 2 容错闭环参考）；STOP 后清空，避免对刹车中的臂下发补偿
+            with state_lock:
+                if cmd.cmd_type == 'STOP':
+                    active_target['value'] = None
+                elif target is not None:
+                    active_target['value'] = list(target)
+            detail = 'accepted'
+            if nn_controller is not None:
+                # 自适应 NN 模式：把云端目标设为 setpoint，由控制循环闭环跟踪
+                if target is not None:
+                    nn_controller.set_setpoint(target)
+                    logger.info("NN setpoint 已更新 commandId=%s cmdType=%s target=%s",
+                                cmd.command_id, cmd.cmd_type,
+                                [round(t, 3) for t in target])
+                else:
+                    logger.info("收到指令 commandId=%s cmdType=%s（无位置目标）",
+                                cmd.command_id, cmd.cmd_type)
             else:
-                logger.info("收到指令 commandId=%s cmdType=%s（无位置目标）",
-                            cmd.command_id, cmd.cmd_type)
-        else:
-            # 透传模式：直接转发到仿真端（故障时做容错补偿）
-            if target is not None and command_publisher is not None:
-                if ftc is not None and ftc.has_any_fault:
-                    with state_lock:
-                        cur_state = latest_state['value']
-                    if cur_state is not None:
-                        target = ftc.compensate(cur_state, target)
-                        logger.info("容错补偿后目标: %s",
-                                    [round(t, 3) for t in target])
-                command_publisher.publish_position(target)
-                logger.info("已转发指令到仿真端 commandId=%s cmdType=%s", cmd.command_id, cmd.cmd_type)
-            else:
-                logger.info("收到指令 commandId=%s cmdType=%s（无需发布位置或无 ROS 2）",
-                            cmd.command_id, cmd.cmd_type)
+                # 透传模式：直接转发到仿真端（故障时做容错补偿）
+                if target is not None and command_publisher is not None:
+                    if ftc is not None and ftc.has_any_fault:
+                        with state_lock:
+                            cur_state = latest_state['value']
+                        if cur_state is not None:
+                            target = ftc.compensate(cur_state, target)
+                            logger.info("容错补偿后目标: %s",
+                                        [round(t, 3) for t in target])
+                    command_publisher.publish_position(target)
+                    logger.info("已转发指令到仿真端 commandId=%s cmdType=%s", cmd.command_id, cmd.cmd_type)
+                else:
+                    logger.info("收到指令 commandId=%s cmdType=%s（无需发布位置或无 ROS 2）",
+                                cmd.command_id, cmd.cmd_type)
+            mqtt_client.publish_command_ack(robot_id, cmd.command_id, cmd.cmd_type,
+                                            'SUCCESS', detail)
+        except Exception as e:
+            logger.error("处理云端指令失败 commandId=%s: %s", cmd.command_id, e)
+            mqtt_client.publish_command_ack(robot_id, cmd.command_id, cmd.cmd_type,
+                                            'FAILED', str(e))
 
     def on_config(runtime_cfg):
         cfg.update_runtime(runtime_cfg)
@@ -268,6 +276,11 @@ def main(args=None):
                 'mqtt', 'upstream_state_topic',
                 default='simulation/{simulation_id}/sim_state'))
         ),
+        # 双向 TLS（broker 仅开 8883，本机映射 8884）：路径相对 edge_config.yaml 解析
+        ca_certs=cfg.mqtt_tls_ca_certs,
+        certfile=cfg.mqtt_tls_certfile,
+        keyfile=cfg.mqtt_tls_keyfile,
+        tls_insecure=cfg.mqtt_tls_insecure,
     )
     mqtt_client.connect()
 

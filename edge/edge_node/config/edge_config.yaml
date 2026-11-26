@@ -27,6 +27,13 @@ mqtt:
   heartbeat_topic: "simulation/{simulation_id}/heartbeat"
   command_topic: "simulation/{simulation_id}/command"
   config_topic: "simulation/{simulation_id}/config"
+  # 双向 TLS：broker_url 用 ssl:// 时启用（本机 ssl://127.0.0.1:8884，生产 ssl://<云端>:8883）
+  # 路径相对本配置文件所在目录解析；username/password 在证书认证下留空
+  tls:
+    ca_certs: ""                # 如 certs/ca.crt
+    certfile: ""                # 如 certs/edge-SIM-001.crt
+    keyfile: ""                 # 如 certs/edge-SIM-001.key
+    insecure: false             # 仅联调可 true；生产必须校验服务端证书与主机名
 
 # 运行参数
 runtime:
