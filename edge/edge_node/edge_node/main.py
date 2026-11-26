@@ -369,6 +369,8 @@ def main(args=None):
         certfile=cfg.mqtt_tls_certfile,
         keyfile=cfg.mqtt_tls_keyfile,
         tls_insecure=cfg.mqtt_tls_insecure,
+        # 优雅下线 OFFLINE 心跳与遗嘱使用真实 robotId
+        robot_id=robot_id,
     )
     # ---- V2 实时实验事件上报 ----
     def ensure_experiment_run() -> None:

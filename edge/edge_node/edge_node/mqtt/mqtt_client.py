@@ -54,10 +54,12 @@ class MqttClient:
         certfile: Optional[str] = None,
         keyfile: Optional[str] = None,
         tls_insecure: bool = False,
+        robot_id: str = '',
     ):
         self._broker_url = broker_url
         self._client_id = client_id
         self._simulation_id = simulation_id
+        self._robot_id = robot_id
         self._state_topic = state_topic
         self._heartbeat_topic = heartbeat_topic
         self._command_topic = command_topic
@@ -86,7 +88,7 @@ class MqttClient:
         # 遗嘱：异常断开时上报 OFFLINE，保证云端感知离线
         will_payload = json.dumps({
             'simulationId': simulation_id,
-            'robotId': '',  # 心跳 robotId 在发布时由调用方提供；遗嘱仅保证 status=OFFLINE
+            'robotId': robot_id,  # 未传入时为空串，云端按未绑定设备处理
             'timestamp': 0,
             'status': 'OFFLINE',
         })
@@ -144,16 +146,17 @@ class MqttClient:
         self._client.loop_start()
 
     def disconnect(self) -> None:
-        try:
-            # 优雅下线：先发布 OFFLINE 心跳，再断开
-            self.publish_heartbeat(Heartbeat(
-                simulation_id=self._simulation_id,
-                robot_id='',
-                timestamp=0,
-                status='OFFLINE',
-            ))
-        except Exception as e:
-            logger.warning("发布 OFFLINE 心跳失败: %s", e)
+        if self._robot_id:
+            try:
+                # 优雅下线：先发布 OFFLINE 心跳（robotId 需为 ROBOT-###，缺失时跳过）
+                self.publish_heartbeat(Heartbeat(
+                    simulation_id=self._simulation_id,
+                    robot_id=self._robot_id,
+                    timestamp=int(time.time() * 1000),
+                    status='OFFLINE',
+                ))
+            except Exception as e:
+                logger.warning("发布 OFFLINE 心跳失败: %s", e)
         self._client.loop_stop()
         self._client.disconnect()
         self._connected = False
