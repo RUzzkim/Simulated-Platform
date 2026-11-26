@@ -153,6 +153,16 @@
           <DialogDescription>
             {{ detail.run?.scenario?.description || '单关节卡滞实验运行详情' }}
           </DialogDescription>
+          <div v-if="detail.run" class="mt-2 flex flex-wrap gap-2">
+            <Button variant="outline" size="sm" @click="downloadDetail('json')">
+              <Download />
+              导出 JSON
+            </Button>
+            <Button variant="outline" size="sm" @click="downloadDetail('csv')">
+              <Download />
+              导出事件 CSV
+            </Button>
+          </div>
         </DialogHeader>
 
         <p v-if="detailError" class="text-destructive text-sm">{{ detailError }}</p>
@@ -276,9 +286,15 @@
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import * as echarts from 'echarts'
-import { RotateCcw, Search } from 'lucide-vue-next'
+import { Download, RotateCcw, Search } from 'lucide-vue-next'
 import { toast } from '@/lib/toast'
-import { getExperimentEvents, getExperimentRun, getExperimentRuns, getExperimentSeries } from '@/api/experiment'
+import {
+  exportExperimentRun,
+  getExperimentEvents,
+  getExperimentRun,
+  getExperimentRuns,
+  getExperimentSeries,
+} from '@/api/experiment'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -677,6 +693,25 @@ const onDetailOpenChange = (open) => {
     detail.events = []
     seriesRows.value = []
     detailLoading.value = false
+  }
+}
+
+const downloadDetail = async (format) => {
+  const runId = detail.run?.run_id
+  if (!runId) return
+  try {
+    const response = await exportExperimentRun(runId, format)
+    const blob = response.data instanceof Blob ? response.data : new Blob([response.data])
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = format === 'csv' ? `${runId}-events.csv` : `${runId}.json`
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
+  } catch (error) {
+    toast.error('导出失败，请稍后重试')
   }
 }
 

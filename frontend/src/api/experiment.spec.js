@@ -8,6 +8,7 @@ const {
   getExperimentRun,
   getExperimentEvents,
   getExperimentSeries,
+  exportExperimentRun,
 } = await import('./experiment')
 
 describe('experiment API', () => {
@@ -31,5 +32,21 @@ describe('experiment API', () => {
     const params = { limit: 800, downsample: false }
     getExperimentSeries('c'.repeat(32), params)
     expect(get).toHaveBeenCalledWith(`/experiments/runs/${'c'.repeat(32)}/series`, { params })
+  })
+
+  it('按 run_id 导出归档，默认 JSON 且按二进制接收', () => {
+    exportExperimentRun('d'.repeat(32))
+    expect(get).toHaveBeenCalledWith(`/experiments/runs/${'d'.repeat(32)}/export`, {
+      params: { format: 'json' },
+      responseType: 'blob',
+    })
+  })
+
+  it('导出事件 CSV 时透传 format', () => {
+    exportExperimentRun('e'.repeat(32), 'csv')
+    expect(get).toHaveBeenCalledWith(`/experiments/runs/${'e'.repeat(32)}/export`, {
+      params: { format: 'csv' },
+      responseType: 'blob',
+    })
   })
 })

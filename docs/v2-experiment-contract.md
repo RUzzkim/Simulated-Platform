@@ -241,6 +241,7 @@
 | GET | `/api/experiments/runs/{runId}` | Run 详情 |
 | GET | `/api/experiments/runs/{runId}/events` | 故障/决策事件时间线 |
 | GET | `/api/experiments/runs/{runId}/series?limit=800&downsample=false` | 按 Run 时间窗查询遥测曲线 |
+| GET | `/api/experiments/runs/{runId}/export?format=json\|csv` | 导出可追溯材料：JSON 含 Run+事件，CSV 为事件时间线 |
 
 - Run 窗口：`started_at + simulation.duration_s`；曲线复用既有 `telemetry_data` 与降采样逻辑。
 - 列表额外返回 `device_id`/`updated_at_ms` 元数据，不属于冻结契约字段。
