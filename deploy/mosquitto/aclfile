@@ -9,6 +9,8 @@ topic write robot/+/cmd
 topic read simulation/+/state
 topic read simulation/+/heartbeat
 topic read simulation/+/command_ack
+topic read simulation/+/experiment_run
+topic read simulation/+/experiment_event
 topic write simulation/+/command
 
 # 设备 SIM-001
@@ -30,4 +32,6 @@ topic read simulation/SIM-001/config
 topic write simulation/SIM-001/command_ack
 topic write simulation/SIM-001/sim_state
 topic read simulation/SIM-001/sim_state
+topic write simulation/SIM-001/experiment_run
+topic write simulation/SIM-001/experiment_event
 topic write simulation/SIM-001/command

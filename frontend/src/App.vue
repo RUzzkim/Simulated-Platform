@@ -155,6 +155,7 @@ const canDispatch = computed(() => hasRole('ADMIN', 'OPERATOR'))
 const navItems = computed(() => [
   { to: '/', label: '设备总览' },
   { to: '/analysis', label: '分析中心' },
+  { to: '/experiments', label: '实验回放' },
   { to: '/system', label: '系统状态' },
   ...(canDispatch.value ? [{ to: '/publish', label: '下发中心' }] : []),
   ...(canViewAudit.value ? [{ to: '/audit-logs', label: '审计日志' }] : []),

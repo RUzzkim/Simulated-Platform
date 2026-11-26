@@ -13,9 +13,11 @@ FIXTURE_DIR = Path(__file__).resolve().parent / 'fixtures' / 'v2_contract'
 
 RUN_SCHEMA = CONTRACT_DIR / 'v2_run.schema.json'
 FRAME_SCHEMA = CONTRACT_DIR / 'v2_trace_frame.schema.json'
+EVENT_SCHEMA = CONTRACT_DIR / 'v2_experiment_event.schema.json'
 VALID_RUN = FIXTURE_DIR / 'valid_run.json'
 VALID_RUN_STOP = FIXTURE_DIR / 'valid_run_safe_stopped.json'
 VALID_FRAME = FIXTURE_DIR / 'valid_trace_frame.json'
+VALID_EVENTS = [FIXTURE_DIR / 'valid_fault_event.json', FIXTURE_DIR / 'valid_decision_event.json']
 
 
 def _load(path: Path):
@@ -27,7 +29,8 @@ class V2ContractTest(unittest.TestCase):
     def setUpClass(cls):
         cls.run_schema = _load(RUN_SCHEMA)
         cls.frame_schema = _load(FRAME_SCHEMA)
-        for schema in (cls.run_schema, cls.frame_schema):
+        cls.event_schema = _load(EVENT_SCHEMA)
+        for schema in (cls.run_schema, cls.frame_schema, cls.event_schema):
             self_check = Draft7Validator(schema)
             self_check.check_schema(schema)
 
@@ -38,6 +41,10 @@ class V2ContractTest(unittest.TestCase):
                 self.assertEqual([], list(Draft7Validator(self.run_schema).iter_errors(run)))
         frame = _load(VALID_FRAME)
         self.assertEqual([], list(Draft7Validator(self.frame_schema).iter_errors(frame)))
+        for path in VALID_EVENTS:
+            with self.subTest(fixture=path.name):
+                event = _load(path)
+                self.assertEqual([], list(Draft7Validator(self.event_schema).iter_errors(event)))
 
     def test_invalid_fixtures_are_rejected(self):
         cases = [
@@ -46,6 +53,8 @@ class V2ContractTest(unittest.TestCase):
             ('invalid_run_bad_contract_version.json', self.run_schema),
             ('invalid_frame_seven_joints.json', self.frame_schema),
             ('invalid_frame_bad_joint_name.json', self.frame_schema),
+            ('invalid_event_missing_run_id.json', self.event_schema),
+            ('invalid_event_bad_type.json', self.event_schema),
         ]
         for name, schema in cases:
             with self.subTest(fixture=name):
@@ -133,6 +142,17 @@ class V2ContractTest(unittest.TestCase):
         if frame['fault_active']:
             self.assertIsNotNone(frame['fault_type'])
             self.assertIsNotNone(frame['fault_joint'])
+
+    def test_event_fixtures_link_to_run(self):
+        run = _load(VALID_RUN)
+        for path in VALID_EVENTS:
+            with self.subTest(fixture=path.name):
+                event = _load(path)
+                self.assertEqual(event['run_id'], run['run_id'])
+                self.assertEqual(event['contract_version'], run['contract_version'])
+        decision = _load(FIXTURE_DIR / 'valid_decision_event.json')
+        self.assertEqual(decision['action'], run['decision']['action'])
+        self.assertEqual(decision['reachability_status'], run['reachability']['status'])
 
 
 if __name__ == '__main__':

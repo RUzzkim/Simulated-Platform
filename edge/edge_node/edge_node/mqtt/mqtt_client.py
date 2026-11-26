@@ -64,6 +64,8 @@ class MqttClient:
         self._config_topic = config_topic
         self._command_ack_topic = command_ack_topic or \
             f'simulation/{simulation_id}/command_ack'
+        self._experiment_run_topic = f'simulation/{simulation_id}/experiment_run'
+        self._experiment_event_topic = f'simulation/{simulation_id}/experiment_event'
         self._qos = qos
         self._keepalive = keepalive
         # 无 ROS 2 模式的上游状态源（仿真端原始状态主题），None 表示不订阅
@@ -272,6 +274,21 @@ class MqttClient:
         with self._lock:
             self._client.publish(self._command_ack_topic, payload=body, qos=self._qos)
         logger.info("已回执指令 commandId=%s result=%s", command_id, result)
+
+    def publish_experiment_run(self, payload: dict) -> None:
+        """发布 V2 实验 Run 记录（契约 2.0.0；实时 Run 为部分记录）。"""
+        body = json.dumps(payload, ensure_ascii=False)
+        with self._lock:
+            self._client.publish(self._experiment_run_topic, payload=body, qos=self._qos)
+        logger.info("已发布实验 Run run_id=%s", payload.get('run_id'))
+
+    def publish_experiment_event(self, payload: dict) -> None:
+        """发布故障/决策事件（契约 2.0.0 事件消息）。"""
+        body = json.dumps(payload, ensure_ascii=False)
+        with self._lock:
+            self._client.publish(self._experiment_event_topic, payload=body, qos=self._qos)
+        logger.info("已发布实验事件 type=%s run_id=%s",
+                    payload.get('event_type'), payload.get('run_id'))
 
     def publish_safe_command(
         self, robot_id: str, target: Optional[list] = None, resume: bool = False

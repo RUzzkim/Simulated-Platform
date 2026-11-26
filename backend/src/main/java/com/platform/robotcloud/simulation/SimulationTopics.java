@@ -12,6 +12,8 @@ public final class SimulationTopics {
     private static final Pattern STATE = Pattern.compile("^simulation/([^/]+)/state$");
     private static final Pattern HEARTBEAT = Pattern.compile("^simulation/([^/]+)/heartbeat$");
     private static final Pattern COMMAND_ACK = Pattern.compile("^simulation/([^/]+)/command_ack$");
+    private static final Pattern EXPERIMENT_RUN = Pattern.compile("^simulation/([^/]+)/experiment_run$");
+    private static final Pattern EXPERIMENT_EVENT = Pattern.compile("^simulation/([^/]+)/experiment_event$");
 
     private SimulationTopics() {
     }
@@ -29,6 +31,16 @@ public final class SimulationTopics {
     /** topic 是 simulation/{id}/command_ack 时返回 simulationId，否则 null。 */
     public static String simulationIdFromCommandAck(String topic) {
         return extract(COMMAND_ACK, topic);
+    }
+
+    /** topic 是 simulation/{id}/experiment_run 时返回 simulationId，否则 null。 */
+    public static String simulationIdFromExperimentRun(String topic) {
+        return extract(EXPERIMENT_RUN, topic);
+    }
+
+    /** topic 是 simulation/{id}/experiment_event 时返回 simulationId，否则 null。 */
+    public static String simulationIdFromExperimentEvent(String topic) {
+        return extract(EXPERIMENT_EVENT, topic);
     }
 
     private static String extract(Pattern pattern, String topic) {

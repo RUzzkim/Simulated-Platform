@@ -1,0 +1,13 @@
+{
+  "contract_version": "2.0.0",
+  "run_id": "e3529e787dd842be943f06eaa0087df8",
+  "event_type": "FAULT",
+  "timestamp": 1795660686657,
+  "sim_time_s": 0.64,
+  "fault_type": "JOINT_LOCKED",
+  "joint_index": 0,
+  "action": null,
+  "reason": null,
+  "reachability_status": null,
+  "detail": "injected at 0.40s, detected at 0.64s"
+}

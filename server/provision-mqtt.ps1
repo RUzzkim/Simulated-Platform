@@ -118,6 +118,8 @@ $lines.Add('topic write robot/+/cmd')
 $lines.Add('topic read simulation/+/state')
 $lines.Add('topic read simulation/+/heartbeat')
 $lines.Add('topic read simulation/+/command_ack')
+$lines.Add('topic read simulation/+/experiment_run')
+$lines.Add('topic read simulation/+/experiment_event')
 $lines.Add('topic write simulation/+/command')
 foreach ($item in $provisioned) {
   $code = $item.deviceCode
@@ -154,6 +156,9 @@ if ($simulationList.Count -gt 0) {
     # 仿真端把原始关节状态发到 sim_state，边端订阅后走同一套故障检测/容错管线
     $lines.Add("topic write simulation/$sim/sim_state")
     $lines.Add("topic read simulation/$sim/sim_state")
+    # V2 实验 Run 与故障/决策事件（契约 2.0.0）
+    $lines.Add("topic write simulation/$sim/experiment_run")
+    $lines.Add("topic write simulation/$sim/experiment_event")
     # 边端容错时把 MOVE_JOINT_SAFE 发回同一个 command 主题给仿真端（边-端内部协议），所以它对这个主题是读+写
     $lines.Add("topic write simulation/$sim/command")
   }

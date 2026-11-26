@@ -37,6 +37,13 @@ _ENV_OVERRIDES = {
     'EDGE_SAFE_COMMAND_ENABLED': ('control', 'safe_command_enabled'),
     'EDGE_SIGNAL_FILTER_ENABLED': ('signal_filter', 'enabled'),
     'EDGE_PUBLISH_FAULTS': ('runtime', 'publish_faults'),
+    # 实时实验 Run 上下文（契约 2.0.0；run_id 留空则启动时生成）
+    'EDGE_RUN_ID': ('experiment', 'run_id'),
+    'EDGE_SCENARIO_ID': ('experiment', 'scenario_id'),
+    'EDGE_RUN_SPLIT': ('experiment', 'split'),
+    'EDGE_RUN_SEED': ('experiment', 'seed'),
+    'EDGE_EXPERIMENT_STRATEGY': ('experiment', 'strategy'),
+    'EDGE_ALGORITHM_VERSION': ('experiment', 'algorithm_version'),
 }
 
 
@@ -126,6 +133,31 @@ class ConfigManager:
     def publish_faults(self) -> bool:
         """上云 RobotState 是否携带可选 faults 故障明细数组（v1.1 加法扩展）"""
         return bool(self.get('runtime', 'publish_faults', default=True))
+
+    # ---- 实时实验 Run 上下文（契约 2.0.0）----
+    @property
+    def experiment_run_id(self) -> str:
+        return str(self.get('experiment', 'run_id', default='') or '')
+
+    @property
+    def experiment_scenario_id(self) -> str:
+        return str(self.get('experiment', 'scenario_id', default='ONLINE-LOCK'))
+
+    @property
+    def experiment_split(self) -> str:
+        return str(self.get('experiment', 'split', default='online'))
+
+    @property
+    def experiment_seed(self) -> int:
+        return int(self.get('experiment', 'seed', default=0))
+
+    @property
+    def experiment_strategy(self) -> str:
+        return str(self.get('experiment', 'strategy', default='v2'))
+
+    @property
+    def experiment_algorithm_version(self) -> str:
+        return str(self.get('experiment', 'algorithm_version', default='v2.0.0'))
 
     # ---- 信号滤波/离群点剔除参数 ----
     @property

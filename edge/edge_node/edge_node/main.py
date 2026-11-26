@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import threading
 import time
+import uuid
 from typing import Optional
 
 from edge_node.config.config_manager import ConfigManager
@@ -38,7 +39,66 @@ def main(args=None):
     sim_id = cfg.simulation_id
     robot_id = cfg.robot_id
 
-    logger.info("启动边端节点 simulation_id=%s robot_id=%s", sim_id, robot_id)
+    # ---- 实时实验 Run 上下文（契约 2.0.0 的部分 Run）----
+    experiment_run_id = cfg.experiment_run_id or uuid.uuid4().hex
+    experiment_started_ms = int(time.time() * 1000)
+    experiment_state = {'run_sent': False, 'last_fault': None, 'last_decision': None}
+
+    def build_live_run(status: str = 'IN_PROGRESS') -> dict:
+        return {
+            'contract_version': '2.0.0',
+            'run_id': experiment_run_id,
+            'algorithm_version': cfg.experiment_algorithm_version,
+            'started_at_ms': experiment_started_ms,
+            'simulation': {
+                'simulation_id': sim_id,
+                'robot_id': robot_id,
+                'plant': 'ros2-gazebo' if ros2_available else 'python-6r',
+                'control_hz': int(round(cfg.control_rate_hz)),
+                'duration_s': 8.0,
+            },
+            'scenario': {
+                'scenario_id': cfg.experiment_scenario_id,
+                'split': cfg.experiment_split,
+                'seed': cfg.experiment_seed,
+                'task_goal_rad': [0.0] * cfg.joint_count,
+                'description': '实时边端运行（部分记录，结束后状态为 INCOMPLETE）',
+            },
+            'fault': {
+                'type': None,
+                'joint_index': None,
+                'joint_name': None,
+                'injected_at_s': None,
+                'detected_at_s': None,
+                'detection_latency_ms': None,
+                'confirmed': False,
+            },
+            'reachability': {
+                'status': 'NOT_ASSESSED',
+                'reason': None,
+                'planner_position_error_m': None,
+            },
+            'strategy': cfg.experiment_strategy,
+            'decision': {'action': None, 'reason': None, 'at_s': None},
+            'task': {
+                'status': status,
+                'final_ee_error_m': None,
+                'recovery_time_s': None,
+                'stop_time_s': None,
+                'peak_fault_joint_torque_nm': None,
+                'max_joint_speed_rad_s': 0.0,
+                'max_joint_torque_nm': 0.0,
+            },
+            'trace': {
+                'path': f'live://{experiment_run_id}',
+                'sha256': '0' * 64,
+                'frame_count': 1,
+                'sample_rate_hz': 100,
+            },
+        }
+
+    logger.info("启动边端节点 simulation_id=%s robot_id=%s run_id=%s",
+                sim_id, robot_id, experiment_run_id)
 
     # ---- 业务层 ----
     processor = StateProcessor(
@@ -167,6 +227,7 @@ def main(args=None):
                 # v1.1：故障明细随 state 上云（可选 faults 数组；无故障为空数组）
                 if cfg.publish_faults:
                     state.faults = [fault]
+                publish_fault_event(fault)
             with state_lock:
                 latest_state['value'] = state
                 latest_fault['value'] = fault
@@ -303,6 +364,73 @@ def main(args=None):
         keyfile=cfg.mqtt_tls_keyfile,
         tls_insecure=cfg.mqtt_tls_insecure,
     )
+    # ---- V2 实时实验事件上报 ----
+    def ensure_experiment_run() -> None:
+        if experiment_state['run_sent'] or not mqtt_client.is_connected:
+            return
+        mqtt_client.publish_experiment_run(build_live_run())
+        experiment_state['run_sent'] = True
+
+    def experiment_stamp():
+        now_ms = int(time.time() * 1000)
+        return now_ms, round((now_ms - experiment_started_ms) / 1000.0, 3)
+
+    def publish_fault_event(fault) -> None:
+        if fault is None or not mqtt_client.is_connected:
+            return
+        key = (fault.fault_type, fault.joint_index)
+        if key == experiment_state['last_fault']:
+            return
+        ensure_experiment_run()
+        stamp_ms, sim_s = experiment_stamp()
+        mqtt_client.publish_experiment_event({
+            'contract_version': '2.0.0',
+            'run_id': experiment_run_id,
+            'event_type': 'FAULT',
+            'timestamp': stamp_ms,
+            'sim_time_s': sim_s,
+            'fault_type': fault.fault_type,
+            'joint_index': fault.joint_index,
+            'action': None,
+            'reason': None,
+            'reachability_status': None,
+            'detail': fault.detail,
+        })
+        experiment_state['last_fault'] = key
+
+    def publish_decision_event() -> None:
+        if ftc is None or not mqtt_client.is_connected:
+            return
+        decision = ftc.last_recovery_decision
+        if decision is None:
+            return
+        key = (decision.action, decision.reason,
+               tuple(round(float(x), 4) for x in (decision.target_q or [])))
+        if key == experiment_state['last_decision']:
+            return
+        ensure_experiment_run()
+        stamp_ms, sim_s = experiment_stamp()
+        if decision.action == 'RECOVER':
+            reachability = 'REACHABLE'
+        elif decision.action == 'STOP':
+            reachability = 'NO_FEASIBLE_PLAN'
+        else:
+            reachability = 'NOT_ASSESSED'
+        mqtt_client.publish_experiment_event({
+            'contract_version': '2.0.0',
+            'run_id': experiment_run_id,
+            'event_type': 'DECISION',
+            'timestamp': stamp_ms,
+            'sim_time_s': sim_s,
+            'fault_type': 'JOINT_LOCKED',
+            'joint_index': next(iter(ftc.active_faults), None),
+            'action': decision.action,
+            'reason': decision.reason,
+            'reachability_status': reachability,
+            'detail': f"iterations={decision.iterations}",
+        })
+        experiment_state['last_decision'] = key
+
     mqtt_client.connect()
 
     # ---- 心跳线程（独立线程，不依赖 ROS 2 spin）----
@@ -340,6 +468,7 @@ def main(args=None):
                 with state_lock:
                     state: Optional[RobotState] = latest_state['value']
                 if state is not None and mqtt_client.is_connected:
+                    ensure_experiment_run()
                     # 通信超时在发布线程检出（非状态回调），发布前挂到本帧 faults
                     if cfg.publish_faults and timeout_fault is not None:
                         state.faults = [timeout_fault]
@@ -374,6 +503,7 @@ def main(args=None):
                     if ftc is not None:
                         final_goal = task_goal if ftc.task_recovery else None
                         q_target = ftc.compensate(state, q_target, task_goal=final_goal)
+                        publish_decision_event()
                     command_publisher.publish_position(q_target)
             except Exception as e:
                 logger.error("控制循环失败: %s", e)
@@ -408,6 +538,7 @@ def main(args=None):
                             safe_target = ftc.compensate(
                                 state, q_target, task_goal=final_goal
                             )
+                            publish_decision_event()
                             mqtt_client.publish_safe_command(robot_id, target=safe_target)
                             if not safe_active:
                                 logger.warning("容错激活：下发安全目标 %s",
@@ -440,6 +571,12 @@ def main(args=None):
     except KeyboardInterrupt:
         logger.info("收到中断信号，正在退出...")
     finally:
+        try:
+            if mqtt_client.is_connected:
+                ensure_experiment_run()
+                mqtt_client.publish_experiment_run(build_live_run('INCOMPLETE'))
+        except Exception as e:
+            logger.warning("收尾实验 Run 状态失败: %s", e)
         mqtt_client.disconnect()
         if ros2_available and node is not None:
             node.destroy_node()

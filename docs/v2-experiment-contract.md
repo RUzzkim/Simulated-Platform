@@ -115,6 +115,29 @@
 - 本轮恢复判据只评价末端**位置**，姿态仅记录，不参与恢复/停止评分。
 - 原始 CSV 未直接写入位姿；规范化时用 `edge_node.fault.kinematics.compute_pose(q)` 计算，保证与规划器同一 DH 模型。
 
+### 3.3 事件消息（FAULT / DECISION）
+
+运行期间的事件单独发布，Schema 见
+[`v2_experiment_event.schema.json`](../edge/edge_node/docs/contract/v2_experiment_event.schema.json)。
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `contract_version` | string | 固定 `2.0.0` |
+| `run_id` | string | 关联 Run 记录 |
+| `event_type` | string | `FAULT` / `DECISION` |
+| `timestamp` | integer | Unix 毫秒，与 Run 同一时间基准 |
+| `sim_time_s` | number | 仿真实测时刻 |
+| `fault_type` | string/null | FAULT 时为 `JOINT_LOCKED` |
+| `joint_index` | int/null | 0–5 |
+| `action` | string/null | DECISION 时为 `RECOVER`/`STOP` |
+| `reason` | string/null | 决策原因 |
+| `reachability_status` | string/null | `REACHABLE`/`NO_FEASIBLE_PLAN`/`NOT_ASSESSED` |
+| `detail` | string/null | 可读说明 |
+
+- Topic：`simulation/{simulationId}/experiment_event`。
+- Run 记录 Topic：`simulation/{simulationId}/experiment_run`，载荷即第 2 节 Run 对象。
+- 同一事件可重复投递；云端按 `run_id|event_type|timestamp|joint|action` 幂等去重。
+
 ## 4. 与 B 验收判据对齐
 
 | 判据 | 冻结值 | 契约落点 |
@@ -207,7 +230,33 @@
 - B 的 validation-r1 原始记录不再改写；新版本用新 `contract_version` 重跑或迁移。
 - MQTT `RobotState`/`Heartbeat` 字段不变；V2 契约属于实验记录层，不新增 MQTT topic。
 
-## 8. 已知边界
+## 8. 云端落库与查询接口
+
+云端把 Run 与事件写入 `experiment_run` / `experiment_event`，响应字段保持本契约的 snake_case：
+
+| 方法 | 路径 | 说明 |
+|---|---|---|
+| GET | `/api/experiments/runs?page=&size=&deviceId=&status=&runId=` | 分页列表，返回 `{items,total,page,size}` |
+| GET | `/api/experiments/runs/{runId}` | Run 详情 |
+| GET | `/api/experiments/runs/{runId}/events` | 故障/决策事件时间线 |
+| GET | `/api/experiments/runs/{runId}/series?limit=800&downsample=false` | 按 Run 时间窗查询遥测曲线 |
+
+- Run 窗口：`started_at + simulation.duration_s`；曲线复用既有 `telemetry_data` 与降采样逻辑。
+- 列表额外返回 `device_id`/`updated_at_ms` 元数据，不属于冻结契约字段。
+- 迁移脚本：[`migrate-v8-experiment.sql`](migrate-v8-experiment.sql)。
+- 导入示例：`replay_trace_to_mqtt.py <trace.csv.gz> --summary summary.json --run-id <id> --started-at-ms <epoch_ms>`，先发 Run/事件，再按 Run 时间窗回放遥测。
+
+## 10. 实时边端（部分 Run）
+
+边端在无 ROS 2 模式下也会发布实时实验记录，字段沿用本契约，但**不是完整的 2.0.0 Run**：
+
+- 启动时发布一次部分 Run：`task.status=IN_PROGRESS`，`fault`/`decision` 为空，`trace.path=live://<run_id>`；退出时再发一次 `task.status=INCOMPLETE`。
+- `IN_PROGRESS`/`INCOMPLETE` 是实时存储状态，不在完成态 Run 的枚举内；因此实时 Run 不通过 `v2_run.schema.json` 校验，只有离线完成的 Run 才按 2.0.0 冻结。
+- 故障/决策事件仍使用 [`v2_experiment_event.schema.json`](../edge/edge_node/docs/contract/v2_experiment_event.schema.json)，并自动关联 `run_id`。
+- 边端上下文可用环境变量覆盖：`EDGE_RUN_ID`（为空则启动生成 32 位 hex）、`EDGE_SCENARIO_ID`、`EDGE_RUN_SPLIT`、`EDGE_RUN_SEED`、`EDGE_EXPERIMENT_STRATEGY`、`EDGE_ALGORITHM_VERSION`。
+- 前端把 `IN_PROGRESS`/`INCOMPLETE` 显示为「运行中」/「未完成」，不参与离线验收统计。
+
+## 9. 已知边界
 
 - `NO_FEASIBLE_PLAN` 只表示规划器搜索失败，不是不可达的数学证明。
 - 末端位姿仅记录，评分只用到末端位置误差。

@@ -5,6 +5,7 @@
 - Schema：
   - [`v2_run.schema.json`](v2_run.schema.json)
   - [`v2_trace_frame.schema.json`](v2_trace_frame.schema.json)
+  - [`v2_experiment_event.schema.json`](v2_experiment_event.schema.json)
 - 测试夹具：[`test/fixtures/v2_contract/`](../../test/fixtures/v2_contract/)
 - 自动化测试：[`test/test_v2_contract.py`](../../test/test_v2_contract.py)
 - 测试依赖：`jsonschema>=4.18`（见 `requirements-dev.txt`）
