@@ -243,10 +243,27 @@
 | GET | `/api/experiments/runs/{runId}/series?limit=800&downsample=false` | 按 Run 时间窗查询遥测曲线 |
 | GET | `/api/experiments/runs/{runId}/export?format=json\|csv` | 导出可追溯材料：JSON 含 Run+事件，CSV 为事件时间线 |
 
-- Run 窗口：`started_at + simulation.duration_s`；曲线复用既有 `telemetry_data` 与降采样逻辑。
 - 列表额外返回 `device_id`/`updated_at_ms` 元数据，不属于冻结契约字段。
 - 迁移脚本：[`migrate-v8-experiment.sql`](migrate-v8-experiment.sql)。
 - 导入示例：`replay_trace_to_mqtt.py <trace.csv.gz> --summary summary.json --run-id <id> --started-at-ms <epoch_ms>`，先发 Run/事件，再按 Run 时间窗回放遥测。
+
+### 8.1 曲线（`/series`）取数规则
+
+冻结口径如下，实现见 `TelemetrySeriesService`，实测证据见 `docs/v2-summary.md`：
+
+| 项 | 规则 |
+|---|---|
+| 时间窗 | `[started_at, started_at + simulation.duration_s]`，写入 `experiment_run.started_at` / `window_end_at`；`duration_s` 缺省 8.0、最小 0.1。窗尾不随实际运行时长缩短。 |
+| 取数源 | 窗内 `telemetry_data`（按 `reported_at`），复用设备遥测表；一次最多扫 `MAX_RAW_SCAN=20000` 原始帧，防区间过大拉爆内存。 |
+| `limit` | 默认 800，范围 `[1, 2000]`。`downsample=false` 时取窗内前 `limit` 帧；`downsample=true` 且原始帧数 `> limit` 时分桶。 |
+| `downsample` | 默认 `false`。`true` 时等时间分桶 + 桶内均值（仅 position/velocity/effort），输出为桶中点、带 `samples` 计数，语义是「该时段平均水平」，**不是原始采样点**；前端标 AVG 标签，不假装是原始帧。 |
+| `reported_at` | 来自遥测 payload 的 `timestamp`（Unix 毫秒）。回放工具必须填该字段，否则回落到入库时刻，曲线会落到窗外（曾导致空曲线，已修复）。 |
+
+**点数与窗长的差异说明（必须读懂）：**
+
+- 离线完成的 validation Run：轨迹 800 帧、100 Hz、`duration_s=8`，帧时间戳落在 `[0, 8]` s 窗内 → 默认 `/series` 返回 800 点、span 正好 8 s（实测：`first=00:00:00, last=00:00:08`）。
+- 实时/被中断的 Run（`IN_PROGRESS`/`INCOMPLETE`）：只在真实运行时长内发布遥测，窗尾仍按 `+8 s` 保留 → **点数可能 < 800、span 可能 < 8 s**，这是预期行为，不是数据丢失。例如一次被中断的演示 Run 返回 50 点。
+- 因此「轨迹 800 帧」与「曲线返回 N 点」不一定相等：曲线点数 = 窗内实际入库且未被 `limit` 截断/分桶的遥测帧数。验收统计以 Run 记录的 `task.status`/指标为准，曲线用于过程查看，不参与通过/失败判定。
 
 ## 10. 实时边端（部分 Run）
 

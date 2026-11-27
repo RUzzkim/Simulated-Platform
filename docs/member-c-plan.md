@@ -54,7 +54,7 @@
 | G-1 | 19 个提交已推送（PR 待开） | `origin/develop-C = d71a176` | 开 PR 并跟进 CI | PR 含全部提交 |
 | G-2 | ✅ 已补齐：72 条 validation Run 入库 | 见 4.4 | — | 72 条全部可查 |
 | G-3 | ✅ 已完成三方核对 | 见 4.4 | — | 72/72 一致 |
-| G-4 | 曲线点数与时间窗口径不明 | 轨迹 800 帧，曲线按遥测采样；`window_end` 固定 8 s | 书面说明差异与取数规则 | 写入契约 §9 |
+| G-4 | ✅ 已完成：曲线取数口径写入契约 §8.1 | 见 4.4 | — | `docs/v2-experiment-contract.md` §8.1 |
 | G-5 | ✅ 已完成：三策略对照结论（见 4.4） | 见 4.4；另发现 seed/onset 混淆，已提请 B 确认 | — | `docs/v2-strategy-comparison.md` |
 | G-6 | 系统指标缺失 | 无控制周期/丢包/稳定性数据 | 边端采集并汇总 | 报告含指标分布 |
 | G-7 | 组件级/UI 测试缺 | 仅 API 与服务层单测 | 补详情页与导出断言 | 用例可回归 |
@@ -73,10 +73,11 @@ C-01 Docker 链路、C-03 MQTT、C-04 `run_id` 贯通、C-05 事件贯通、C-06
 |---|---|---|
 | G-2 | ✅ 完成 | 72 条 validation Run 全部入库；off/v1/v2 各 24；曲线 72/72 均 800 点；重复导入 0 失败 |
 | G-3 | ✅ 完成 | `manifest ↔ DB ↔ trace.sha256` 全量比对：72/72 一致，缺失 0、哈希不符 0 |
+| G-4 | ✅ 完成 | 曲线取数口径写入契约 §8.1：窗 = `[started_at, +duration_s]`、limit 默认 800/上限 2000、downsample 分桶语义；实测 validation Run 默认 800 点 span 8s，`limit=200` 截断为 200 点 2s。说明实时/中断 Run 点数<800 为预期行为 |
 | G-5 | ✅ 完成 | 三策略对照：恢复率 off 45.8% → v1 79.2% → v2 87.5%；云端 51/18/3 与本地一致。**另发现 `fault_onset_s` 与 `seed` 完全混淆，已在 `docs/v2-strategy-comparison.md` §0 与请求单 §6 标注，请 B 确认** |
 | 修复 | 回放脚本 | 云端只订阅 `simulation/{id}/state`；遥测入库读 `timestamp`。脚本补 `timestamp` 字段并把默认主题改为 `/state` |
 
-剩余：G-1（推送已完成，PR 待开）、G-4、G-6、G-7、G-8、G-9；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）、C-17（报告定稿）。
+剩余：G-1（推送已完成，PR 待开）、G-6、G-7、G-8、G-9；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）、C-17（报告定稿）。
 
 ## 5. 阶段路线
 

@@ -69,6 +69,7 @@ MQTT(mTLS 8884) --> 云端(Spring Boot) --> MySQL(experiment_run / experiment_ev
 | 前端单测（Vitest） | 6 例通过（四个查询接口 + 两个导出） |
 | 前端构建 | `npm run build` 通过 |
 | 接口实测 | 导出 JSON 1806 B（`contract=2.0.0`、`INCOMPLETE`、`JOINT_LOCKED`、2 事件）；CSV 表头 + 2 行 |
+| 曲线取数 | validation Run `354fc1b7…` 默认 `/series` 返回 800 点、span `00:00:00→00:00:08`；`limit=200` 返回前 200 点（span 2 s）；`downsample=true` 因原始帧数未超 limit 仍 800 点 |
 | 浏览器 | 登录 → `/experiments` → 详情，两个导出按钮可见、无报错 |
 
 关键 `run_id`：
