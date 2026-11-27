@@ -1,5 +1,7 @@
 # gazebo_arm — 轻量实时仿真端（「端」层）
 
+> **V2.0 联调用法**：本目录暂保留。Docker 默认运行 `sim_arm.launch.py`，以无头模式启动轻量 Python 节点。`gazebo.launch.py` 对应 V1 的 Gazebo 物理仿真，相关场景、桥接及抓取脚本留作历史复现。见[V2.0 研发方案](../../docs/v2.0-development-proposal.md#3-范围边界)。
+
 「端—边—云」里的**端**:一个 ROS2 节点,实时仿真 6R 液压机械臂,产生关节状态、
 接收关节指令,供边端(`edge/edge_node`)对接。这是原先缺失的实时端的第一版
 (方案:轻量实时端——复用已验证的动力学 + DH 几何,不追 Gazebo 物理引擎)。
@@ -182,7 +184,7 @@ J2 卡滞后，该目标在当前搜索条件下应得到 `STOP / NO_FEASIBLE_PL
 
 离线闭环测试已覆盖默认初始姿态下的 J2 定位、恢复与停止。2026-11-26 在 Windows Docker Desktop 上使用独立 bridge 网络和宿主 MQTT broker，两个在线仿真案例均定位到 J2。恢复案例末端位置误差约 0.69 mm，停止案例最后一帧的最大关节速度约 0.00031 rad/s。运行命令和实测指标见[成员 B 任务恢复实验](../../docs/member-b-task-recovery.md#docker--ros-2-端边联调)。
 
-## Gazebo 物理仿真骨架（进行中，2026-09-26）
+## Gazebo 物理仿真骨架（V1 历史记录，2026-09-26）
 
 按项目书把「端」从轻量 RViz plant 升级到 Gazebo 物理仿真的**骨架**。当前状态：
 

@@ -144,10 +144,15 @@ def main(args=None):
             return
         last_logged_recovery_decision['value'] = decision
         logger.warning(
-            "[任务恢复] action=%s reason=%s 末端位置误差=%.4fm iterations=%d target=%s",
+            "[任务恢复] action=%s reason=%s 末端位置误差=%.4fm 几何误差下界=%s iterations=%d target=%s",
             decision.action,
             decision.reason,
             decision.position_error,
+            (
+                "未证明"
+                if decision.position_error_lower_bound is None
+                else f"{decision.position_error_lower_bound:.4f}m"
+            ),
             decision.iterations,
             [round(value, 4) for value in decision.target_q],
         )

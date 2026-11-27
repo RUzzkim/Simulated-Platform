@@ -8,7 +8,7 @@
     "kinematics.py": "9954497e037d70935af61794d73b9e9e5c3a4bc506c77cfbc78b3cf4d77eff3a",
     "recovery.py": "a5f3114fed7330cff081f86f7aceb89403ef14631537824d7c08303a653d6049",
     "run_task_recovery.py": "4853f8ab32632b1ef3ae85f3fd8d4d953810882cc2a29d920d996673e24e47d0",
-    "validate_reachability.py": "f4211919dc43793ea2e6d678c9e50a437809de4384f1195f44d1c368428e8a11",
+    "validate_reachability.py": "89847686fffc43cda877ae6dc24d98fa46643c0791fece88ce1f1de97850cfdc",
     "summary.json": "e9c345a932c3d55aea65c815278a1eb6c92eb4c7ca0ec5390d6fdcd27667198d"
   },
   "reachable_case": {
@@ -78,8 +78,8 @@
     "geometry": {
       "locked_j0_rad": -0.052781084,
       "tangential_target_m": -0.343765786,
-      "wrist_offset_bound_m": 0.2,
-      "minimum_position_error_m": 0.143765786,
+      "wrist_offset_bound_m": 0.1,
+      "minimum_position_error_m": 0.243765786,
       "position_tolerance_m": 0.05,
       "proven_unreachable": true
     },

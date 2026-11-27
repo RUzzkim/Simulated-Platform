@@ -152,6 +152,29 @@ def test_run_records_configured_lock_torque_threshold(tmp_path):
     assert result['lock_torque_threshold_nm'] == 8.5
 
 
+def test_run_records_j0_geometric_stop_reason_and_lower_bound(tmp_path):
+    from run_task_recovery import run_case
+    from scenarios import build_task_recovery_scenarios
+
+    scenario = next(
+        scenario for scenario in build_task_recovery_scenarios('validation')
+        if scenario.name == 'VALIDATION-LOCK-J0#s3T2'
+    )
+    result = run_case(scenario, 'v2', tmp_path)
+
+    assert result['action'] == 'STOP'
+    assert result['decision_reason'] == 'GEOMETRICALLY_UNREACHABLE'
+    assert abs(result['position_error_lower_bound_m'] - 0.051001394) < 1e-9
+
+    with gzip.open(tmp_path / result['trace'], 'rt', encoding='utf-8', newline='') as stream:
+        trace = list(csv.DictReader(stream))
+
+    stop_rows = [row for row in trace if row['action'] == 'STOP']
+    assert stop_rows
+    assert all(row['reason'] == 'GEOMETRICALLY_UNREACHABLE' for row in stop_rows)
+    assert all(abs(float(row['position_error_lower_bound_m']) - 0.051001394) < 1e-9 for row in stop_rows)
+
+
 def test_run_rejects_non_positive_lock_torque_threshold(tmp_path):
     import pytest
     from run_task_recovery import run_case

@@ -37,6 +37,7 @@ RECOVERY_MAX_ACCELERATION_RAD_S2 = 2.0
 TRACE_FIELDS = (
     'run_id', 'scenario', 'strategy', 'step', 'command_t_s', 't_s',
     'fault_active', 'event_type', 'event_joint', 'action', 'reason',
+    'position_error_lower_bound_m',
     *(f'cmd{i}' for i in range(6)), *(f'ref{i}' for i in range(6)),
     'ee_error_m', 'q0', 'q1', 'q2', 'q3', 'q4', 'q5',
     'qd0', 'qd1', 'qd2', 'qd3', 'qd4', 'qd5',
@@ -90,6 +91,12 @@ def score(sc, samples):
         'first_false_alarm_type': None if false_alarm is None else false_alarm['event_type'],
         'decision_s': next((r['command_t_s'] for r in samples if r['action']), None),
         'action': samples[-1]['action'] if samples else None,
+        'decision_reason': next(
+            (row.get('reason') for row in samples if row['action']), None
+        ),
+        'position_error_lower_bound_m': next(
+            (row.get('position_error_lower_bound_m') for row in samples if row['action']), None
+        ),
         'recovery_time_s': round(recovery_start + DWELL_S - sc.fault_onset, 4) if recovered else None,
         'peak_fault_joint_torque_nm': max((abs(r['tau'][sc.fault_joint]) for r in samples if r['fault_active']), default=None),
         'mean_fault_joint_torque_nm': round(fault_torque_mean, 6),
@@ -209,6 +216,10 @@ def run_case(sc, strategy, output_dir, sensor_torque_noise_sigma_nm=0.0, noise_s
                 lock_position = None
             action = ftc.last_recovery_decision.action if ftc and ftc.last_recovery_decision else None
             reason = ftc.last_recovery_decision.reason if ftc and ftc.last_recovery_decision else None
+            position_error_lower_bound = (
+                ftc.last_recovery_decision.position_error_lower_bound
+                if ftc and ftc.last_recovery_decision else None
+            )
             sample = {
                 'run_id': run_id, 'scenario': sc.name, 'strategy': strategy,
                 'step': k, 'command_t_s': command_time, 't_s': t,
@@ -216,6 +227,7 @@ def run_case(sc, strategy, output_dir, sensor_torque_noise_sigma_nm=0.0, noise_s
                 'event_type': event.fault_type if event else None,
                 'event_joint': event.joint_index if event else None,
                 'action': action, 'reason': reason,
+                'position_error_lower_bound_m': position_error_lower_bound,
                 'ee_error_m': _ee_dist(plant.q, sc.target),
                 'q': list(plant.q), 'qd': list(plant.qd), 'tau': list(plant.tau),
                 'state_q': state_q, 'state_qd': state_qd, 'state_tau': state_tau,

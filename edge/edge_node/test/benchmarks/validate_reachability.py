@@ -60,10 +60,14 @@ def locked_j0_error_lower_bound(target_position, locked_angle, wrist_offset_boun
 
 
 def j0_wrist_offset_bound(dh_params):
-    """Validate the radial-plane DH structure and bound distal offsets by length."""
+    """Bound out-of-plane reach with the final DH offset after the radial-plane links."""
     if len(dh_params) != 6 or any(len(row) != 4 for row in dh_params):
         raise ValueError("DH geometry must contain six standard DH rows")
-    expected_alpha = (math.pi / 2.0, 0.0, 0.0)
+    if abs(dh_params[0][0]) > 1e-12:
+        raise ValueError("base theta offset must be zero for the locked-J0 angle bound")
+    # d5 is along a radial-plane axis. Only the final d6 offset can add a
+    # component normal to that plane, so bound it by its own link length.
+    expected_alpha = (math.pi / 2.0, 0.0, 0.0, math.pi / 2.0)
     for index, expected in enumerate(expected_alpha):
         if not math.isclose(dh_params[index][3], expected, abs_tol=1e-12):
             raise ValueError("DH geometry no longer preserves the locked-J0 radial-plane")
@@ -71,11 +75,22 @@ def j0_wrist_offset_bound(dh_params):
         raise ValueError("pre-wrist DH offsets leave the locked-J0 radial-plane")
     if any(abs(dh_params[index][2]) > 1e-12 for index in (3, 4, 5)):
         raise ValueError("distal DH link lengths leave the locked-J0 radial-plane")
-    return sum(abs(dh_params[index][1]) for index in (4, 5))
+    return abs(dh_params[5][1])
+
+
+def _base_scenario(scenario):
+    scenario = scenario.removesuffix("#NOFAULT")
+    return scenario.split("#TQ", 1)[0]
 
 
 def _run(summary, scenario):
-    matches = [row for row in summary["runs"] if row["scenario"] == scenario and row["strategy"] == "v2"]
+    matches = [
+        row for row in summary["runs"]
+        if _base_scenario(row["scenario"]) == scenario
+        and row["strategy"] == "v2"
+        and row["fault_injected"]
+        and row.get("noise_seed", 42) == 42
+    ]
     if len(matches) != 1:
         raise ValueError(f"expected one V2 run for {scenario}, found {len(matches)}")
     return matches[0]
@@ -152,10 +167,12 @@ def build_certificate(summary_path):
 
     no_fault_controls = []
     for scenario in (REACHABLE_SCENARIO, UNREACHABLE_SCENARIO):
-        control_name = f"{scenario}#NOFAULT"
         controls = [
             row for row in summary["runs"]
-            if row["scenario"] == control_name and row["strategy"] in ("off", "v1", "v2")
+            if _base_scenario(row["scenario"]) == scenario
+            and not row["fault_injected"]
+            and row["strategy"] in ("off", "v1", "v2")
+            and row.get("noise_seed", 42) == 42
         ]
         if len(controls) != 3:
             raise ValueError(f"expected three matched no-fault strategies for {scenario}")
@@ -180,7 +197,12 @@ def build_certificate(summary_path):
         "source_sha256": hashes,
         "reachable_case": reachable,
         "unreachable_case": unreachable,
-        "strategy_runs": [row for row in summary["runs"] if row["scenario"] in (REACHABLE_SCENARIO, UNREACHABLE_SCENARIO)],
+        "strategy_runs": [
+            row for row in summary["runs"]
+            if row["fault_injected"]
+            and _base_scenario(row["scenario"]) in (REACHABLE_SCENARIO, UNREACHABLE_SCENARIO)
+            and row.get("noise_seed", 42) == 42
+        ],
         "no_fault_controls": no_fault_controls,
     }
 
@@ -201,13 +223,13 @@ def render_report(certificate):
         "# 成员 B · 卡滞后目标可达性验证\n\n"
         "本报告核查 J0 卡滞后目标能否在末端位置容差内到达。判据只覆盖末端位置，不评价姿态。\n\n"
         f"## 锁定约束下可达\n\n场景 `{reachable['scenario']}` 在 {reachable['fault_onset_s']:.2f} s 注入卡滞。V2 轨迹于 {reachable['witness_sample_time_s']:.2f} s 提供一组关节状态，J0 固定在 {reachable['locked_position_rad']:.9f} rad。正运动学末端误差为 {witness['position_error_m']:.6f} m，小于 {witness['position_tolerance_m']:.3f} m 见证容差，因此该关节向量证明目标在锁定约束下可达。闭环恢复耗时 {reachable['recovery_time_s']:.2f} s，最终误差 {reachable['final_position_error_m']:.6f} m。\n\n"
-        f"## 锁定约束下不可达\n\n场景 `{unreachable['scenario']}` 在 {unreachable['fault_onset_s']:.2f} s 注入卡滞，锁定角为 {unreachable['locked_position_rad']:.9f} rad。固定 J0 后，J1–J3 的连杆点位于由基座轴角度确定的径向平面内。DH 第 5、6 行的轴向偏距分别为 0.100 m，平面外位移上限为 {geometry['wrist_offset_bound_m']:.3f} m。目标的平面切向投影为 {geometry['tangential_target_m']:.6f} m，故任意关节配置的末端误差下界为 {geometry['minimum_position_error_m']:.6f} m，大于 {geometry['position_tolerance_m']:.3f} m 评分容差。该几何下界证明目标不可达。V2 输出 `{unreachable['action']}`，原因为 `{unreachable['reason']}`，并在 {unreachable['stop_time_s']:.2f} s 达到停稳评分。\n\n"
+        f"## 锁定约束下不可达\n\n场景 `{unreachable['scenario']}` 在 {unreachable['fault_onset_s']:.2f} s 注入卡滞，锁定角为 {unreachable['locked_position_rad']:.9f} rad。固定 J0 后，DH 前五个坐标系的原点位于由基座锁定角确定的径向平面内。第 5 行轴向偏距沿平面内轴线，仅第 6 行轴向偏距贡献平面外位移，上限为 {geometry['wrist_offset_bound_m']:.3f} m。目标的切向投影为 {geometry['tangential_target_m']:.6f} m，末端位置误差至少为投影绝对值减去这一上限，即 {geometry['minimum_position_error_m']:.6f} m，大于 {geometry['position_tolerance_m']:.3f} m 评分容差。V2 输出 `{unreachable['action']}`，原因为 `{unreachable['reason']}`，并在 {unreachable['stop_time_s']:.2f} s 达到停稳评分。\n\n"
         "## 三策略配对复跑\n\n" + "\n".join(table) + "\n\n"
         "两种故障目标各有同轨迹无故障对照，六条关闭容错、V1、V2 无故障运行均无误报。无故障对照 run_id 已记录在证书 JSON。使用默认 10.0 N·m 检测阈值、合成卡滞读数 12.5 N·m、100 Hz 控制周期。\n\n"
-        "## 适用范围\n\n可达结论是正运动学存在性证明。不可达结论是针对仓库通用 6R DH 模型和记录锁定角的几何下界。两个目标来自此前已用过的 validation 场景，本次只复核可达性和可复现性，不构成独立盲测或实体机械臂结论。不可达证明计入 DH 第 5、6 行偏距，位置判据不覆盖末端姿态。\n\n"
+        "## 适用范围\n\n可达结论是正运动学存在性证明。不可达结论是针对仓库通用 6R DH 模型和记录锁定角的几何下界。两个目标来自此前已用过的 validation 场景，本次只复核可达性和可复现性，不构成独立盲测或实体机械臂结论。不可达证明使用末端位置判据，没有评价末端姿态。\n\n"
         "复现命令：\n\n~~~powershell\n"
-        "py edge/edge_node/test/benchmarks/run_task_recovery.py --split validation --scenario 'VALIDATION-LOCK-J0#s1T1' 'VALIDATION-LOCK-J0#s1T2' --include-no-fault-controls --output-dir edge/edge_node/test/reports/task_recovery/member-b-reachability-check-r1 --json edge/edge_node/test/reports/task_recovery/member-b-reachability-check-r1/summary.json\n"
-        "py edge/edge_node/test/benchmarks/validate_reachability.py --summary edge/edge_node/test/reports/task_recovery/member-b-reachability-check-r1/summary.json\n"
+        "py edge/edge_node/test/benchmarks/run_task_recovery.py --split validation --scenario 'VALIDATION-LOCK-J0#s1T1' 'VALIDATION-LOCK-J0#s1T2' --include-no-fault-controls --output-dir edge/edge_node/test/reports/task_recovery/member-b-reachability-check-r2 --json edge/edge_node/test/reports/task_recovery/member-b-reachability-check-r2/summary.json\n"
+        "py edge/edge_node/test/benchmarks/validate_reachability.py --summary edge/edge_node/test/reports/task_recovery/member-b-reachability-check-r2/summary.json\n"
         "py -m pytest -q edge/edge_node/test/test_reachability_certificate.py\n~~~\n\n"
         f"本轮汇总 JSON SHA-256：`{certificate['source_sha256']['summary.json']}`。可达见证与不可达下界使用该哈希对应的复跑数据。\n\n"
         "逐次 run_id、可达关节见证、几何误差下界和 SHA-256 见相邻 JSON。\n"
@@ -216,9 +238,9 @@ def render_report(certificate):
 
 def main():
     parser = argparse.ArgumentParser(description="核验 J0 锁定后的末端位置目标可达性")
-    parser.add_argument("--summary", default="edge/edge_node/test/reports/task_recovery/member-b-reachability-check-r1/summary.json")
-    parser.add_argument("--json", default="docs/member-b-reachability-certificate-r1.json")
-    parser.add_argument("--report", default="docs/member-b-reachability-validation-r1.md")
+    parser.add_argument("--summary", default="edge/edge_node/test/reports/task_recovery/member-b-reachability-check-r2/summary.json")
+    parser.add_argument("--json", default="docs/member-b-reachability-certificate-r2.json")
+    parser.add_argument("--report", default="docs/member-b-reachability-validation-r2.md")
     args = parser.parse_args()
     certificate = build_certificate(args.summary)
     Path(args.json).write_text(json.dumps(certificate, ensure_ascii=False, indent=2), encoding="utf-8")
