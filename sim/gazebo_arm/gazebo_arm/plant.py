@@ -22,6 +22,17 @@ V_EPS = 0.01          # 库仑摩擦平滑尺度 (rad/s)
 V_S = 0.05            # Stribeck 特征速度 (rad/s)
 
 
+def parse_joint_positions(value: str) -> List[float]:
+    """解析 6 个逗号分隔的初始关节角（弧度）。"""
+    try:
+        positions = [float(item.strip()) for item in value.split(",")]
+    except (AttributeError, ValueError) as exc:
+        raise ValueError("initial joint positions must be six comma-separated numbers") from exc
+    if len(positions) != N or not all(math.isfinite(position) for position in positions):
+        raise ValueError("initial joint positions must contain six finite numbers")
+    return positions
+
+
 def _clamp(v: float, lo: float, hi: float) -> float:
     return lo if v < lo else hi if v > hi else v
 
@@ -36,6 +47,7 @@ class FaultInjector:
     - 传感器漂移：上报读数 = 真值 + drift_rate·t (+ 高斯噪声)，模拟高温粉尘下信号漂移。
     - 执行器磨损：实际出力打折 (gain<1) + 附加库仑摩擦，模拟磨损/卡涩导致的欠驱动。
     - 外部扰动：给动力学叠加外力矩，模拟工件重量波动/碰撞。
+    - 关节卡滞：从指定仿真时刻冻结一个关节的位置和速度，并报告合成反作用力矩读数。
     """
 
     def __init__(self):
@@ -47,7 +59,44 @@ class FaultInjector:
         self.actuator_extra_friction = [0.0] * N  # 附加库仑摩擦 (N·m)
         self.disturbance_enabled = False
         self.disturbance_torque = [0.0] * N    # 叠加到动力学的外力矩 (N·m)
+        self.joint_lock_enabled = False
+        self.joint_lock_index = 0
+        self.joint_lock_onset_s = 0.0
+        self.joint_lock_reaction_torque_nm = 12.5
+        self._joint_lock_clock_start_s: Optional[float] = 0.0
+        self._joint_lock_position: Optional[float] = None
         self._t = 0.0
+
+    def configure_joint_lock(
+        self, enabled: bool, joint_index: int = 0, onset_s: float = 0.0,
+        reaction_torque_nm: float = 12.5, *, after_first_command: bool = False,
+    ) -> None:
+        if not isinstance(joint_index, int) or isinstance(joint_index, bool) or not 0 <= joint_index < N:
+            raise ValueError(f"joint_index must be between 0 and {N - 1}")
+        if not math.isfinite(onset_s) or onset_s < 0.0:
+            raise ValueError("onset_s must be finite and non-negative")
+        if not math.isfinite(reaction_torque_nm) or reaction_torque_nm <= 0.0:
+            raise ValueError("reaction_torque_nm must be finite and positive")
+        self.joint_lock_enabled = bool(enabled)
+        self.joint_lock_index = joint_index
+        self.joint_lock_onset_s = float(onset_s)
+        self.joint_lock_reaction_torque_nm = float(reaction_torque_nm)
+        self._joint_lock_clock_start_s = None if after_first_command else 0.0
+        self._joint_lock_position = None
+
+    def arm_joint_lock(self) -> None:
+        if self.joint_lock_enabled and self._joint_lock_clock_start_s is None:
+            self._joint_lock_clock_start_s = self._t
+
+    def locked_joint_position(self, q: List[float], substep_offset_s: float) -> Optional[float]:
+        start = self._joint_lock_clock_start_s
+        if not self.joint_lock_enabled or start is None:
+            return None
+        if self._t + substep_offset_s + 1e-12 < start + self.joint_lock_onset_s:
+            return None
+        if self._joint_lock_position is None:
+            self._joint_lock_position = float(q[self.joint_lock_index])
+        return self._joint_lock_position
 
     def advance(self, dt: float) -> None:
         self._t += dt
@@ -64,21 +113,35 @@ class FaultInjector:
         return self.disturbance_torque[i] if self.disturbance_enabled else 0.0
 
     def sensor(self, q: List[float], qd: List[float], tau: List[float]):
-        """把真实状态转成「传感器读数」：叠加漂移+噪声（默认关时原样返回）。"""
-        if not self.sensor_drift_enabled:
-            return list(q), list(qd), list(tau)
-        out = []
-        for i, qi in enumerate(q):
-            val = qi + self.sensor_drift_rate[i] * self._t
-            if self.sensor_noise_std > 0.0:
-                val += random.gauss(0.0, self.sensor_noise_std)
-            out.append(val)
-        return out, list(qd), list(tau)
+        """把物理状态转成传感器读数，故障可修改位置或力矩读数。"""
+        positions, efforts = list(q), list(tau)
+        if self.sensor_drift_enabled:
+            for i in range(N):
+                positions[i] += self.sensor_drift_rate[i] * self._t
+                if self.sensor_noise_std > 0.0:
+                    positions[i] += random.gauss(0.0, self.sensor_noise_std)
+        if self._joint_lock_position is not None:
+            efforts[self.joint_lock_index] = self.joint_lock_reaction_torque_nm
+        return positions, list(qd), efforts
 
     @property
     def any_enabled(self) -> bool:
         return (self.sensor_drift_enabled or self.actuator_wear_enabled
-                or self.disturbance_enabled)
+                or self.disturbance_enabled or self.joint_lock_enabled)
+
+
+def configure_joint_lock(
+    faults: FaultInjector, enabled: bool, joint_number: int, onset_s: float,
+    reaction_torque_nm: float, *, after_first_command: bool = False,
+) -> None:
+    """按机械臂常用的 J1..J6 编号配置卡滞注入。"""
+    if not isinstance(joint_number, int) or isinstance(joint_number, bool) or not 1 <= joint_number <= N:
+        raise ValueError(f"joint_number must be between 1 and {N}")
+    faults.configure_joint_lock(
+        enabled=enabled, joint_index=joint_number - 1, onset_s=onset_s,
+        reaction_torque_nm=reaction_torque_nm,
+        after_first_command=after_first_command,
+    )
 
 
 
@@ -162,6 +225,8 @@ class RealtimePlant:
         if len(target) != N or not all(math.isfinite(float(x)) for x in target):
             raise ValueError(f"关节目标须为 {N} 个有限数")
         self._target = [float(x) for x in target]
+        if self._target != self.home:
+            self.faults.arm_joint_lock()
 
     def _mass_matrix(self) -> List[List[float]]:
         m = [[0.0] * N for _ in range(N)]
@@ -177,7 +242,15 @@ class RealtimePlant:
         """推进一个发布 tick（内部 SUB 个子步）。"""
         h = dt / self.SUB
         fi = self.faults
-        for _ in range(self.SUB):
+        for substep in range(self.SUB):
+            lock_index = None
+            lock_position = fi.locked_joint_position(
+                self.q, substep * h,
+            )
+            if lock_position is not None:
+                lock_index = fi.joint_lock_index
+                self.q[lock_index] = lock_position
+                self.qd[lock_index] = 0.0
             q_ref = self._ref.step(self._target, h)
             # 内环 PD + 可选重力前馈，限幅 -> 关节力矩（传感器读数）
             tau_net = [0.0] * N
@@ -200,14 +273,32 @@ class RealtimePlant:
                 c = self.coupling[k]
                 tau_net[k] -= c * math.sin(self.q[k] - self.q[k + 1]) * self.qd[k + 1] ** 2
                 tau_net[k + 1] += c * math.sin(self.q[k] - self.q[k + 1]) * self.qd[k] ** 2
-            qdd = _solve(self._mass_matrix(), tau_net)
+            mass_matrix = self._mass_matrix()
+            if lock_index is None:
+                qdd = _solve(mass_matrix, tau_net)
+            else:
+                free_indices = [index for index in range(N) if index != lock_index]
+                reduced_mass = [
+                    [mass_matrix[row][column] for column in free_indices]
+                    for row in free_indices
+                ]
+                reduced_tau = [tau_net[index] for index in free_indices]
+                free_acceleration = _solve(reduced_mass, reduced_tau)
+                qdd = [0.0] * N
+                for index, acceleration in zip(free_indices, free_acceleration):
+                    qdd[index] = acceleration
             for i in range(N):
+                if i == lock_index:
+                    continue
                 self.qd[i] = _clamp(self.qd[i] + qdd[i] * h, -self.v_limit, self.v_limit)
                 self.q[i] += self.qd[i] * h
-        fi.advance(dt)   # 漂移按 tick 累时
+        # 在发布边界生效时，保留积分至此刻的位置，直接上报锁定后的零速度。
+        if fi.locked_joint_position(self.q, dt) is not None:
+            self.qd[fi.joint_lock_index] = 0.0
+        fi.advance(dt)   # 漂移和故障时钟按 tick 累时
 
     def state(self):
-        # 输出「传感器读数」：正常时即真值，注入传感器漂移时叠加漂移/噪声
+        # 传感器读数与动力学中的力矩分开。
         return self.faults.sensor(self.q, self.qd, self.tau)
 
 

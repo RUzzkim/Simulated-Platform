@@ -13,6 +13,7 @@
 """
 from __future__ import annotations
 
+import math
 import re
 import time
 
@@ -21,7 +22,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64MultiArray
 
-from gazebo_arm.plant import RealtimePlant, N
+from gazebo_arm.plant import RealtimePlant, N, configure_joint_lock, parse_joint_positions
 from gazebo_arm.scenarios import SCENARIOS
 
 JOINT_NAMES = [f"joint_{i + 1}" for i in range(N)]
@@ -53,12 +54,24 @@ class PlantNode(Node):
         self.declare_parameter("fault_wear_gain", 0.6)        # J3 出力增益(<1)
         self.declare_parameter("fault_disturbance", False)
         self.declare_parameter("fault_disturbance_torque", 8.0)  # N·m，J2 外扰
+        self.declare_parameter("fault_joint_lock", False)
+        self.declare_parameter("fault_joint_lock_index", 2)       # 1..6，机械臂关节编号
+        self.declare_parameter("fault_joint_lock_onset_s", 5.0)  # 仿真启动后的秒数
+        self.declare_parameter("fault_joint_lock_after_first_command", False)
+        self.declare_parameter("fault_joint_lock_reaction_torque", 12.5)  # N·m，合成读数
+        self.declare_parameter(
+            "initial_joint_positions", ",".join(str(value) for value in HOME),
+        )
         sim_id = self.get_parameter("sim_id").value
         ros_id = _ros2_safe_id(sim_id)
         self.rate_hz = float(self.get_parameter("rate_hz").value)
+        if not math.isfinite(self.rate_hz) or self.rate_hz <= 0.0:
+            raise ValueError("rate_hz must be finite and positive")
         self.dt = 1.0 / self.rate_hz
 
-        self.plant = RealtimePlant(HOME)
+        initial_positions = parse_joint_positions(
+            self.get_parameter("initial_joint_positions").value)
+        self.plant = RealtimePlant(initial_positions)
         self._configure_faults()
         self.pub = self.create_publisher(JointState, f"/simulation/{ros_id}/joint_states", 10)
         self.sub = self.create_subscription(
@@ -106,6 +119,19 @@ class PlantNode(Node):
             fi.disturbance_enabled = True
             fi.disturbance_torque = [0.0, tq, 0.0, 0.0, 0.0, 0.0]          # J2 外扰
             active.append(f"外部扰动(J2 τ={tq}N·m)")
+        if bool(self.get_parameter("fault_joint_lock").value):
+            joint_number = self.get_parameter("fault_joint_lock_index").value
+            onset_s = float(self.get_parameter("fault_joint_lock_onset_s").value)
+            reaction_torque = float(
+                self.get_parameter("fault_joint_lock_reaction_torque").value)
+            after_first_command = self.get_parameter("fault_joint_lock_after_first_command").value
+            configure_joint_lock(
+                fi, True, joint_number, onset_s, reaction_torque,
+                after_first_command=after_first_command,
+            )
+            timing = "首条非初始姿态目标后" if after_first_command else "仿真启动后"
+            active.append(
+                f"关节卡滞(J{joint_number}, {timing} {onset_s}s, τ_read={reaction_torque}N·m)")
         if active:
             self.get_logger().warn("故障注入已启用：" + "；".join(active))
 

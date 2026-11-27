@@ -5,7 +5,7 @@
 ## 协作前先看
 
 1. 阅读 `docs/v2.0-development-proposal.md`，团队共同冻结实验阈值、场景、随机种子与接口字段。
-2. 按本机环境验证 Docker、ROS 2 仿真端和 Python 边缘节点。Gazebo 物理场景不是首阶段算法验证前提，现有 Python plant 可用于确定性实验。
+2. V2.0 使用 Python plant 做算法实验，端边联调可复用无头 ROS 2 仿真节点。Gazebo 物理引擎退出 V2.0 的部署、演示和验收流程，相关代码保留供历史复现。见[研发方案的范围边界](docs/v2.0-development-proposal.md#3-范围边界)。
 3. 实验使用唯一 `run_id`，保存算法版本、场景参数、随机种子、故障与决策时刻及原始时间序列。
 4. 根目录 `.gitignore` 已排除本地环境文件、部署证书/私钥和构建产物。仅提交 `.env.example`，不要提交真实凭据。
 5. 方案计划截止日期为 **2026 年 12 月 9 日**。成果数字须可追溯到仿真记录并注明仿真条件。
@@ -18,7 +18,7 @@
 
 | 层 | 在哪 | 干什么 |
 |---|---|---|
-| 端 | `sim/`（ROS 2 仿真端 + 液压臂数值孪生） | 实时仿真 6R 机械臂，产生关节状态、接收关节指令；含 Gazebo 物理世界、作业场景与故障注入 |
+| 端 | `sim/`（轻量 ROS 2 仿真端和历史仿真资产） | Python 节点仿真六轴关节运动、接收关节指令并注入故障，供端边联调 |
 | 边 | `edge/edge_node`（仓库里的 Python / ROS 2 边端） | 100Hz 实时处理：信号清洗、故障检测、容错控制 |
 | 云 | 就是这个仓库 | 设备管理、数据存储、历史查询、故障统计、指令与配置下发、账号与审计 |
 
@@ -111,13 +111,13 @@ platform/
 │   └── INTERFACE_ALIGNMENT.md  边端与云端接口对齐说明
 │
 ├── sim/                        端：仿真端（ROS 2 实时仿真 + 液压臂数值孪生）
-│   ├── gazebo_arm/             ROS 2「端」包（ament_python）
+│   ├── gazebo_arm/             轻量 ROS 2 仿真包，含 Gazebo 历史资产
 │   │   ├── gazebo_arm/         源码：plant（物理 plant + 故障注入）、plant_node、
 │   │   │                       scenarios（搬运/喷号/分拣作业）、gazebo_bridge（Gazebo↔边端）、
 │   │   │                       grasp_node（抓取）、gen_urdf（工业臂 URDF 生成）
 │   │   ├── urdf/               hydraulic_arm.urdf + gazebo_arm.gazebo.xacro（ros2_control）
 │   │   ├── worlds/             steel_yard.world（钢材车间物理世界）
-│   │   ├── launch/             sim_arm.launch.py（RViz 路径）、gazebo.launch.py（Gazebo 路径）
+│   │   ├── launch/             sim_arm.launch.py（Python 节点）、gazebo.launch.py（历史入口）
 │   │   ├── config/ rviz/ docs/ 控制器配置、RViz、WSL2 快速上手
 │   │   └── docker-compose.yml  端+边一键联调（ros:humble）
 │   └── hydraulic-arm/          液压臂数值孪生（控制器整定与阈值校核，仅仿真结论）
@@ -156,7 +156,7 @@ platform/
 - `docs/database-schema.sql`：建表语句，同目录 `migrate-v*.sql` 是增量迁移。
 - `docs/cloud-architecture.md`、`docs/dev-plan.md`：架构设计与开发计划，想了解为什么这么分层可以翻。
 - `edge/edge_node/docs/edge_cloud_integration.md`：边端那份联调文档。
-- `sim/gazebo_arm/README.md`：仿真端（ROS 2 / Gazebo）怎么起、怎么接边端、作业场景与故障注入、验证状态。
+- [轻量 ROS 2 仿真端说明](sim/gazebo_arm/README.md)：端边联调、故障注入与 Gazebo 历史记录。
 - `sim/hydraulic-arm/README.md`：液压臂数值孪生的建模、参数、控制器整定与边端阈值校核（仅仿真结论）。
 - `edge/edge_node/test/reports/comparison_report.md`：传统控制 vs 自适应 NN、容错 ON/OFF 的 48 组对比测试报告（含性能对比图与收敛曲线）。
 - `docs/V1-evidence-index.md`：V1.0 全部佐证材料的一页索引（对到计划书指标与附录清单）。

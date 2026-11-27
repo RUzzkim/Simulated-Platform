@@ -104,7 +104,7 @@
 - 云端需要的 `simulationId` / `robotId` / `status` 在 `JointState` 中**不存在**
 
 **边端当前处理（phase1）：**
-- `simulationId`：从 Topic 名 `/simulation/SIM-001/joint_states` 解析
+- `simulationId`：从 ROS 2 Topic 名 `/simulation/SIM_001/joint_states` 解析，并将 ROS 2 安全段 `SIM_001` 映射回设备标识 `SIM-001`
 - `robotId`：边端本地配置注入
 - `timestamp`：`header.stamp` 纳秒→毫秒
 - `status`：默认 `RUNNING`（无来源）

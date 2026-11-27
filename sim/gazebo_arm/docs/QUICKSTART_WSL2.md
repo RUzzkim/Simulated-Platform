@@ -111,7 +111,7 @@ ros2 topic pub --once /simulation/SIM_001/joint_command std_msgs/msg/Float64Mult
 | colcon 报缺 `robot_state_publisher` | `sudo apt install ros-humble-robot-state-publisher`(desktop 版已含) |
 | RViz 窗口不弹 | Win11 才有 WSLg;`wsl --update` 后重开;`echo $DISPLAY` 应非空 |
 | RViz 开了但**看不到臂** | RobotModel 的 Description Topic 设为 `/robot_description`;Fixed Frame 设 `base_link`(配置里已设好,若手改过就改回) |
-| 臂在但**不动** | 确认带了 `demo:=true`;`ros2 topic echo /simulation/SIM-001/joint_states --once` 看 position 是否在变 |
+| 臂在但**不动** | 确认带了 `demo:=true`;`ros2 topic echo /simulation/SIM_001/joint_states --once` 看 position 是否在变 |
 | 臂是一串圆柱、姿势怪 | 正常:URDF 几何用 DH 近似,只为看运动,不是精确外形 |
 | `ros2 topic list` 能看到话题但 `echo` 收不到数据（Docker 多容器） | 两容器没共享 `/dev/shm`,FastDDS 默认走共享内存传输、跨容器不通;`docker-compose.yml` 里两个服务都要 `ipc: host`（已配好） |
 

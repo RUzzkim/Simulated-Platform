@@ -1,5 +1,7 @@
 # gazebo_arm — 轻量实时仿真端（「端」层）
 
+> **V2.0 联调用法**：本目录暂保留。Docker 默认运行 `sim_arm.launch.py`，以无头模式启动轻量 Python 节点。`gazebo.launch.py` 对应 V1 的 Gazebo 物理仿真，相关场景、桥接及抓取脚本留作历史复现。见[V2.0 研发方案](../../docs/v2.0-development-proposal.md#3-范围边界)。
+
 「端—边—云」里的**端**:一个 ROS2 节点,实时仿真 6R 液压机械臂,产生关节状态、
 接收关节指令,供边端(`edge/edge_node`)对接。这是原先缺失的实时端的第一版
 (方案:轻量实时端——复用已验证的动力学 + DH 几何,不追 Gazebo 物理引擎)。
@@ -13,7 +15,7 @@
 | 端→边 | `/simulation/{sim_id}/joint_states` | `sensor_msgs/JointState` | position/velocity/effort[6] + stamp,100Hz |
 | 边→端 | `/simulation/{sim_id}/joint_command` | `std_msgs/Float64MultiArray` | 6 个目标关节角(rad) |
 
-关节名 `joint_1..joint_6`,`sim_id` 默认 `SIM-001`。
+关节名 `joint_1..joint_6`。设备 ID 默认 `SIM-001`，MQTT 主题沿用该 ID，ROS 2 话题段使用 `SIM_001`。
 
 ## 动力学与几何从哪来(复用,非新造)
 
@@ -35,13 +37,14 @@
 
 ### 方式一:Docker(推荐,不用手装 ROS2)
 
-在一台 Ubuntu(或 Windows 的 WSL2 Ubuntu)上装好 Docker 后,一条命令把**端+边**一起起:
+在一台 Ubuntu(或 Windows 的 WSL2 Ubuntu)上装好 Docker 后,确认 MQTT broker 已在该环境的 `localhost:1883` 监听。Compose 不会启动 broker。随后把**端+边**一起起:
 
 ```bash
 cd sim/gazebo_arm
-docker compose up --build          # 起 sim_end(端) + edge_node(边),host 网络 + 同 ROS_DOMAIN_ID
-# 验证端在发关节状态:
-docker exec -it sim_end bash -lc 'source /opt/ros/humble/setup.bash && ros2 topic echo /simulation/SIM-001/joint_states'
+docker compose up --build -d      # 后台启动 sim_end(端) + edge_node(边)
+docker logs -f edge_node          # 查看边端的故障定位和恢复决策
+# 在另一个终端验证端在发关节状态:
+docker exec -it sim_end bash -lc 'source /opt/ros/humble/setup.bash && ros2 topic echo /simulation/SIM_001/joint_states'
 ```
 
 只跑端(不带边):`docker build -t gazebo_arm:latest . && docker run --rm --network host -e EDGE_SIMULATION_ID=SIM-001 gazebo_arm:latest`。
@@ -150,7 +153,10 @@ wsl --import Ubuntu-22.04 E:\WSL\ubuntu-2204 <rootfs.tar.gz> --version 2
 **故障/扰动注入**（`plant.py` 的 `FaultInjector`，默认全关，逐关节可配，只改物理/读数不碰控制）：
 - `传感器漂移`：上报位置 = 真值 + 漂移速率·t + 噪声（高温粉尘信号漂移）；
 - `执行器磨损`：实际出力打折(gain<1) + 附加摩擦（欠驱动）；
-- `外部扰动`：动力学叠加外力矩（工件重量波动/碰撞）。
+- `外部扰动`：动力学叠加外力矩（工件重量波动/碰撞）；
+- `单关节卡滞`：到达指定仿真时间后冻结 J1..J6 中一个关节的位置和速度，其余关节继续运动。锁定轴 effort 报告可配置的合成反作用力矩读数，默认 12.5 N·m，用于触发现有边缘端卡滞检测阈值；它不是来自真实力传感器的测量。
+
+初始关节姿态可用 `initial_joint_positions` 配置，取 6 个逗号分隔的弧度值。默认保持原姿态 `[0, 0.35, -0.72, 0.20, 0, 0]`。卡滞关节编号使用 J1..J6，与状态数据中的 0..5 索引相差 1。
 
 用法（launch 参数）：
 ```bash
@@ -158,12 +164,27 @@ wsl --import Ubuntu-22.04 E:\WSL\ubuntu-2204 <rootfs.tar.gz> --version 2
 ros2 launch gazebo_arm sim_arm.launch.py rviz:=true scenario:=handling
 # 喷号场景 + 注入执行器磨损（喂边端容错 / 云端健康分析）
 ros2 launch gazebo_arm sim_arm.launch.py scenario:=marking fault_actuator_wear:=true
+# 从默认初始姿态开始，首次收到非初始目标 1 秒后注入 J2 卡滞
+ros2 launch gazebo_arm sim_arm.launch.py fault_joint_lock:=true fault_joint_lock_index:=2 fault_joint_lock_onset_s:=1.0 fault_joint_lock_after_first_command:=true
 # 也可单独细调：ros2 run gazebo_arm plant_node --ros-args -p fault_disturbance:=true -p fault_disturbance_torque:=10.0
 ```
-已本机验证：`python plant.py` 三类注入均生效且默认关时不影响正常收敛；native launch 跑
-`scenario:=handling` 关节按路点循环、叠加故障不崩。
+Docker 端边联调用法（在 `sim/gazebo_arm` 目录执行；Compose 默认启用 J2 卡滞、`pass_through` 控制和任务恢复。注入计时从边端首次下发运动目标后开始）：
+```powershell
+docker compose up --build -d
+```
+MQTT broker 必须已运行，并能从边端容器通过 `localhost:1883` 访问；Compose 不会启动 broker。启动后，在已有 broker 上下发恢复案例（关节角单位为弧度）：
+```bash
+mosquitto_pub -h localhost -t simulation/SIM-001/command -m '{"commandId":"CMD-FAULT-RECOVERY-001","simulationId":"SIM-001","robotId":"ROBOT-001","cmdType":"MOVE_JOINT","jointTarget":[0.2,-0.1,0.8,0.0,-0.2,0.0]}'
+```
+在另一个终端查看 `docker logs -f edge_node`，应看到 J2 的 `JOINT_LOCKED` 故障和 `RECOVER` 决策。STOP 搜索案例需与恢复案例分开运行，每次先执行 `docker compose down`，再重新执行 `docker compose up --build -d`，然后发送：
+```bash
+mosquitto_pub -h localhost -t simulation/SIM-001/command -m '{"commandId":"CMD-FAULT-STOP-001","simulationId":"SIM-001","robotId":"ROBOT-001","cmdType":"MOVE_JOINT","jointTarget":[-1.106891,-2.193779,0.948349,-2.686462,0.225453,-0.843902]}'
+```
+J2 卡滞后，该目标在当前搜索条件下应得到 `STOP / NO_FEASIBLE_PLAN`。这表示规划器未在其搜索范围内找到满足末端位置容差的方案，不构成数学上的不可达证明。结束后执行 `docker compose down`。
 
-## Gazebo 物理仿真骨架（进行中，2026-09-26）
+离线闭环测试已覆盖默认初始姿态下的 J2 定位、恢复与停止。2026-11-26 在 Windows Docker Desktop 上使用独立 bridge 网络和宿主 MQTT broker，两个在线仿真案例均定位到 J2。恢复案例末端位置误差约 0.69 mm，停止案例最后一帧的最大关节速度约 0.00031 rad/s。运行命令和实测指标见[成员 B 任务恢复实验](../../docs/member-b-task-recovery.md#docker--ros-2-端边联调)。
+
+## Gazebo 物理仿真骨架（V1 历史记录，2026-09-26）
 
 按项目书把「端」从轻量 RViz plant 升级到 Gazebo 物理仿真的**骨架**。当前状态：
 

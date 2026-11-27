@@ -16,6 +16,12 @@ services:
     environment:
       EDGE_SIMULATION_ID: "SIM-001"
       ROS_DOMAIN_ID: "0"
+      SIM_FAULT_JOINT_LOCK: "${SIM_FAULT_JOINT_LOCK:-true}"
+      SIM_FAULT_JOINT_LOCK_INDEX: "${SIM_FAULT_JOINT_LOCK_INDEX:-2}"
+      SIM_FAULT_JOINT_LOCK_ONSET_S: "${SIM_FAULT_JOINT_LOCK_ONSET_S:-1.0}"
+      SIM_FAULT_JOINT_LOCK_AFTER_FIRST_COMMAND: "${SIM_FAULT_JOINT_LOCK_AFTER_FIRST_COMMAND:-true}"
+      SIM_FAULT_JOINT_LOCK_REACTION_TORQUE: "${SIM_FAULT_JOINT_LOCK_REACTION_TORQUE:-12.5}"
+      SIM_INITIAL_JOINT_POSITIONS: "${SIM_INITIAL_JOINT_POSITIONS:-0.0,0.35,-0.72,0.2,0.0,0.0}"
     restart: unless-stopped
     logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
 
@@ -30,8 +36,9 @@ services:
       EDGE_SIMULATION_ID: "SIM-001"
       EDGE_ROBOT_ID: "ROBOT-001"
       MQTT_BROKER_URL: "tcp://localhost:1883"   # 可选：改成云端 broker 才上云
-      CONTROL_MODE: "adaptive_nn"
+      CONTROL_MODE: "${CONTROL_MODE:-pass_through}"
       FAULT_DETECTION_ENABLED: "true"
+      TASK_RECOVERY_ENABLED: "${TASK_RECOVERY_ENABLED:-true}"
       ROS_DOMAIN_ID: "0"
     restart: unless-stopped
     logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }

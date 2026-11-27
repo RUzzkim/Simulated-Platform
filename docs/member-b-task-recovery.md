@@ -6,7 +6,7 @@
 
 ## 在仓库根目录复现
 
-Python 3.11 可以直接运行本实验。每次执行生成一份 summary.json，每个 run_id 对应一份 800 帧的压缩 CSV。V2 的恢复指令使用 1.0 rad/s 速度上限、2.0 rad/s² 加速度上限，控制周期与 100 Hz 仿真一致。边缘节点从 `fault_tolerance` YAML 配置读取这两个上限。
+Python 3.11 可以直接运行本实验。离线基准使用通用六轴 DH 参数和 Python plant。每次执行生成一份 summary.json，每个 run_id 对应一份 800 帧的压缩 CSV。V2 的恢复指令使用 1.0 rad/s 速度上限、2.0 rad/s² 加速度上限，控制周期与 100 Hz 仿真一致。边缘节点从 `fault_tolerance` YAML 配置读取这两个上限。见[实验运动学参数](../edge/edge_node/edge_node/fault/kinematics.py)。
 
 ~~~powershell
 python edge/edge_node/test/benchmarks/run_task_recovery.py --output-dir edge/edge_node/test/reports/task_recovery/my-run
@@ -32,7 +32,7 @@ python edge/edge_node/test/benchmarks/run_task_recovery.py --split exploratory -
 
 4 个故障关节 × 3 个注入时刻 × 2 个点到点任务，共 24 个场景。开发集在 0.30、0.45、0.60 秒注入，冻结验证集在 0.40、0.80、1.20 秒注入。每个场景用同一六轴 Python plant 和位置伺服，容错关闭、V1、V2 三种策略各运行一次。每次仿真 8 秒，步长 0.01 秒。关节编号从 0 起。
 
-检测器确认卡滞后，V2 固定故障关节，以原任务终点的三维位置为目标，对健康关节做带限位的阻尼最小二乘搜索。先从当前关节位置搜索，必要时从满足锁定约束的原任务关节目标再试一次。规划位置误差容差为 0.02 m。搜索失败时记录 NO_FEASIBLE_PLAN，根据关节速度估算制动目标并锁存停止决策。目标的几何可达性需独立标注。
+检测器确认卡滞后，V2 固定故障关节，以原任务终点的三维位置为目标，对健康关节做带限位的阻尼最小二乘搜索。先从当前关节位置搜索，必要时从满足锁定约束的原任务关节目标再试一次。规划位置误差容差为 0.02 m。对满足当前 DH 几何证明前提的 J0 锁定工况，规划器先计算末端位置误差下界，若严格大于 0.050 m 评分容差，则记录 `GEOMETRICALLY_UNREACHABLE` 并按关节速度生成制动目标；其他工况继续数值搜索。搜索失败记录 `NO_FEASIBLE_PLAN`，该数值搜索结果本身不证明几何不可达。
 
 | 当前仿真评分判据 | 计算方法 |
 |---|---|
@@ -79,7 +79,46 @@ validation 场景在本轮运行前冻结，三策略配对结果如下。由于
 
 - A 可回放 `LOCK-J1#s1T1` 的肩关节恢复。0.30 s 注入，0.54 s 作出恢复决策，末帧误差 0.011438 m。该运行达到健康关节速度上限，按本说明冻结的裕度判据不能计作成功。基座停止用 `LOCK-J0#s1T1`，0.66 s 下发停止目标，0.11 s 后进入停稳速度范围。
 - C 可按 run_id 关联汇总与 CSV。command_t_s 对应采样与下发时刻，t_s 对应积分后的实测时刻。ref0…5 是轨迹参考，cmd0…5 是实际指令，q、qd、tau 是位置、速度和力矩。action 记录决策，recovered 和 safe_stopped 记录评分结果。
-- 边缘配置通过 TASK_RECOVERY_ENABLED=true 启用，离线脚本按策略选择控制器。显式 STOP 在 ROS 2 路径发布当前位置目标，在 MQTT 路径发布 STOP 消息并让仿真端退出安全伺服。2026-11-25 已将 `test_status_e2e.py` 改为 pytest 集成测试。真实 MQTT broker 转发指令和仿真原始状态，生产 `MqttClient` 与 `StateProcessor` 完成处理，独立 MQTT 客户端断言 STOPPED、ERROR、RUNNING 三种接收状态以及时间戳、关节数据和设备标识。每轮使用独立的 `test/status-e2e/<uuid>/...` 主题，等待订阅确认后发消息。云端应用消费者和 Docker、ROS 2 联合演示仍待验证。
+- 边缘配置通过 TASK_RECOVERY_ENABLED=true 启用，离线脚本按策略选择控制器。显式 STOP 在 ROS 2 路径发布当前位置目标，在 MQTT 路径发布 STOP 消息并让仿真端退出安全伺服。2026-11-25 已将 `test_status_e2e.py` 改为 pytest 集成测试。真实 MQTT broker 转发指令和仿真原始状态，生产 `MqttClient` 与 `StateProcessor` 完成处理，独立 MQTT 客户端断言 STOPPED、ERROR、RUNNING 三种接收状态以及时间戳、关节数据和设备标识。每轮使用独立的 `test/status-e2e/<uuid>/...` 主题，等待订阅确认后发消息。云端应用消费者仍待验证。
+
+## Docker / ROS 2 端边联调
+
+本节复现使用轻量 Python 仿真节点。`gazebo_arm:latest` 沿用 ROS 2 包名，容器实际运行 `sim_arm.launch.py`，发布关节状态、接收关节指令并注入卡滞。见[容器启动入口](../sim/gazebo_arm/docker-entrypoint.sh)。
+
+2026-11-26 在 Windows Docker Desktop 上经现有 Mosquitto 发送 `MOVE_JOINT`，边端通过 ROS 2 驱动轻量仿真节点，并将滤波后的关节状态和故障信息发回 MQTT。两组各运行一次，使用同一初始姿态 `[0, 0.35, -0.72, 0.2, 0, 0]` rad 和 `pass_through` 控制。首条非初始姿态目标发出后，仿真在 1 s 时锁定肩关节 J2，合成力矩读数为 12.5 N·m。MQTT 设备 ID 为 `SIM-987`，ROS 2 话题使用 `SIM_987`。遥测中的 `jointIndex=1` 对应机械臂的 J2。
+
+| 案例 | 边端决策 | 首次故障距指令前最后一帧 | 末帧位置误差 | 末帧最大关节速度 |
+|---|---|---:|---:|---:|
+| 恢复目标 | `RECOVER / TARGET_REACHED` | 1.31 s | 0.690 mm | 0.000199 rad/s |
+| 停止目标 | `STOP / NO_FEASIBLE_PLAN` | 1.32 s | 588.193 mm | 0.000305 rad/s |
+
+每组采集约 9 s，共 89 帧。位置误差由末帧关节角的正运动学结果计算。在线规划器的位置容差为 20 mm，离线闭环回归测试用 5 mm 容差。STOP 日志中的 48.8 mm 是规划搜索得到的最佳残差，表中的 588.193 mm 是执行制动目标后距原任务目标的误差。
+
+在 PowerShell 中从仓库根目录复现。启动现有本机 broker 后，在容器内通过 `host.docker.internal:1883` 连接 Windows broker。确保测试编号 `SIM-987` 与网络、容器名称可用。
+
+~~~powershell
+docker compose -f sim/gazebo_arm/docker-compose.yml build
+docker network create codex-arm-validation
+docker run -d --name codex-arm-sim --network codex-arm-validation --ipc host -e ROS_DOMAIN_ID=43 -e EDGE_SIMULATION_ID=SIM-987 gazebo_arm:latest
+docker run -d --name codex-arm-edge --network codex-arm-validation --ipc host -e ROS_DOMAIN_ID=43 -e EDGE_SIMULATION_ID=SIM-987 -e EDGE_ROBOT_ID=ROBOT-987 -e MQTT_CLIENT_ID=edge-node-SIM-987 -e CONTROL_MODE=pass_through -e TASK_RECOVERY_ENABLED=true -e MQTT_BROKER_URL=tcp://host.docker.internal:1883 edge_node:latest
+~~~
+
+待边端显示 MQTT 已连接，并在 `simulation/SIM-987/state` 看到初始姿态后，通过 MQTT 客户端向 `simulation/SIM-987/command` 发送以下任一消息。跑第二组前执行 `docker stop codex-arm-edge codex-arm-sim`，再执行 `docker start codex-arm-sim codex-arm-edge`，并重新确认初始姿态。
+
+~~~json
+{"commandId":"CMD-ARM-RECOVER","simulationId":"SIM-987","robotId":"ROBOT-987","cmdType":"MOVE_JOINT","jointTarget":[0.2,-0.1,0.8,0.0,-0.2,0.0]}
+~~~
+
+~~~json
+{"commandId":"CMD-ARM-STOP","simulationId":"SIM-987","robotId":"ROBOT-987","cmdType":"MOVE_JOINT","jointTarget":[-1.106891,-2.193779,0.948349,-2.686462,0.225453,-0.843902]}
+~~~
+
+~~~powershell
+docker logs codex-arm-edge 2>&1 | Select-String 'action=|CMD-ARM-'
+docker stop codex-arm-edge codex-arm-sim
+docker rm codex-arm-edge codex-arm-sim
+docker network rm codex-arm-validation
+~~~
 
 ## 合成卡滞力矩读数敏感性实验
 
@@ -113,3 +152,13 @@ py -m pytest -q edge/edge_node/test
 随后将 `edge_config.yaml` 中在线启用的 `RobotSignalFilter` 加入离线任务恢复基准，滤波状态同时送入检测器和控制器。相同探索矩阵下 V1/V2 检出 112/144，漏检 32 次，无故障误报 0/144；9 N·m、σ=3 N·m 检出 15/16，但平均延迟仍为 1.865 s。由于滤波改变闭环状态与轨迹，该组结果单独记录，不把计数变化归因为检测器改进。复现方法与完整分档结果见 [在线滤波噪声敏感性记录](member-b-sensor-noise-online-filter-r1.md) 和 [逐次结果数据](member-b-sensor-noise-online-filter-r1.json)。
 
 基准脚本现支持 `--lock-torque-threshold` 记录候选检测阈值，默认仍为 10.0 N·m。8.5 N·m 在线滤波复核在 validation 的 24 个故障场景中实现 24/24 故障确认，V2 为 21/24 恢复、3/24 安全停稳。该结果与早期阈值探针一致，但验证集没有无故障对照，8.5 N·m 只作为候选配置，不替换默认值。详见 [8.5 N·m 阈值复核记录](member-b-validation-threshold85-r1.md) 和 [逐次结果数据](member-b-validation-threshold85-r1.json)。
+
+随后在同一 validation 条件下，对 8.5 与 10.0 N·m 两个阈值各加入 24 条匹配无故障轨迹，并启用在线滤波，每档共 144 次仿真。两档均为 V1、V2 故障检出 24/24、匹配对照误报 0/24、平均确认延迟 251.667 ms，恢复与停稳结果逐场景相同。该结果只适用于本轮 12.5 N·m 合成读数与既有场景，不能代表阈值附近或其他正常负载下的误报表现。默认仍为 10.0 N·m。详见 [配对阈值复核报告](member-b-validation-threshold-paired-r1.md)、[8.5 N·m 逐次数据](member-b-validation-threshold-paired-r1-8p5.json) 和 [10.0 N·m 逐次数据](member-b-validation-threshold-paired-r1-10p0.json)。
+
+2026-11-26 完成阈值与传感器噪声敏感性矩阵，比较 8.5、10.0 N·m 两档检测阈值，8/9/10/11 N·m 合成卡滞读数及 0/1.5/3 N·m 高斯读数噪声。每阈值 288 个故障条件及 72 条按噪声匹配的无故障对照，三策略共 1,080 次运行，两阈值合计 2,160 次。8.5 N·m 的 V1/V2 检出 264/288，10.0 N·m 检出 154/288，两者各自 72 条无故障对照均未记录误报。8 N·m 无噪声时两个阈值都未检出。该矩阵使用单一随机种子和曾用于实验的 validation 场景，不能作为独立盲测或通用误报率。默认阈值仍为 10.0 N·m。详见 [阈值与噪声敏感性报告](member-b-validation-threshold-sensitivity-r1.md) 和 [逐次结果数据目录](member-b-validation-threshold-sensitivity-r1/)。
+
+针对“卡滞后任务目标在当前约束下是否可达”，2026-11-26 对 J0 基座回转轴的 `VALIDATION-LOCK-J0#s1T1` 与 `VALIDATION-LOCK-J0#s1T2` 两个目标重新运行关闭容错、V1、V2 三策略，并为每个目标配对无故障对照。T1 从 V2 卡滞轨迹提取到一组 J0 固定在 0.028222729 rad 的关节状态，正运动学末端位置误差 0.016435 m，低于 0.020 m 存在性见证容差；闭环 V2 恢复耗时 2.87 s。T2 的实测 J0 锁定角为 -0.052781084 rad，目标切向投影绝对值为 0.343766 m。按当前 DH 坐标系，前一个 0.100 m 偏距沿锁定轴的径向平面，只有最后一个 0.100 m 偏距贡献平面外位移，因此任何关节配置的末端位置误差至少为 0.243766 m，大于 0.050 m 评分容差。该几何下界独立证明 T2 在 J0 锁定后不可达；更新后的 V2 输出 `STOP / GEOMETRICALLY_UNREACHABLE` 并在 0.16 s 达到停稳判据。三个策略的配对无故障对照均无误报。最新复跑数据、关节见证和误差下界见 [r2 可达性验证报告](member-b-reachability-validation-r2.md) 与 [机器可读证书](member-b-reachability-certificate-r2.json)，判据脚本为 [validate_reachability.py](../edge/edge_node/test/benchmarks/validate_reachability.py)。本轮目标源自此前已用过的 validation 集，结果是模型内可达性复核，不是独立盲测或实体机械臂验证。r1 证书保留此前数值搜索决策作为历史记录。
+
+2026-11-26 对 J2 肩关节（模型 `joint_2`、遥测 `jointIndex=1`）两个恢复目标，以及 J0 基座回转轴（模型 `joint_1`、遥测 `jointIndex=0`）的可达/几何不可达目标，各使用三个力矩噪声种子重复 V2 任务恢复并配对 off/V1/V2 对照，共 72 次 Python plant 仿真。V2 在 J2 两目标各 3/3 恢复；J0 可达目标 3/3 恢复，几何不可达目标 3/3 安全停稳。相应 V1、V2 无故障对照均无误报。详细逐次评分、run_id、源码和压缩轨迹校验值，以及供 A 回放的四条 V2 轨迹见 [成员 B 重复工况验证报告](member-b-repeat-validation-r1.md) 和 [机器可读清单](experiments/member-b-repeat-validation-r1/manifest.json)。以上为模型内离线复跑，未新增 Docker/MQTT 在线结果。
+
+随后将同一在线滤波和 σ=1.5 N·m 故障关节力矩读数噪声条件扩展到四个执行器卡滞位置，J0 基座、肩 J2、肘 J3 和腕 J4，各覆盖两个任务目标、三个故障注入时刻和三个固定噪声种子。每场景比较 off、V1、V2，并配对三策略无故障对照，共 216 次故障仿真和 216 次对照。V2 总体 72 次检出中 63 次达到恢复评分、9 次安全停稳，配对无故障对照误报 0/72。J2、J3、J4 各为 18/18 恢复；J0 原始恢复评分为 9/18、停稳 9/18。复核发现 J0 三条 T2 任务目标在对应锁定角下的末端位置误差下界均超过 50 mm 评分容差，9/9 条 V2 运行检测后安全停稳。按目标类别看，T1 可达目标恢复为 9/9，T2 不可达目标安全停稳为 9/9。J0 s3T2 下界为 51.001 mm，较评分容差高 1.001 mm，因此结论对通用 DH 模型几何误差敏感。原始 432 次验证中这 9 个 J0 停止决策为 `NO_FEASIBLE_PLAN`；在将经证明的几何误差下界接入规划器后，复跑的 9 个 J0 停止决策均为 `GEOMETRICALLY_UNREACHABLE`，同时保留了 9/18 的原始恢复评分。逐关节与规划器数据、可复核的 432 次逐次 SHA-256 清单和六条 A 可直接回放的压缩轨迹见 [J0、J2–J4 几何判定复跑报告 r2](member-b-all-joints-repeat-validation-r2.md) 与 [机器可读清单](experiments/member-b-all-joints-noise-geometry-guard-r2/manifest.json)。清单由 [汇总与完整性核验脚本](../edge/edge_node/test/benchmarks/summarize_all_joints_repeat.py) 从原始本地忽略轨迹生成。本轮仍是模型内重复运行，不是独立盲测或实体机械臂验证，且未新增 Docker、ROS 2、MQTT 在线结果。
