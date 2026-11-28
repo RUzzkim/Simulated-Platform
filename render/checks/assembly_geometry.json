@@ -1,0 +1,83 @@
+{
+  "source_samples": 2450,
+  "interfaces": {
+    "base_swivel": {
+      "joint": 1,
+      "min_rad": -0.6848302960309678,
+      "max_rad": 0.7997059382943796,
+      "sample_count": 25,
+      "intersections": []
+    },
+    "shoulder": {
+      "joint": 2,
+      "min_rad": 0.35,
+      "max_rad": 0.9078892683209836,
+      "sample_count": 25,
+      "intersections": []
+    },
+    "elbow": {
+      "joint": 3,
+      "min_rad": -1.1978330675965618,
+      "max_rad": -0.5002536921913815,
+      "sample_count": 25,
+      "intersections": []
+    },
+    "wrist_roll": {
+      "joint": 4,
+      "min_rad": 0.2,
+      "max_rad": 0.5963785075363832,
+      "sample_count": 25,
+      "intersections": []
+    },
+    "wrist_pitch": {
+      "joint": 5,
+      "min_rad": -0.0002341038930205214,
+      "max_rad": 0.2997286686563752,
+      "sample_count": 25,
+      "intersections": []
+    },
+    "tool_flange": {
+      "joint": 6,
+      "min_rad": -3.007696547871453e-07,
+      "max_rad": 0.1997351153857481,
+      "sample_count": 25,
+      "intersections": []
+    }
+  },
+  "render_poses": {
+    "home": {
+      "position_error_m": 7.598131170262075e-08,
+      "rotation_max_component_error": 7.549790470519408e-08,
+      "gripper": {
+        "coaxial_opposed_faces": true,
+        "mesh_overlap": false,
+        "open_gap_mm": 155.59997409582138,
+        "minimum_rail_clearance_mm": 0.3999881446361542,
+        "pad_thickness_mm": 13.999998569488525
+      }
+    },
+    "elbow_bent": {
+      "position_error_m": 1.6049041769309353e-07,
+      "rotation_max_component_error": 1.0126314009539783e-07,
+      "gripper": {
+        "coaxial_opposed_faces": true,
+        "mesh_overlap": false,
+        "open_gap_mm": 155.5999591946602,
+        "minimum_rail_clearance_mm": 0.39999932050704956,
+        "pad_thickness_mm": 13.999998569488525
+      }
+    },
+    "shoulder_lock": {
+      "position_error_m": 5.960464477539063e-08,
+      "rotation_max_component_error": 1.1920928955078125e-07,
+      "gripper": {
+        "coaxial_opposed_faces": true,
+        "mesh_overlap": false,
+        "open_gap_mm": 155.60002624988556,
+        "minimum_rail_clearance_mm": 0.39999186992645264,
+        "pad_thickness_mm": 13.999998569488525
+      }
+    }
+  },
+  "jaw_origin_span_m": 0.21199999004602432
+}

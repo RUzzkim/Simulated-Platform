@@ -1,0 +1,17 @@
+[
+  {
+    "clip": "normal_cycle",
+    "frame": 16,
+    "decoded_vs_rendered_ssim": 0.996518
+  },
+  {
+    "clip": "normal_cycle",
+    "frame": 85,
+    "decoded_vs_rendered_ssim": 0.997407
+  },
+  {
+    "clip": "normal_cycle",
+    "frame": 270,
+    "decoded_vs_rendered_ssim": 0.998461
+  }
+]

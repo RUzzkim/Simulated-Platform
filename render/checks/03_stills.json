@@ -1,0 +1,59 @@
+{
+  "home": {
+    "source": "member-a-delivery/handling-no-fault.csv",
+    "tick": 1,
+    "time": 0.01,
+    "angles": [
+      0.0,
+      0.35,
+      -0.72,
+      0.2,
+      0.0,
+      0.0
+    ],
+    "position_error_m": 7.598131170262075e-08,
+    "rotation_max_component_error": 7.549790470519408e-08,
+    "joint_3_degrees": -41.25296124941927,
+    "image": "render/outputs/frames/pose_home.png",
+    "samples": 128,
+    "seconds": 1.8546800999993138
+  },
+  "elbow_bent": {
+    "source": "member-a-delivery/handling-no-fault.csv",
+    "tick": 766,
+    "time": 7.66,
+    "angles": [
+      -0.5920615579804348,
+      0.9078892683209836,
+      -1.1978330675965618,
+      0.5963785075363832,
+      6.565052591950079e-05,
+      -2.3987696964937073e-07
+    ],
+    "position_error_m": 1.6049041769309353e-07,
+    "rotation_max_component_error": 1.0126314009539783e-07,
+    "joint_3_degrees": -68.63077933449163,
+    "image": "render/outputs/frames/pose_elbow_bent.png",
+    "samples": 128,
+    "seconds": 1.8834546999987651
+  },
+  "shoulder_lock": {
+    "source": "member-a-delivery/runs/point-to-point-shoulder-lock-25d80a6e39bb485ba11daa0624be0b68/states.csv",
+    "tick": 150,
+    "time": 1.5,
+    "angles": [
+      0.6675064562853874,
+      0.35131841120386753,
+      -0.5421604726981353,
+      0.3609290979638148,
+      0.24537187004869848,
+      0.16090894532874006
+    ],
+    "position_error_m": 5.960464477539063e-08,
+    "rotation_max_component_error": 1.1920928955078125e-07,
+    "joint_3_degrees": -31.063506904420848,
+    "image": "render/outputs/frames/pose_shoulder_lock.png",
+    "samples": 128,
+    "seconds": 1.5759698000001663
+  }
+}

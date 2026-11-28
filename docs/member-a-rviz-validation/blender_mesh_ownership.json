@@ -1,0 +1,487 @@
+{
+  "source": "render\\checks\\product_final_v2.blend",
+  "sha256": "e5f6070c7dbdd1e3128434c662bac202d58313d56ef80ba01ee4acf9e1f1e5b4",
+  "component_count": 58,
+  "unassigned": [
+    "Seamless studio floor"
+  ],
+  "bbox_roundtrip_mm": {
+    "base_link": 0.0,
+    "link_2": 7.450580596923828e-06,
+    "link_3": 5.9604644775390625e-05,
+    "gripper_base": 1.4901161193847656e-05,
+    "link_1": 3.725290298461914e-05,
+    "link_5": 7.450580596923828e-06,
+    "link_4": 3.725290298461914e-06,
+    "finger_left": 3.725290298461914e-06,
+    "finger_right": 7.450580596923828e-06,
+    "link_6": 3.725290298461914e-06
+  },
+  "joint_origin_and_axis_changes": 0,
+  "components": [
+    {
+      "name": "Anchor socket floor 1",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Anchor socket floor 2",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Anchor socket floor 3",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Anchor socket floor 4",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Anchor washer 1",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Anchor washer 2",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Anchor washer 3",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Anchor washer 4",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Elbow fixed cheek +1",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Elbow fixed cheek -1",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Elbow fixed shaft",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Elbow rotating bearing housing",
+      "link": "link_3",
+      "source_link": "link_3",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 768
+    },
+    {
+      "name": "Elbow shaft end +1",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Elbow shaft end -1",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Enclosed gripper drive",
+      "link": "gripper_base",
+      "source_link": "gripper_base",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 640
+    },
+    {
+      "name": "Fixed swivel dust seal",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Forearm clear of fixed elbow cheeks",
+      "link": "link_3",
+      "source_link": "link_3",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 2048
+    },
+    {
+      "name": "Guide cover fastener +0.014/+0.065",
+      "link": "gripper_base",
+      "source_link": "gripper_base",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Guide cover fastener +0.014/-0.065",
+      "link": "gripper_base",
+      "source_link": "gripper_base",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Guide cover fastener -0.014/+0.065",
+      "link": "gripper_base",
+      "source_link": "gripper_base",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Guide cover fastener -0.014/-0.065",
+      "link": "gripper_base",
+      "source_link": "gripper_base",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Linear jaw guide +1",
+      "link": "gripper_base",
+      "source_link": "gripper_base",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Linear jaw guide -1",
+      "link": "gripper_base",
+      "source_link": "gripper_base",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Recessed anchor head 1",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 48
+    },
+    {
+      "name": "Recessed anchor head 2",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 48
+    },
+    {
+      "name": "Recessed anchor head 3",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 48
+    },
+    {
+      "name": "Recessed anchor head 4",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 48
+    },
+    {
+      "name": "Shoulder pin",
+      "link": "link_1",
+      "source_link": "link_1",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Shoulder rotating bearing housing",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Upper arm with elbow fork seat",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 896
+    },
+    {
+      "name": "Wrist output casing",
+      "link": "link_5",
+      "source_link": "link_5",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Wrist pitch pin",
+      "link": "link_4",
+      "source_link": "link_4",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Wrist pitch pin cap +1",
+      "link": "link_4",
+      "source_link": "link_4",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Wrist pitch pin cap -1",
+      "link": "link_4",
+      "source_link": "link_4",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Wrist pitch rotating bearing",
+      "link": "link_5",
+      "source_link": "joint_5_axis",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 768
+    },
+    {
+      "name": "Wrist roll fixed collar",
+      "link": "link_3",
+      "source_link": "link_3",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Wrist roll pin",
+      "link": "link_3",
+      "source_link": "link_3",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Wrist yoke cheek +1",
+      "link": "link_4",
+      "source_link": "link_4",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Wrist yoke cheek -1",
+      "link": "link_4",
+      "source_link": "link_4",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "Wrist yoke rear flange",
+      "link": "link_4",
+      "source_link": "link_4",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 768
+    },
+    {
+      "name": "base_link · 00 pedestal_foot",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "base_link · 01 pedestal",
+      "link": "base_link",
+      "source_link": "base_link",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "finger_left machined jaw",
+      "link": "finger_left",
+      "source_link": "finger_left",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 768
+    },
+    {
+      "name": "finger_left · 02 graphite_block",
+      "link": "finger_left",
+      "source_link": "finger_left",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "finger_right machined jaw",
+      "link": "finger_right",
+      "source_link": "finger_right",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 768
+    },
+    {
+      "name": "finger_right · 02 graphite_block",
+      "link": "finger_right",
+      "source_link": "finger_right",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_1 · 00 steel_disc",
+      "link": "link_1",
+      "source_link": "link_1",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_1 · 01 graphite_disc",
+      "link": "link_1",
+      "source_link": "link_1",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_1 · 02 shoulder_cheek",
+      "link": "link_1",
+      "source_link": "link_1",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 896
+    },
+    {
+      "name": "link_1 · 03 graphite_disc",
+      "link": "link_1",
+      "source_link": "link_1",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_1 · 04 shoulder_cheek",
+      "link": "link_1",
+      "source_link": "link_1",
+      "finish": "cast",
+      "modifiers": [],
+      "triangles": 896
+    },
+    {
+      "name": "link_1 · 05 graphite_disc",
+      "link": "link_1",
+      "source_link": "link_1",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_2 · 02 service_cover",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "cover",
+      "modifiers": [],
+      "triangles": 768
+    },
+    {
+      "name": "link_2 · 03 line_cover",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_2 · 04 graphite_disc",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_2 · 05 graphite_disc",
+      "link": "link_2",
+      "source_link": "link_2",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_6 · 00 steel_disc",
+      "link": "link_6",
+      "source_link": "link_6",
+      "finish": "steel",
+      "modifiers": [],
+      "triangles": 512
+    },
+    {
+      "name": "link_6 · 01 graphite_disc",
+      "link": "link_6",
+      "source_link": "link_6",
+      "finish": "graphite",
+      "modifiers": [],
+      "triangles": 512
+    }
+  ]
+}

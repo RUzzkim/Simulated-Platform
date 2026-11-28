@@ -1,0 +1,28 @@
+{
+  "run_id": "point-to-point-normal-12f62a7531804e2a8d426ee8642f732c",
+  "scenario": "point-to-point-normal",
+  "step_s": 0.01,
+  "steps": 800,
+  "initial_position_rad": [
+    0.0,
+    0.35,
+    -0.72,
+    0.2,
+    0.0,
+    0.0
+  ],
+  "target_position_rad": [
+    0.8,
+    0.6,
+    -0.5,
+    0.4,
+    0.3,
+    0.2
+  ],
+  "reference_max_velocity_rad_s": 0.6,
+  "lock_joint": null,
+  "lock_tick": null,
+  "end_effector_frame": "link_6",
+  "pose_reference_frame": "base_link",
+  "urdf_sha256": "39491545a43433c6d976825a0fb9a1e1937f461a03417e1b133d72b47fe10000"
+}

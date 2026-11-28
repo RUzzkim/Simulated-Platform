@@ -1,0 +1,406 @@
+[
+  {
+    "round": 1,
+    "stage": "hdri",
+    "image": "product_home_01_hdri.png",
+    "comparison": "product_compare_01_hdri.png",
+    "parameters": {
+      "hdri": "studio_small_09_4k.hdr",
+      "strength": 0.8,
+      "heading_deg": 35,
+      "floor_gray": 0.038,
+      "samples": 128
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "render": {
+      "mean_luma": 167.3942108738296,
+      "highlight_pct": 0.1294262775789197,
+      "subject_mean_luma": 174.35602728936485,
+      "background_mean_luma": 166.1736074205241,
+      "contrast_luma": 8.182419868840753
+    },
+    "histogram_deviation_pct": 9.814278843046448,
+    "histogram_pass": false
+  },
+  {
+    "round": 2,
+    "stage": "hdri",
+    "image": "product_home_02_hdri.png",
+    "comparison": "product_compare_02_hdri.png",
+    "parameters": {
+      "hdri": "studio_small_09_4k.hdr",
+      "strength": 0.8,
+      "heading_deg": 35,
+      "floor_gray": 0.012,
+      "samples": 128
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "render": {
+      "mean_luma": 151.29578196323484,
+      "highlight_pct": 0.13043742037250503,
+      "subject_mean_luma": 174.199072012472,
+      "background_mean_luma": 147.28018700101018,
+      "contrast_luma": 26.91888501146181
+    },
+    "histogram_deviation_pct": 3.6893666241193612,
+    "histogram_pass": true
+  },
+  {
+    "round": 3,
+    "stage": "metal",
+    "image": "product_home_03_metal.png",
+    "comparison": "product_compare_03_metal.png",
+    "parameters": {
+      "hdri": "studio_small_09_4k.hdr",
+      "strength": 0.8,
+      "heading_deg": 35,
+      "floor_gray": 0.012,
+      "samples": 128,
+      "metallic_roughness_anisotropic": {
+        "cast": [
+          0.9,
+          0.3,
+          0.4
+        ],
+        "graphite": [
+          0.85,
+          0.45,
+          0.28
+        ],
+        "steel": [
+          1,
+          0.2,
+          0.35
+        ],
+        "cover": [
+          0.85,
+          0.39,
+          0.36
+        ],
+        "rubber": [
+          0,
+          0.7,
+          0
+        ]
+      }
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "render": {
+      "mean_luma": 150.30261059070963,
+      "highlight_pct": 0.6238751036421363,
+      "subject_mean_luma": 167.5854251711284,
+      "background_mean_luma": 147.27196123028654,
+      "contrast_luma": 20.31346394084187
+    },
+    "histogram_deviation_pct": 3.567966044635413,
+    "histogram_pass": true
+  },
+  {
+    "round": 4,
+    "stage": "ao",
+    "image": "product_home_04_ao.png",
+    "comparison": "product_compare_04_ao.png",
+    "parameters": {
+      "hdri": "studio_small_09_4k.hdr",
+      "strength": 0.8,
+      "heading_deg": 35,
+      "floor_gray": 0.012,
+      "samples": 128,
+      "metallic_roughness_anisotropic": {
+        "cast": [
+          0.9,
+          0.3,
+          0.4
+        ],
+        "graphite": [
+          0.85,
+          0.45,
+          0.28
+        ],
+        "steel": [
+          1,
+          0.2,
+          0.35
+        ],
+        "cover": [
+          0.85,
+          0.39,
+          0.36
+        ],
+        "rubber": [
+          0,
+          0.7,
+          0
+        ]
+      },
+      "ao_mix": 0.5
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "render": {
+      "mean_luma": 150.03428819187445,
+      "highlight_pct": 0.6208416752613805,
+      "subject_mean_luma": 165.93688561165706,
+      "background_mean_luma": 147.24566852144562,
+      "contrast_luma": 18.69121709021144
+    },
+    "histogram_deviation_pct": 3.5038992441806758,
+    "histogram_pass": true
+  },
+  {
+    "round": 5,
+    "stage": "micro",
+    "image": "product_home_05_micro.png",
+    "comparison": "product_compare_05_micro.png",
+    "parameters": {
+      "hdri": "studio_small_09_4k.hdr",
+      "strength": 0.8,
+      "heading_deg": 35,
+      "floor_gray": 0.012,
+      "samples": 128,
+      "metallic_roughness_anisotropic": {
+        "cast": [
+          0.9,
+          0.3,
+          0.4
+        ],
+        "graphite": [
+          0.85,
+          0.45,
+          0.28
+        ],
+        "steel": [
+          1,
+          0.2,
+          0.35
+        ],
+        "cover": [
+          0.85,
+          0.39,
+          0.36
+        ],
+        "rubber": [
+          0,
+          0.7,
+          0
+        ]
+      },
+      "ao_mix": 0.5,
+      "micro_noise_scale": 115
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "render": {
+      "mean_luma": 150.0342676858986,
+      "highlight_pct": 0.622863960848551,
+      "subject_mean_luma": 165.93283750593017,
+      "background_mean_luma": 147.24635428021347,
+      "contrast_luma": 18.6864832257167
+    },
+    "histogram_deviation_pct": 3.5034670302022413,
+    "histogram_pass": true
+  },
+  {
+    "round": 6,
+    "stage": "micro",
+    "image": "product_home_06_micro.png",
+    "comparison": "product_compare_06_micro.png",
+    "parameters": {
+      "hdri": "studio_small_09_4k.hdr",
+      "strength": 0.75,
+      "heading_deg": 102.0,
+      "floor_gray": 0.012,
+      "samples": 128,
+      "metallic_roughness_anisotropic": {
+        "cast": [
+          0.9,
+          0.3,
+          0.4
+        ],
+        "graphite": [
+          0.85,
+          0.45,
+          0.28
+        ],
+        "steel": [
+          1,
+          0.2,
+          0.35
+        ],
+        "cover": [
+          0.85,
+          0.39,
+          0.36
+        ],
+        "rubber": [
+          0,
+          0.7,
+          0
+        ]
+      },
+      "ao_mix": 0.5,
+      "micro_noise_scale": 115
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "render": {
+      "mean_luma": 147.5933081922789,
+      "highlight_pct": 0.6198305324677951,
+      "subject_mean_luma": 157.804911239154,
+      "background_mean_luma": 145.80306779882585,
+      "contrast_luma": 12.001843440328145
+    },
+    "histogram_deviation_pct": 3.1596824456490924,
+    "histogram_pass": true
+  },
+  {
+    "round": 7,
+    "stage": "micro",
+    "image": "product_home_07_micro.png",
+    "comparison": "product_compare_07_micro.png",
+    "parameters": {
+      "hdri": "studio_small_09_4k.hdr",
+      "strength": 0.8,
+      "heading_deg": 218.0,
+      "floor_gray": 0.012,
+      "samples": 128,
+      "metallic_roughness_anisotropic": {
+        "cast": [
+          0.9,
+          0.3,
+          0.4
+        ],
+        "graphite": [
+          0.85,
+          0.45,
+          0.28
+        ],
+        "steel": [
+          1,
+          0.2,
+          0.35
+        ],
+        "cover": [
+          0.85,
+          0.39,
+          0.36
+        ],
+        "rubber": [
+          0,
+          0.7,
+          0
+        ]
+      },
+      "ao_mix": 0.5,
+      "micro_noise_scale": 115
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "render": {
+      "mean_luma": 145.2238000546017,
+      "highlight_pct": 0.6178082468806245,
+      "subject_mean_luma": 153.1992620661605,
+      "background_mean_luma": 143.82558723884677,
+      "contrast_luma": 9.373674827313721
+    },
+    "histogram_deviation_pct": 2.5758922145573635,
+    "histogram_pass": true
+  },
+  {
+    "round": 8,
+    "stage": "micro",
+    "image": "product_home_08_micro.png",
+    "comparison": "product_compare_08_micro.png",
+    "parameters": {
+      "hdri": "studio_small_09_4k.hdr",
+      "strength": 0.8,
+      "heading_deg": 218.0,
+      "floor_gray": 0.012,
+      "backdrop_mix": 0.42,
+      "samples": 128,
+      "metallic_roughness_anisotropic": {
+        "cast": [
+          0.9,
+          0.3,
+          0.4
+        ],
+        "graphite": [
+          0.85,
+          0.45,
+          0.28
+        ],
+        "steel": [
+          1,
+          0.2,
+          0.35
+        ],
+        "cover": [
+          0.85,
+          0.39,
+          0.36
+        ],
+        "rubber": [
+          0,
+          0.7,
+          0
+        ]
+      },
+      "ao_mix": 0.5,
+      "micro_noise_scale": 115
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "render": {
+      "mean_luma": 136.33533113713116,
+      "highlight_pct": 0.6198305324677951,
+      "subject_mean_luma": 153.1373014913232,
+      "background_mean_luma": 133.38970488436766,
+      "contrast_luma": 19.74759660695554
+    },
+    "histogram_deviation_pct": 3.985564053120288,
+    "histogram_pass": true
+  }
+]

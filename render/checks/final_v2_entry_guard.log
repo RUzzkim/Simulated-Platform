@@ -1,0 +1,14 @@
+Blender 4.5.5 LTS (hash 836beaaf597a built 2025-11-18 01:33:26)
+Traceback (most recent call last):
+Read blend: "C:\Users\hj\orca\projects\Simulated-Platform\render\checks\product_final.blend"
+  File "C:\Users\hj\orca\projects\Simulated-Platform\render\render_stills.py", line 70, in <module>
+    main()
+  File "C:\Users\hj\orca\projects\Simulated-Platform\render\render_stills.py", line 41, in main
+    require_final_scene(scene)
+  File "C:\Users\hj\orca\projects\Simulated-Platform\render\setup_scene.py", line 214, in require_final_scene
+    raise ValueError(f"Production rendering requires the finalized scene at {FINAL_SCENE}")
+ValueError: Production rendering requires the finalized scene at C:\Users\hj\orca\projects\Simulated-Platform\render\checks\product_final_v2.blend
+
+Error: script failed, file: 'render/render_stills.py', exiting.
+
+Blender quit

@@ -1,0 +1,243 @@
+[
+  {
+    "round": 1,
+    "view": "home",
+    "image": "home.png",
+    "parameters": {
+      "cast_roughness": 0.49,
+      "world_strength_scale": 1.1,
+      "floor_gray": 0.059,
+      "pad_thickness_scale": 3.5
+    },
+    "render": {
+      "mean_luma": 177.36513351331678,
+      "highlight_pct": 0.19515055916196486,
+      "subject_mean_luma": 174.65590351792858,
+      "background_mean_luma": 177.84013820904391,
+      "contrast_luma": -3.1842346911153356
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": true
+  },
+  {
+    "round": 1,
+    "view": "tool",
+    "image": "tool.png",
+    "parameters": {
+      "cast_roughness": 0.49,
+      "world_strength_scale": 1.1,
+      "floor_gray": 0.059,
+      "pad_thickness_scale": 3.5
+    },
+    "render": {
+      "mean_luma": 144.27762085178668,
+      "highlight_pct": 0.022245141458876825,
+      "subject_mean_luma": 142.660820840992,
+      "background_mean_luma": 145.17751695286063,
+      "contrast_luma": -2.51669611186864
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": true
+  },
+  {
+    "round": 1,
+    "view": "reference_pose",
+    "image": "reference_diagnostic.png",
+    "parameters": {},
+    "render": {
+      "mean_luma": 159.77856045420535,
+      "highlight_pct": 0.828125947946369,
+      "subject_mean_luma": 183.82691247379853,
+      "background_mean_luma": 151.09409316671025,
+      "contrast_luma": 32.73281930708828
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": false
+  },
+  {
+    "round": 2,
+    "view": "home",
+    "image": "home.png",
+    "parameters": {
+      "cast_roughness": 0.49,
+      "world_strength_scale": 1.1,
+      "floor_gray": 0.059,
+      "floor_roughness": 0.54,
+      "cast_color_scale": 0.92,
+      "pad_thickness_scale": 3.5
+    },
+    "render": {
+      "mean_luma": 174.6100900908006,
+      "highlight_pct": 0.14964913345062592,
+      "subject_mean_luma": 172.39744344584517,
+      "background_mean_luma": 174.99806057710592,
+      "contrast_luma": -2.600617131260748
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": true
+  },
+  {
+    "round": 2,
+    "view": "tool",
+    "image": "tool.png",
+    "parameters": {
+      "cast_roughness": 0.49,
+      "world_strength_scale": 1.1,
+      "floor_gray": 0.059,
+      "floor_roughness": 0.54,
+      "cast_color_scale": 0.92,
+      "pad_thickness_scale": 3.5
+    },
+    "render": {
+      "mean_luma": 143.5091291714696,
+      "highlight_pct": 0.021233998665291513,
+      "subject_mean_luma": 140.72473772587168,
+      "background_mean_luma": 145.05889598803807,
+      "contrast_luma": -4.334158262166397
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": true
+  },
+  {
+    "round": 2,
+    "view": "reference_pose",
+    "image": "reference_pose.png",
+    "parameters": {
+      "cast_roughness": 0.49,
+      "world_strength_scale": 1.1,
+      "floor_gray": 0.059,
+      "floor_roughness": 0.54,
+      "cast_color_scale": 0.92,
+      "pad_thickness_scale": 3.5
+    },
+    "render": {
+      "mean_luma": 164.4528873162248,
+      "highlight_pct": 0.46714797063641333,
+      "subject_mean_luma": 181.7610339202683,
+      "background_mean_luma": 158.20280266721718,
+      "contrast_luma": 23.558231253051105
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": false
+  },
+  {
+    "round": 3,
+    "view": "home",
+    "image": "home.png",
+    "parameters": {
+      "cast_roughness": 0.49,
+      "world_strength_scale": 1.1,
+      "floor_gray": 0.08,
+      "floor_roughness": 0.54,
+      "cast_color_scale": 0.865,
+      "pad_thickness_scale": 3.5
+    },
+    "render": {
+      "mean_luma": 180.86088412303587,
+      "highlight_pct": 0.1294262775789197,
+      "subject_mean_luma": 170.81028576657178,
+      "background_mean_luma": 182.62317885767257,
+      "contrast_luma": -11.81289309110079
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": true
+  },
+  {
+    "round": 3,
+    "view": "tool",
+    "image": "tool.png",
+    "parameters": {
+      "cast_roughness": 0.49,
+      "world_strength_scale": 1.1,
+      "floor_gray": 0.08,
+      "floor_roughness": 0.54,
+      "cast_color_scale": 0.865,
+      "pad_thickness_scale": 3.5
+    },
+    "render": {
+      "mean_luma": 143.26476298004005,
+      "highlight_pct": 0.021233998665291513,
+      "subject_mean_luma": 139.4381319910641,
+      "background_mean_luma": 145.3946307956245,
+      "contrast_luma": -5.956498804560397
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": true
+  },
+  {
+    "round": 3,
+    "view": "reference_pose",
+    "image": "reference_pose.png",
+    "parameters": {
+      "cast_roughness": 0.49,
+      "world_strength_scale": 1.1,
+      "floor_gray": 0.08,
+      "floor_roughness": 0.54,
+      "cast_color_scale": 0.865,
+      "pad_thickness_scale": 3.5
+    },
+    "render": {
+      "mean_luma": 170.7585321866974,
+      "highlight_pct": 0.1385265627211875,
+      "subject_mean_luma": 180.27061468861956,
+      "background_mean_luma": 167.32365714285714,
+      "contrast_luma": 12.946957545762416
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068
+    },
+    "contrast_pass": true
+  }
+]

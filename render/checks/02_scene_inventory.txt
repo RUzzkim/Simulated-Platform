@@ -1,0 +1,6 @@
+FINISHES [(('cast', 'Silver cast housing'), 7), (('cover', 'Graphite service cover'), 1), (('graphite', 'Gunmetal joints and rails'), 19), (('rubber', 'Grip pad rubber'), 2), (('steel', 'Bright steel'), 11)]
+CAMERAS [('HOME proof camera', 'PERSP'), ('Overview 45°', 'ORTHO'), ('Elbow close-up', 'PERSP'), ('Tool close-up', 'PERSP')]
+Blender 4.5.5 LTS (hash 836beaaf597a built 2025-11-18 01:33:26)
+Read blend: "C:\Users\hj\orca\projects\Simulated-Platform\render\checks\studio.blend"
+
+Blender quit

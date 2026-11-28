@@ -1,0 +1,97 @@
+{
+  "cycles_backend": "CUDA",
+  "devices": [
+    "NVIDIA GeForce RTX 5060 Ti"
+  ],
+  "samples": 128,
+  "adaptive_threshold": 0.07500000298023224,
+  "gpu_denoising": true,
+  "hdri_size": [
+    4096,
+    2048
+  ],
+  "hdri_strength": 0.800000011920929,
+  "metal_finishes": {
+    "graphite": [
+      {
+        "name": "Satin gunmetal joints and rails",
+        "metallic_roughness_anisotropic": [
+          0.8500000238418579,
+          0.44999998807907104,
+          0.2800000011920929
+        ],
+        "contact_ao_samples": 3,
+        "roughness_textured": true
+      },
+      {
+        "name": "Turned graphite \u00b7 concentric finish",
+        "metallic_roughness_anisotropic": [
+          0.8500000238418579,
+          0.44999998807907104,
+          0.2800000011920929
+        ],
+        "contact_ao_samples": 3,
+        "roughness_textured": true
+      }
+    ],
+    "cast": [
+      {
+        "name": "Satin silver housing",
+        "metallic_roughness_anisotropic": [
+          0.8999999761581421,
+          0.30000001192092896,
+          0.4000000059604645
+        ],
+        "contact_ao_samples": 3,
+        "roughness_textured": true
+      }
+    ],
+    "steel": [
+      {
+        "name": "Turned steel \u00b7 concentric finish",
+        "metallic_roughness_anisotropic": [
+          1.0,
+          0.20000000298023224,
+          0.3499999940395355
+        ],
+        "contact_ao_samples": 3,
+        "roughness_textured": false
+      },
+      {
+        "name": "Machined steel",
+        "metallic_roughness_anisotropic": [
+          1.0,
+          0.20000000298023224,
+          0.3499999940395355
+        ],
+        "contact_ao_samples": 3,
+        "roughness_textured": false
+      }
+    ],
+    "cover": [
+      {
+        "name": "Graphite service cover",
+        "metallic_roughness_anisotropic": [
+          0.8500000238418579,
+          0.38999998569488525,
+          0.36000001430511475
+        ],
+        "contact_ao_samples": 3,
+        "roughness_textured": true
+      }
+    ],
+    "rubber": [
+      {
+        "name": "Grip pad rubber",
+        "metallic_roughness_anisotropic": [
+          0.0,
+          0.699999988079071,
+          0.0
+        ],
+        "contact_ao_samples": 0,
+        "roughness_textured": false
+      }
+    ]
+  },
+  "geometry_objects": 62
+}

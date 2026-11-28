@@ -1,0 +1,20 @@
+{
+  "device": [
+    "NVIDIA GeForce RTX 5060 Ti"
+  ],
+  "samples": 128,
+  "world": "studio_small_09_4k.hdr",
+  "strength": 0.95,
+  "hdri_gamma": 1.12,
+  "cast_roughness": 0.25,
+  "overview": "Overview 45\u00b0",
+  "detail": "Tool close-up",
+  "pad_thickness_mm": 14,
+  "hdr_toggle_evidence": {
+    "mean_absolute_luma_change_in_arm": 0.8756271964722234,
+    "v2_arm_p90_minus_p10": 38.14039999999997,
+    "without_hdri_p90_minus_p10": 41.06819999999996,
+    "reference_arm_p90_minus_p10": 25.28480000000002,
+    "note": "Each ROI covers a visible metal arm surface. View and part shape differ between the source and reference."
+  }
+}

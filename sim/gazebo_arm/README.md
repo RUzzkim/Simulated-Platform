@@ -63,6 +63,34 @@ python3 gazebo_arm/gen_urdf.py
 启动后:plant 节点发 `joint_states`、收 `joint_command`;`robot_state_publisher`
 把状态转 TF 供 RViz 显示。边端以 ROS2 模式起来即可与之闭环。
 
+## 单关节卡滞记录与回放
+
+离线场景位于 `scenarios/`，包括 `handling`、`lock` 和 `elbow_grasp`。记录器以 `--scenario` 选择 YAML，无参数时列出场景。启动、录制和回放命令见 [成员 A 仿真端运行手册](../../docs/member-a-数字孪生仿真端.md#4-运行手册)。
+
+每次运行打印输出目录，其中 `states.csv` 包含六轴状态和末端位姿。末端坐标为 `link_6` 相对于 `base_link` 的位置和固定轴 RPY，单位为米和弧度。卡滞事件在 `events.csv` 中记录为 `joint_2` 在 0.30 秒锁定。
+
+在已用 colcon 构建此包并加载工作区的 ROS 2 环境中，将 `replay_csv` 指向实际 CSV 的绝对路径。
+
+```bash
+ros2 launch gazebo_arm sim_arm.launch.py rviz:=true replay_csv:=/absolute/path/to/states.csv
+```
+
+回放按 CSV 步长发送关节状态，RViz 使用现有 URDF 展示运动。原来只包含关节状态的实验 CSV 也可回放。
+
+## 关节交互与实时轨迹
+
+使用 `panel:=true` 同时打开控制面板。手动模式下，拖动六个滑条会通过 `joint_command` 驱动仿真臂。滑条限位来自 URDF。面板显示关节读数和末端 XYZ、RPY，RViz 的蓝线为末端实际走过的轨迹，橙球为当前手动目标角所对应的末端位置。
+
+```bash
+ros2 launch gazebo_arm sim_arm.launch.py rviz:=true panel:=true
+ros2 launch gazebo_arm sim_arm.launch.py rviz:=true panel:=true scene:=false scenario:=handling
+ros2 launch gazebo_arm sim_arm.launch.py rviz:=true panel:=true scene:=false scenario:=handling fault_lock_joint:=joint_2 fault_lock_at:=3.4
+```
+
+自动场景、演示和 CSV 回放时，面板仅显示状态及轨迹。卡滞时间以仿真推进的秒数计，锁定持续到仿真重启。离线 CSV 使用固定步长，适合重复对比实验。
+
+使用 `scenario_loop:=false` 可只播放一轮，最后保持终点姿态。场景会等当前路点接近到位且速度降下来再切换，故障导致无法到位时会在有限等待后继续。
+
 ## 验证状态(如实)
 
 - **已在本机验证**:`plant.py` 独立冒烟——单次下发与 100Hz 流式下发两种用法,10s
@@ -82,20 +110,17 @@ python3 gazebo_arm/gen_urdf.py
 - **外观已工业化(基本体,2026-09-26)**:`gen_urdf.py` 从「一串等粗圆柱」改为钢铁车间工业臂观感：
   - **结构**：厚重地面法兰盘 + 4 地脚螺栓的底座、每关节壳含两端密封盖(IP67 防尘)、
     指向下一关节的连杆体、大臂/前臂背侧线缆保护套。
-  - **夹爪总成**(独立连杆 fixed 关节，腕→底座板→左右手指)：底座板(安全黄) + 联动杆(银) +
-    左右**扁平手指**(钢色主体 + 内侧**近黑硬化夹持面** + 背面驱动槽) + 腕部力/扭矩传感器(蓝) +
-    指端视觉传感器(相机)。手指固定在额定张开位；做成 prismatic 可开合需 7 轴夹爪控制器
+  - **末端工具**：默认双指夹爪，开口 180 mm、指长 65 mm。紧凑吸附头可用 `python gen_urdf.py --tool suction` 导出，杯口与钢坯搬运脚本的 `link_6 + 0.16 m` 吸附点对齐。手指固定在额定张开位；做成 prismatic 可开合需 7 轴夹爪控制器
     (超出 6-DOF 端边云契约，属后续)。
-  - **RAL 配色**(内联，RViz 正常显示)：主体安全黄 1003 / 关节深灰 7016 / 腕部金属银 9006 /
-    夹爪硬化钢 7015 / 底座深灰 / 顶部警示红环 3020。
+  - **RViz 展示配色**：银白大臂、中灰小臂、深灰底座与工具。默认浅灰白背景，隐藏网格、TF、碰撞体和场景布景。
   - **夹爪按场景可调**：`python gen_urdf.py --preset general|sorting|marking|docking`
     (或 `--fingers/--opening/--groove`)——分拣长指大开口且夹持面为 **V 型槽**(卡圆钢管)、
     喷号短指小开口、对接精度优先。
   - **胶囊碰撞体**：每根连杆用「圆柱+两端球」逼近胶囊、带余量，套一层粗略凸的「防碰撞紧身衣」
     (URDF 无 capsule 基本体，此为标准近似)，比逐视觉体做碰撞更省，供后续运动规划/避障用。
-  - **关节轴/质心=工业标准**：6 个关节轴均 `0 0 1`(DH z 约定)，关节位姿按 DH (a,0,d)+rpy(α,0,0)；
+  - **关节轴与坐标系**：按标准 DH 的 `Tz(d) Rz(θ) Tx(a) Rx(α)` 顺序生成。六个转动关节负责局部 Z 轴旋转，固定偏移将关节轴坐标系连接到各 DH 连杆坐标系；
     质量/质心/惯量取自数值孪生(link_1..6：110/55/32/12/6/5 kg)，物理同源。
-  - 仍是基本体近似(无 CAD 网格/无 Gazebo PBR 金属度贴图)。`robot_state_publisher` 解析无报错(10 连杆)。
+  - 大臂、小臂和腕部的展示外壳由 `visual_meshes.py` 按本项目 DH 尺寸生成，运行 `gen_urdf.py` 可重新导出 URDF 与 COLLADA 网格。网格带平滑法线和独立的铸壳、钢件及枪灰材质。
     重生成后 native 需 `colcon build` 再重启 launch 生效。
   - 注：夹持力 50~500N、开合驱动属**物理/第 7 轴**范畴，当前 6-DOF 契约下夹爪为固定几何(不改边端契约)。
 

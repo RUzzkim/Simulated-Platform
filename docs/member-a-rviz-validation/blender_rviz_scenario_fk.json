@@ -1,0 +1,29 @@
+{
+  "handling": {
+    "frames": 800,
+    "max_joint_error": 0,
+    "max_fk_xyz_m": 0,
+    "max_fk_rpy_rad": 0,
+    "matching_events": 0,
+    "source": "member-a-delivery\\runs-dh-verified\\point-to-point-normal-fa908ea857014556a1cff3f45e4ee94d\\states.csv",
+    "actual": "C:\\Users\\hj\\AppData\\Local\\SimPlatformROS\\member-a-rviz-refined\\blender-rviz-stage\\scenario-runs\\point-to-point-normal-2f0f630bed02490d88ad4ac2fa60a8b4"
+  },
+  "lock": {
+    "frames": 800,
+    "max_joint_error": 0,
+    "max_fk_xyz_m": 0,
+    "max_fk_rpy_rad": 0,
+    "matching_events": 1,
+    "source": "member-a-delivery\\runs-dh-verified\\point-to-point-shoulder-lock-38cec0f2888a4cc7ae20b82f33ce1a43\\states.csv",
+    "actual": "C:\\Users\\hj\\AppData\\Local\\SimPlatformROS\\member-a-rviz-refined\\blender-rviz-stage\\scenario-runs\\point-to-point-shoulder-lock-1e9d7f050ed448cd89cd0999d0057413"
+  },
+  "elbow_grasp": {
+    "frames": 1050,
+    "max_joint_error": 0,
+    "max_fk_xyz_m": 0,
+    "max_fk_rpy_rad": 0,
+    "matching_events": 0,
+    "source": "C:\\Users\\hj\\AppData\\Local\\SimPlatformROS\\member-a-workspace\\scenario-runs\\elbow-grasp-a24f93c288234b139ef58199e820dba6\\states.csv",
+    "actual": "C:\\Users\\hj\\AppData\\Local\\SimPlatformROS\\member-a-rviz-refined\\blender-rviz-stage\\scenario-runs\\elbow-grasp-621f9b599771473a97987f5422221520"
+  }
+}

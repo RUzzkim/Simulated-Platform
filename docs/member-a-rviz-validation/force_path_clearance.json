@@ -1,0 +1,93 @@
+{
+  "joints": {
+    "joint_1": {
+      "housing_gap_mm": 3.0,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 0.6,
+      "max_radial_side_difference_mm": 0.0
+    },
+    "joint_2_l": {
+      "housing_gap_mm": 4.0,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 1.3,
+      "max_radial_side_difference_mm": 7.450580596923828e-06
+    },
+    "joint_2_r": {
+      "housing_gap_mm": 4.0,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 1.3,
+      "max_radial_side_difference_mm": 7.450580596923828e-06
+    },
+    "joint_3_l": {
+      "housing_gap_mm": 3.0,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 0.6,
+      "max_radial_side_difference_mm": 3.1397503728880505e-05
+    },
+    "joint_3_r": {
+      "housing_gap_mm": 3.0,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 0.6,
+      "max_radial_side_difference_mm": 3.1397503728880505e-05
+    },
+    "joint_4": {
+      "housing_gap_mm": 3.0,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 0.7,
+      "max_radial_side_difference_mm": 1.9357176209156002e-05
+    },
+    "joint_5_l": {
+      "housing_gap_mm": 3.5,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 1.0,
+      "max_radial_side_difference_mm": 8.99588527628059e-06
+    },
+    "joint_5_r": {
+      "housing_gap_mm": 3.5,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 1.0,
+      "max_radial_side_difference_mm": 9.313225746154785e-06
+    },
+    "joint_6": {
+      "housing_gap_mm": 3.0,
+      "housing_to_race_seams_mm": [
+        0.55,
+        0.55
+      ],
+      "races_gap_mm": 0.6,
+      "max_radial_side_difference_mm": 2.419647026491445e-05
+    }
+  },
+  "gripper": {
+    "pad_thickness_mm": [
+      14.000006020069122,
+      13.999998569488525
+    ],
+    "open_gap_mm": 155.60004860162735,
+    "opposed_padding_offset_mm": 5.9604644775390625e-05
+  }
+}

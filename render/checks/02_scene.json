@@ -1,0 +1,76 @@
+{
+  "blender": "4.5.5 LTS",
+  "engine": "Cycles",
+  "backend": "CUDA",
+  "gpu": [
+    "NVIDIA GeForce RTX 5060 Ti"
+  ],
+  "samples": 64,
+  "denoise": true,
+  "gpu_denoise": true,
+  "denoiser": "OPENIMAGEDENOISE",
+  "adaptive_threshold": 0.05999999865889549,
+  "preview_seconds": 0.563424899999518,
+  "materials": {
+    "cast": [
+      "Satin silver housing",
+      [
+        0.45,
+        0.47,
+        0.5
+      ],
+      0.96,
+      0.31
+    ],
+    "graphite": [
+      "Satin gunmetal joints and rails",
+      [
+        0.086,
+        0.096,
+        0.112
+      ],
+      0.94,
+      0.38
+    ],
+    "steel": [
+      "Machined steel",
+      [
+        0.6,
+        0.63,
+        0.65
+      ],
+      1.0,
+      0.22
+    ],
+    "cover": [
+      "Graphite service cover",
+      [
+        0.115,
+        0.126,
+        0.144
+      ],
+      0.9,
+      0.42
+    ],
+    "rubber": [
+      "Grip pad rubber",
+      [
+        0.026,
+        0.029,
+        0.033
+      ],
+      0,
+      0.79
+    ]
+  },
+  "brushed_roughness_variation": 0.028,
+  "turned_roughness_variation": 0.011,
+  "cameras": [
+    "HOME proof camera",
+    "Overview 45\u00b0",
+    "Elbow close-up",
+    "Tool close-up",
+    "Guide and jaws",
+    "Base close-up"
+  ]
+}

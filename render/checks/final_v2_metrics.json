@@ -1,0 +1,176 @@
+[
+  {
+    "view": "home",
+    "image": "pose_home.png",
+    "parameters": {
+      "scene": "product_final_v2.blend",
+      "samples": 128,
+      "joint_angles_rad": [
+        0.0,
+        0.35,
+        -0.72,
+        0.2,
+        0.0,
+        0.0
+      ]
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 159.93619403021293,
+      "highlight_pct": 1.4176221966066047,
+      "subject_mean_luma": 132.7867182675476,
+      "background_mean_luma": 165.8580561824878,
+      "contrast_luma": -33.07133791494019,
+      "reflection": {
+        "detected": true,
+        "coverage_pct_at_2_luma": 100.0,
+        "mean_signed_darkening_luma": 14.79935625,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 9.58527284399573,
+    "histogram_similarity_pct": 90.41472715600428,
+    "highlight_delta_pp": 1.1992153531921776,
+    "contrast_delta_luma": -39.351096928771256,
+    "thresholds_pass": true
+  },
+  {
+    "view": "reference_pose",
+    "image": "final_v2_reference_view.png",
+    "parameters": {
+      "scene": "product_final_v2.blend",
+      "samples": 128,
+      "joint_angles_rad": [
+        0,
+        1.84,
+        -2.02,
+        -0.4,
+        -1.8,
+        -2.4
+      ]
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 109.89905641974559,
+      "highlight_pct": 1.248761350077858,
+      "subject_mean_luma": 171.3613085152393,
+      "background_mean_luma": 89.64904181263358,
+      "contrast_luma": 81.71226670260572,
+      "reflection": {
+        "detected": false,
+        "coverage_pct_at_2_luma": 0.0,
+        "mean_signed_darkening_luma": -11.195751562499998,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 14.198336253751636,
+    "histogram_similarity_pct": 85.80166374624837,
+    "highlight_delta_pp": 1.030354506663431,
+    "contrast_delta_luma": 75.43250768877465,
+    "thresholds_pass": false
+  },
+  {
+    "view": "home",
+    "image": "pose_home.png",
+    "parameters": {
+      "scene": "product_final_v2.blend",
+      "scene_sha256": "e5f6070c7dbdd1e3128434c662bac202d58313d56ef80ba01ee4acf9e1f1e5b4",
+      "samples": 128,
+      "joint_angles_rad": [
+        0.0,
+        0.35,
+        -0.72,
+        0.2,
+        0.0,
+        0.0
+      ]
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 144.81006550385243,
+      "highlight_pct": 1.4186333394001902,
+      "subject_mean_luma": 132.65600110678184,
+      "background_mean_luma": 147.46111831159394,
+      "contrast_luma": -14.805117204812092,
+      "reflection": {
+        "detected": true,
+        "coverage_pct_at_2_luma": 79.26136363636364,
+        "mean_signed_darkening_luma": 2.170435416666671,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 2.746664319229279,
+    "histogram_similarity_pct": 97.25333568077072,
+    "highlight_delta_pp": 1.2002264959857631,
+    "contrast_delta_luma": -21.08487621864316,
+    "thresholds_pass": true
+  },
+  {
+    "view": "reference_pose",
+    "image": "final_v2_reference_view.png",
+    "parameters": {
+      "scene": "product_final_v2.blend",
+      "scene_sha256": "e5f6070c7dbdd1e3128434c662bac202d58313d56ef80ba01ee4acf9e1f1e5b4",
+      "samples": 128,
+      "joint_angles_rad": [
+        0,
+        1.84,
+        -2.02,
+        -0.4,
+        -1.8,
+        -2.4
+      ]
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 139.52595820340147,
+      "highlight_pct": 1.2396610649355901,
+      "subject_mean_luma": 171.57188983638662,
+      "background_mean_luma": 128.96776091088734,
+      "contrast_luma": 42.60412892549928,
+      "reflection": {
+        "detected": false,
+        "coverage_pct_at_2_luma": 0.0,
+        "mean_signed_darkening_luma": -2.1188350754310377,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 5.285980921519853,
+    "histogram_similarity_pct": 94.71401907848015,
+    "highlight_delta_pp": 1.021254221521163,
+    "contrast_delta_luma": 36.324369911668214,
+    "thresholds_pass": false
+  }
+]
