@@ -45,6 +45,7 @@ import argparse
 import json
 import math
 import random
+import ssl
 import sys
 import os
 import threading
@@ -443,6 +444,17 @@ class RobotSimulator:
                              client_id=f'sim-simulator-{os.getpid()}')
         client.on_connect = self._on_connect
         client.on_message = self._on_command
+        if self.args.ca_cert or self.args.cert or self.args.key:
+            ctx = ssl.create_default_context(cafile=self.args.ca_cert or None)
+            ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+            if self.args.tls_insecure:
+                ctx.check_hostname = False
+                ctx.verify_mode = ssl.CERT_NONE
+            if self.args.cert:
+                ctx.load_cert_chain(self.args.cert, self.args.key or None)
+            client.tls_set_context(ctx)
+            print(f'[SIM] MQTT TLS 已启用 (ca={self.args.ca_cert} cert={self.args.cert})',
+                  flush=True)
         client.connect(self.args.broker, self.args.port, keepalive=60)
         client.loop_start()
         if not self._connected.wait(timeout=10):
@@ -532,6 +544,11 @@ def parse_args():
     p = argparse.ArgumentParser(description='仿真端模拟器 v2.3（物理动力学 + 轨迹规划 + 指令闭环）')
     p.add_argument('--broker', default='localhost')
     p.add_argument('--port', type=int, default=1883)
+    p.add_argument('--ca-cert', default=None, help='CA 证书（启用 TLS，如 deploy/certs/ca.crt）')
+    p.add_argument('--cert', default=None, help='客户端证书（CN 必须 = simulationId）')
+    p.add_argument('--key', default=None, help='客户端私钥')
+    p.add_argument('--tls-insecure', action='store_true',
+                   help='仅联调：跳过服务端证书/主机名校验')
     p.add_argument('--sim-id', default='SIM-001')
     p.add_argument('--robot-id', default='ROBOT-001')
     p.add_argument('--state-topic', default=None,

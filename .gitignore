@@ -24,6 +24,9 @@ __pycache__/
 venv/
 *.py[cod]
 
+# 实验原始轨迹不入库；批次 manifest/summary/冻结配置保留
+edge/edge_node/test/experiments/data/**/*.csv.gz
+
 # Local editor and OS files
 .idea/
 .vscode/
@@ -34,6 +37,9 @@ Thumbs.db
 .agents/
 .backup/
 .tmp*
+
+# Local Trae context archive (do not commit)
+.trae/
 
 # Local V2 simulation traces and run manifests
 /edge/edge_node/test/reports/task_recovery/

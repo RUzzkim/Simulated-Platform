@@ -1,0 +1,54 @@
+{
+  "contract_version": "2.0.0",
+  "algorithm_version": "v2.0.0",
+  "started_at_ms": 1760000000000,
+  "simulation": {
+    "simulation_id": "SIM-001",
+    "robot_id": "ROBOT-001",
+    "plant": "python-6r",
+    "control_hz": 100,
+    "duration_s": 8.0
+  },
+  "scenario": {
+    "scenario_id": "ONLINE-LOCK",
+    "split": "online",
+    "seed": 0,
+    "task_goal_rad": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    "description": "缺少 run_id，应被拒绝"
+  },
+  "fault": {
+    "type": null,
+    "joint_index": null,
+    "joint_name": null,
+    "injected_at_s": null,
+    "detected_at_s": null,
+    "detection_latency_ms": null,
+    "confirmed": false
+  },
+  "reachability": {
+    "status": "NOT_ASSESSED",
+    "reason": null,
+    "planner_position_error_m": null
+  },
+  "strategy": "v2",
+  "decision": {
+    "action": null,
+    "reason": null,
+    "at_s": null
+  },
+  "task": {
+    "status": "IN_PROGRESS",
+    "final_ee_error_m": null,
+    "recovery_time_s": null,
+    "stop_time_s": null,
+    "peak_fault_joint_torque_nm": null,
+    "max_joint_speed_rad_s": 0.0,
+    "max_joint_torque_nm": 0.0
+  },
+  "trace": {
+    "path": "live://0123456789abcdef0123456789abcdef",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "frame_count": 1,
+    "sample_rate_hz": 100
+  }
+}

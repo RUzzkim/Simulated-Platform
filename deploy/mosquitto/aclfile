@@ -9,23 +9,17 @@ topic write robot/+/cmd
 topic read simulation/+/state
 topic read simulation/+/heartbeat
 topic read simulation/+/command_ack
+topic read simulation/+/experiment_run
+topic read simulation/+/experiment_event
 topic write simulation/+/command
 
-# 设备 robot-001
-user robot-001
-topic read robot/robot-001/cmd
-topic write robot/robot-001/telemetry
-topic write robot/robot-001/heartbeat
-topic write robot/robot-001/event
-topic write robot/robot-001/cmd_ack
-
-# 设备 robot-02
-user robot-02
-topic read robot/robot-02/cmd
-topic write robot/robot-02/telemetry
-topic write robot/robot-02/heartbeat
-topic write robot/robot-02/event
-topic write robot/robot-02/cmd_ack
+# 设备 SIM-001
+user SIM-001
+topic read robot/SIM-001/cmd
+topic write robot/SIM-001/telemetry
+topic write robot/SIM-001/heartbeat
+topic write robot/SIM-001/event
+topic write robot/SIM-001/cmd_ack
 
 # 边端节点：证书 CN = simulationId，身份由 use_identity_as_username 取自证书
 
@@ -38,4 +32,6 @@ topic read simulation/SIM-001/config
 topic write simulation/SIM-001/command_ack
 topic write simulation/SIM-001/sim_state
 topic read simulation/SIM-001/sim_state
+topic write simulation/SIM-001/experiment_run
+topic write simulation/SIM-001/experiment_event
 topic write simulation/SIM-001/command

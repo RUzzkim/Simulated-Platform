@@ -1,0 +1,237 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://simulated-platform.local/contract/v2_live_run.schema.json",
+  "title": "V2.0 实时边端部分 Run",
+  "description": "契约 2.0.0 的实时辅助记录：边端启动时发布 IN_PROGRESS、退出时发布 INCOMPLETE。fault/decision 恒为空，故障与决策只通过 experiment_event 传递；不作为离线完成态 Run，不替代 v2_run.schema.json。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "run_id",
+    "algorithm_version",
+    "started_at_ms",
+    "simulation",
+    "scenario",
+    "fault",
+    "reachability",
+    "strategy",
+    "decision",
+    "task",
+    "trace"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "2.0.0"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$"
+    },
+    "algorithm_version": {
+      "type": "string",
+      "pattern": "^v\\d+\\.\\d+\\.\\d+$"
+    },
+    "started_at_ms": {
+      "type": "integer",
+      "minimum": 1000000000000,
+      "maximum": 9999999999999
+    },
+    "simulation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["simulation_id", "robot_id", "plant", "control_hz", "duration_s"],
+      "properties": {
+        "simulation_id": {
+          "type": "string",
+          "pattern": "^SIM-\\d{3}$"
+        },
+        "robot_id": {
+          "type": "string",
+          "pattern": "^ROBOT-\\d{3}$"
+        },
+        "plant": {
+          "enum": ["python-6r", "ros2-gazebo"]
+        },
+        "control_hz": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_s": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenario_id", "split", "seed", "task_goal_rad", "description"],
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "split": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "task_goal_rad": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "fault": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "joint_index",
+        "joint_name",
+        "injected_at_s",
+        "detected_at_s",
+        "detection_latency_ms",
+        "confirmed"
+      ],
+      "properties": {
+        "type": {
+          "enum": ["JOINT_LOCKED", null]
+        },
+        "joint_index": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 5
+        },
+        "joint_name": {
+          "type": ["string", "null"]
+        },
+        "injected_at_s": {
+          "type": ["number", "null"]
+        },
+        "detected_at_s": {
+          "type": ["number", "null"]
+        },
+        "detection_latency_ms": {
+          "type": ["number", "null"]
+        },
+        "confirmed": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": null } },
+            "required": ["type"]
+          },
+          "then": {
+            "properties": {
+              "joint_index": { "const": null },
+              "joint_name": { "const": null },
+              "confirmed": { "const": false }
+            }
+          }
+        }
+      ]
+    },
+    "reachability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reason", "planner_position_error_m"],
+      "properties": {
+        "status": {
+          "const": "NOT_ASSESSED",
+          "description": "实时快照不做可达性评估，评估结果只随 DECISION 事件上报"
+        },
+        "reason": {
+          "const": null
+        },
+        "planner_position_error_m": {
+          "const": null
+        }
+      }
+    },
+    "strategy": {
+      "enum": ["off", "v1", "v2"]
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "reason", "at_s"],
+      "properties": {
+        "action": { "const": null },
+        "reason": { "const": null },
+        "at_s": { "const": null }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "final_ee_error_m",
+        "recovery_time_s",
+        "stop_time_s",
+        "peak_fault_joint_torque_nm",
+        "max_joint_speed_rad_s",
+        "max_joint_torque_nm"
+      ],
+      "properties": {
+        "status": {
+          "enum": ["IN_PROGRESS", "INCOMPLETE"]
+        },
+        "final_ee_error_m": {
+          "type": ["number", "null"]
+        },
+        "recovery_time_s": {
+          "type": ["number", "null"]
+        },
+        "stop_time_s": {
+          "type": ["number", "null"]
+        },
+        "peak_fault_joint_torque_nm": {
+          "type": ["number", "null"]
+        },
+        "max_joint_speed_rad_s": {
+          "type": ["number", "null"]
+        },
+        "max_joint_torque_nm": {
+          "type": ["number", "null"]
+        }
+      }
+    },
+    "trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "frame_count", "sample_rate_hz"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^live://[0-9a-f]{32}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "frame_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sample_rate_hz": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

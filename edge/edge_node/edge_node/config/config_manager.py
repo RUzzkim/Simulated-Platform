@@ -24,6 +24,10 @@ _ENV_OVERRIDES = {
     'MQTT_USERNAME': ('mqtt', 'username'),
     'MQTT_PASSWORD': ('mqtt', 'password'),
     'MQTT_QOS': ('mqtt', 'qos'),
+    'EDGE_MQTT_CA_CERTS': ('mqtt', 'tls', 'ca_certs'),
+    'EDGE_MQTT_CERTFILE': ('mqtt', 'tls', 'certfile'),
+    'EDGE_MQTT_KEYFILE': ('mqtt', 'tls', 'keyfile'),
+    'EDGE_MQTT_TLS_INSECURE': ('mqtt', 'tls', 'insecure'),
     'CONTROL_MODE': ('control', 'control_mode'),
     'FAULT_DETECTION_ENABLED': ('fault_detection', 'enabled'),
     'FAULT_TOLERANCE_ENABLED': ('fault_tolerance', 'enabled'),
@@ -34,6 +38,13 @@ _ENV_OVERRIDES = {
     'EDGE_SAFE_COMMAND_ENABLED': ('control', 'safe_command_enabled'),
     'EDGE_SIGNAL_FILTER_ENABLED': ('signal_filter', 'enabled'),
     'EDGE_PUBLISH_FAULTS': ('runtime', 'publish_faults'),
+    # 实时实验 Run 上下文（契约 2.0.0；run_id 留空则启动时生成）
+    'EDGE_RUN_ID': ('experiment', 'run_id'),
+    'EDGE_SCENARIO_ID': ('experiment', 'scenario_id'),
+    'EDGE_RUN_SPLIT': ('experiment', 'split'),
+    'EDGE_RUN_SEED': ('experiment', 'seed'),
+    'EDGE_EXPERIMENT_STRATEGY': ('experiment', 'strategy'),
+    'EDGE_ALGORITHM_VERSION': ('experiment', 'algorithm_version'),
 }
 
 
@@ -43,6 +54,7 @@ class ConfigManager:
     def __init__(self, config_path: Optional[str] = None):
         self._static: Dict[str, Any] = {}
         self._runtime = EdgeConfig()
+        self._path: Optional[str] = None
         if config_path:
             self.load_static(config_path)
 
@@ -50,6 +62,7 @@ class ConfigManager:
     def load_static(self, config_path: str) -> None:
         if not os.path.exists(config_path):
             raise FileNotFoundError(f"配置文件不存在: {config_path}")
+        self._path = os.path.abspath(config_path)
         with open(config_path, 'r', encoding='utf-8') as f:
             self._static = yaml.safe_load(f) or {}
         self._apply_env_overrides()
@@ -121,6 +134,31 @@ class ConfigManager:
     def publish_faults(self) -> bool:
         """上云 RobotState 是否携带可选 faults 故障明细数组（v1.1 加法扩展）"""
         return bool(self.get('runtime', 'publish_faults', default=True))
+
+    # ---- 实时实验 Run 上下文（契约 2.0.0）----
+    @property
+    def experiment_run_id(self) -> str:
+        return str(self.get('experiment', 'run_id', default='') or '')
+
+    @property
+    def experiment_scenario_id(self) -> str:
+        return str(self.get('experiment', 'scenario_id', default='ONLINE-LOCK'))
+
+    @property
+    def experiment_split(self) -> str:
+        return str(self.get('experiment', 'split', default='online'))
+
+    @property
+    def experiment_seed(self) -> int:
+        return int(self.get('experiment', 'seed', default=0))
+
+    @property
+    def experiment_strategy(self) -> str:
+        return str(self.get('experiment', 'strategy', default='v2'))
+
+    @property
+    def experiment_algorithm_version(self) -> str:
+        return str(self.get('experiment', 'algorithm_version', default='v2.0.0'))
 
     # ---- 信号滤波/离群点剔除参数 ----
     @property
@@ -289,6 +327,33 @@ class ConfigManager:
 
     def render_topic(self, pattern: str) -> str:
         return pattern.replace('{simulation_id}', self.simulation_id)
+
+    def resolve_path(self, path: Optional[str]) -> Optional[str]:
+        """把配置里的相对路径按 YAML 所在目录解析（证书路径随配置走）"""
+        if not path:
+            return path
+        path = os.path.expanduser(path)
+        if os.path.isabs(path):
+            return path
+        base = os.path.dirname(self._path) if self._path else os.getcwd()
+        return os.path.normpath(os.path.join(base, path))
+
+    # ---- MQTT TLS（双向认证）----
+    @property
+    def mqtt_tls_ca_certs(self) -> Optional[str]:
+        return self.resolve_path(self.get('mqtt', 'tls', 'ca_certs'))
+
+    @property
+    def mqtt_tls_certfile(self) -> Optional[str]:
+        return self.resolve_path(self.get('mqtt', 'tls', 'certfile'))
+
+    @property
+    def mqtt_tls_keyfile(self) -> Optional[str]:
+        return self.resolve_path(self.get('mqtt', 'tls', 'keyfile'))
+
+    @property
+    def mqtt_tls_insecure(self) -> bool:
+        return bool(self.get('mqtt', 'tls', 'insecure', default=False))
 
     def render_ros2_topic(self, pattern: str) -> str:
         ros_id = re.sub(r'[^0-9A-Za-z_]', '_', self.simulation_id)

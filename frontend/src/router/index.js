@@ -11,6 +11,7 @@ const router = createRouter({
     { path: '/devices/:id', name: 'device-detail', component: () => import('../views/DeviceDetail.vue') },
     { path: '/system', name: 'system-status', component: () => import('../views/SystemStatus.vue') },
     { path: '/analysis', name: 'analysis', component: () => import('../views/Analysis.vue') },
+    { path: '/experiments', name: 'experiments', component: () => import('../views/Experiments.vue') },
     {
       path: '/publish',
       name: 'publish',

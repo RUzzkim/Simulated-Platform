@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import json
+import ssl
 import threading
 import time
 from typing import Callable, Optional
@@ -48,14 +49,25 @@ class MqttClient:
         on_config: Optional[Callable[[EdgeConfig], None]] = None,
         on_state: Optional[Callable[[dict], None]] = None,
         upstream_state_topic: Optional[str] = None,
+        command_ack_topic: Optional[str] = None,
+        ca_certs: Optional[str] = None,
+        certfile: Optional[str] = None,
+        keyfile: Optional[str] = None,
+        tls_insecure: bool = False,
+        robot_id: str = '',
     ):
         self._broker_url = broker_url
         self._client_id = client_id
         self._simulation_id = simulation_id
+        self._robot_id = robot_id
         self._state_topic = state_topic
         self._heartbeat_topic = heartbeat_topic
         self._command_topic = command_topic
         self._config_topic = config_topic
+        self._command_ack_topic = command_ack_topic or \
+            f'simulation/{simulation_id}/command_ack'
+        self._experiment_run_topic = f'simulation/{simulation_id}/experiment_run'
+        self._experiment_event_topic = f'simulation/{simulation_id}/experiment_event'
         self._qos = qos
         self._keepalive = keepalive
         # 无 ROS 2 模式的上游状态源（仿真端原始状态主题），None 表示不订阅
@@ -64,17 +76,19 @@ class MqttClient:
         self._on_config = on_config
         self._on_state = on_state
 
-        # 解析 host:port
-        host, port = self._parse_broker(broker_url)
+        # 解析 host:port（ssl:// / mqtts:// / tls:// 走 TLS，默认 8883）
+        host, port, secure = self._parse_broker(broker_url)
 
         self._client = mqtt.Client(client_id=client_id, protocol=mqtt.MQTTv311)
         if username:
             self._client.username_pw_set(username, password or None)
+        if secure:
+            self._configure_tls(ca_certs, certfile, keyfile, tls_insecure)
 
         # 遗嘱：异常断开时上报 OFFLINE，保证云端感知离线
         will_payload = json.dumps({
             'simulationId': simulation_id,
-            'robotId': '',  # 心跳 robotId 在发布时由调用方提供；遗嘱仅保证 status=OFFLINE
+            'robotId': robot_id,  # 未传入时为空串，云端按未绑定设备处理
             'timestamp': 0,
             'status': 'OFFLINE',
         })
@@ -92,15 +106,38 @@ class MqttClient:
 
     @staticmethod
     def _parse_broker(url: str):
+        """返回 (host, port, secure)；secure 表示该 scheme 需要 TLS"""
         url = url.strip()
-        if url.startswith('tcp://'):
-            url = url[len('tcp://'):]
-        elif url.startswith('mqtt://'):
-            url = url[len('mqtt://'):]
+        secure = False
+        for scheme in ('tcp://', 'mqtt://'):
+            if url.startswith(scheme):
+                url = url[len(scheme):]
+                break
+        else:
+            for scheme in ('ssl://', 'mqtts://', 'tls://'):
+                if url.startswith(scheme):
+                    url = url[len(scheme):]
+                    secure = True
+                    break
         if ':' in url:
             host, port_str = url.rsplit(':', 1)
-            return host, int(port_str)
-        return url, 1883
+            return host, int(port_str), secure
+        return url, 8883 if secure else 1883, secure
+
+    def _configure_tls(self, ca_certs: Optional[str], certfile: Optional[str],
+                       keyfile: Optional[str], insecure: bool) -> None:
+        """双向 TLS：校验 broker 证书（自签 CA），有客户端证书时一并出示"""
+        ctx = ssl.create_default_context(cafile=ca_certs or None)
+        ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+        if insecure:
+            # 仅供联调：跳过服务端证书与主机名校验，生产禁用
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+        if certfile:
+            ctx.load_cert_chain(certfile=certfile, keyfile=keyfile or None)
+        self._client.tls_set_context(ctx)
+        logger.info("MQTT TLS 已启用 (ca=%s cert=%s insecure=%s)",
+                    ca_certs or '<系统信任库>', certfile or '<无客户端证书>', insecure)
 
     # ---- 生命周期 ----
     def connect(self) -> None:
@@ -109,16 +146,17 @@ class MqttClient:
         self._client.loop_start()
 
     def disconnect(self) -> None:
-        try:
-            # 优雅下线：先发布 OFFLINE 心跳，再断开
-            self.publish_heartbeat(Heartbeat(
-                simulation_id=self._simulation_id,
-                robot_id='',
-                timestamp=0,
-                status='OFFLINE',
-            ))
-        except Exception as e:
-            logger.warning("发布 OFFLINE 心跳失败: %s", e)
+        if self._robot_id:
+            try:
+                # 优雅下线：先发布 OFFLINE 心跳（robotId 需为 ROBOT-###，缺失时跳过）
+                self.publish_heartbeat(Heartbeat(
+                    simulation_id=self._simulation_id,
+                    robot_id=self._robot_id,
+                    timestamp=int(time.time() * 1000),
+                    status='OFFLINE',
+                ))
+            except Exception as e:
+                logger.warning("发布 OFFLINE 心跳失败: %s", e)
         self._client.loop_stop()
         self._client.disconnect()
         self._connected = False
@@ -182,6 +220,13 @@ class MqttClient:
     def _handle_command(self, payload: str) -> None:
         try:
             data = json.loads(payload)
+            # 自环过滤：边端容错时把 MOVE_JOINT_SAFE 发回同一 command 主题给仿真端，
+            # 自己也会收到，不能当云端指令解析（否则每帧报解析错误）
+            cmd_id = str(data.get('commandId', ''))
+            if data.get('cmdType') == 'MOVE_JOINT_SAFE' or \
+                    cmd_id.startswith(('EDGE-SAFE-', 'EDGE-RESUME-')):
+                logger.debug("忽略边端自发的安全指令 commandId=%s", cmd_id)
+                return
             cmd = RobotCommand.from_dict(data)
             logger.info("收到云端指令 commandId=%s cmdType=%s", cmd.command_id, cmd.cmd_type)
             if self._on_command:
@@ -212,6 +257,41 @@ class MqttClient:
         with self._lock:
             self._client.publish(self._heartbeat_topic, payload=payload, qos=self._qos)
         logger.debug("发布 heartbeat %s", payload)
+
+    def publish_command_ack(self, robot_id: str, command_id: str, cmd_type: str,
+                            result: str = 'SUCCESS', detail: Optional[str] = None) -> None:
+        """指令回执：云端 command_log 靠它从 PENDING 置 SUCCESS/FAILED
+
+        commandId 与云端 command_log.message_id 是同一个值（UUID）。
+        """
+        payload = {
+            'commandId': command_id,
+            'simulationId': self._simulation_id,
+            'robotId': robot_id,
+            'cmdType': cmd_type,
+            'result': result,
+            'detail': detail or '',
+            'timestamp': int(time.time() * 1000),
+        }
+        body = json.dumps(payload, ensure_ascii=False)
+        with self._lock:
+            self._client.publish(self._command_ack_topic, payload=body, qos=self._qos)
+        logger.info("已回执指令 commandId=%s result=%s", command_id, result)
+
+    def publish_experiment_run(self, payload: dict) -> None:
+        """发布 V2 实验 Run 记录（契约 2.0.0；实时 Run 为部分记录）。"""
+        body = json.dumps(payload, ensure_ascii=False)
+        with self._lock:
+            self._client.publish(self._experiment_run_topic, payload=body, qos=self._qos)
+        logger.info("已发布实验 Run run_id=%s", payload.get('run_id'))
+
+    def publish_experiment_event(self, payload: dict) -> None:
+        """发布故障/决策事件（契约 2.0.0 事件消息）。"""
+        body = json.dumps(payload, ensure_ascii=False)
+        with self._lock:
+            self._client.publish(self._experiment_event_topic, payload=body, qos=self._qos)
+        logger.info("已发布实验事件 type=%s run_id=%s",
+                    payload.get('event_type'), payload.get('run_id'))
 
     def publish_safe_command(
         self, robot_id: str, target: Optional[list] = None, resume: bool = False

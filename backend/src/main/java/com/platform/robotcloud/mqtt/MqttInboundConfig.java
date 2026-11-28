@@ -75,7 +75,10 @@ public class MqttInboundConfig {
                         // 边端（simulation 契约）的上报主题，载荷由 simulation 包归一化后入库
                         "simulation/+/state",
                         "simulation/+/heartbeat",
-                        "simulation/+/command_ack");
+                        "simulation/+/command_ack",
+                        // V2 实验 Run 与故障/决策事件（契约 2.0.0）
+                        "simulation/+/experiment_run",
+                        "simulation/+/experiment_event");
         adapter.setOutputChannel(mqttInputChannel);
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());

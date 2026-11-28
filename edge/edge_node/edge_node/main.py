@@ -11,8 +11,10 @@
 from __future__ import annotations
 
 import argparse
+import signal
 import threading
 import time
+import uuid
 from typing import Optional
 
 from edge_node.config.config_manager import ConfigManager
@@ -34,11 +36,75 @@ def main(args=None):
     parser.add_argument('--config', type=str, required=True, help='edge_config.yaml 路径')
     parsed, _ = parser.parse_known_args(args)
 
+    # Windows：服务停止/自动化测试发送 CTRL_BREAK_EVENT（SIGBREAK），
+    # 注册为与 Ctrl+C 相同的处理，统一走 finally 的优雅收尾
+    if hasattr(signal, 'SIGBREAK'):
+        signal.signal(signal.SIGBREAK, signal.default_int_handler)
+
     cfg = ConfigManager(parsed.config)
     sim_id = cfg.simulation_id
     robot_id = cfg.robot_id
 
-    logger.info("启动边端节点 simulation_id=%s robot_id=%s", sim_id, robot_id)
+    # ---- 实时实验 Run 上下文（契约 2.0.0 的部分 Run）----
+    experiment_run_id = cfg.experiment_run_id or uuid.uuid4().hex
+    experiment_started_ms = int(time.time() * 1000)
+    experiment_state = {'run_sent': False, 'last_fault': None, 'last_decision': None}
+
+    def build_live_run(status: str = 'IN_PROGRESS') -> dict:
+        return {
+            'contract_version': '2.0.0',
+            'run_id': experiment_run_id,
+            'algorithm_version': cfg.experiment_algorithm_version,
+            'started_at_ms': experiment_started_ms,
+            'simulation': {
+                'simulation_id': sim_id,
+                'robot_id': robot_id,
+                'plant': 'ros2-gazebo' if ros2_available else 'python-6r',
+                'control_hz': int(round(cfg.control_rate_hz)),
+                'duration_s': 8.0,
+            },
+            'scenario': {
+                'scenario_id': cfg.experiment_scenario_id,
+                'split': cfg.experiment_split,
+                'seed': cfg.experiment_seed,
+                'task_goal_rad': [0.0] * cfg.joint_count,
+                'description': '实时边端运行（部分记录，结束后状态为 INCOMPLETE）',
+            },
+            'fault': {
+                'type': None,
+                'joint_index': None,
+                'joint_name': None,
+                'injected_at_s': None,
+                'detected_at_s': None,
+                'detection_latency_ms': None,
+                'confirmed': False,
+            },
+            'reachability': {
+                'status': 'NOT_ASSESSED',
+                'reason': None,
+                'planner_position_error_m': None,
+            },
+            'strategy': cfg.experiment_strategy,
+            'decision': {'action': None, 'reason': None, 'at_s': None},
+            'task': {
+                'status': status,
+                'final_ee_error_m': None,
+                'recovery_time_s': None,
+                'stop_time_s': None,
+                'peak_fault_joint_torque_nm': None,
+                'max_joint_speed_rad_s': 0.0,
+                'max_joint_torque_nm': 0.0,
+            },
+            'trace': {
+                'path': f'live://{experiment_run_id}',
+                'sha256': '0' * 64,
+                'frame_count': 1,
+                'sample_rate_hz': 100,
+            },
+        }
+
+    logger.info("启动边端节点 simulation_id=%s robot_id=%s run_id=%s",
+                sim_id, robot_id, experiment_run_id)
 
     # ---- 业务层 ----
     processor = StateProcessor(
@@ -187,6 +253,10 @@ def main(args=None):
                 # v1.1：故障明细随 state 上云（可选 faults 数组；无故障为空数组）
                 if cfg.publish_faults:
                     state.faults = [fault]
+                publish_fault_event(fault)
+            else:
+                # 故障清除后复位去重状态，允许同关节同类型故障再次上报
+                experiment_state['last_fault'] = None
             with state_lock:
                 latest_state['value'] = state
                 latest_fault['value'] = fault
@@ -231,57 +301,64 @@ def main(args=None):
 
     # ---- 云端指令回调 ----
     def on_command(cmd: RobotCommand):
-        # 状态推断：根据指令类型更新运行状态（STOP→STOPPED，其余→RUNNING）
-        processor.set_command_status(cmd.cmd_type)
-        target = pass_through.command_to_target(cmd)
-        # 记录活动目标（无 ROS 2 容错闭环参考）；STOP 后清空，避免对刹车中的臂下发补偿
-        with state_lock:
-            if cmd.cmd_type == 'STOP':
-                active_target['value'] = None
-                safe_command_active['value'] = False
-            elif target is not None:
-                active_target['value'] = list(target)
-                safe_command_active['value'] = False
-        if target is not None and ftc is not None:
-            ftc.reset()
-        if cmd.cmd_type == 'STOP':
-            if nn_controller is not None:
-                nn_controller.reset()
-            if ros2_available and command_publisher is not None:
-                with state_lock:
-                    cur_state = latest_state['value']
-                if cur_state is not None:
-                    command_publisher.publish_position(cur_state.joint_position)
-            if not ros2_available:
-                mqtt_client.publish_stop_command(robot_id)
-            if ftc is not None:
+        try:
+            # 状态推断：根据指令类型更新运行状态（STOP→STOPPED，其余→RUNNING）
+            processor.set_command_status(cmd.cmd_type)
+            target = pass_through.command_to_target(cmd)
+            # 记录活动目标（无 ROS 2 容错闭环参考）；STOP 后清空，避免对刹车中的臂下发补偿
+            with state_lock:
+                if cmd.cmd_type == 'STOP':
+                    active_target['value'] = None
+                    safe_command_active['value'] = False
+                elif target is not None:
+                    active_target['value'] = list(target)
+                    safe_command_active['value'] = False
+            if target is not None and ftc is not None:
                 ftc.reset()
-        elif nn_controller is not None:
-            # 自适应 NN 模式：把云端目标设为 setpoint，由控制循环闭环跟踪
-            if target is not None:
-                nn_controller.set_setpoint(target)
-                logger.info("NN setpoint 已更新 commandId=%s cmdType=%s target=%s",
-                            cmd.command_id, cmd.cmd_type,
-                            [round(t, 3) for t in target])
-            else:
-                logger.info("收到指令 commandId=%s cmdType=%s（无位置目标）",
-                            cmd.command_id, cmd.cmd_type)
-        else:
-            # 透传模式：直接转发到仿真端（故障时做容错补偿）
-            if target is not None and command_publisher is not None:
-                if ftc is not None and ftc.requires_compensation:
+            if cmd.cmd_type == 'STOP':
+                if nn_controller is not None:
+                    nn_controller.reset()
+                if ros2_available and command_publisher is not None:
                     with state_lock:
                         cur_state = latest_state['value']
                     if cur_state is not None:
-                        task_goal = target if ftc.task_recovery else None
-                        target = ftc.compensate(cur_state, target, task_goal=task_goal)
-                        logger.info("容错补偿后目标: %s",
-                                    [round(t, 3) for t in target])
-                command_publisher.publish_position(target)
-                logger.info("已转发指令到仿真端 commandId=%s cmdType=%s", cmd.command_id, cmd.cmd_type)
+                        command_publisher.publish_position(cur_state.joint_position)
+                if not ros2_available:
+                    mqtt_client.publish_stop_command(robot_id)
+                if ftc is not None:
+                    ftc.reset()
+            elif nn_controller is not None:
+                # 自适应 NN 模式：把云端目标设为 setpoint，由控制循环闭环跟踪
+                if target is not None:
+                    nn_controller.set_setpoint(target)
+                    logger.info("NN setpoint 已更新 commandId=%s cmdType=%s target=%s",
+                                cmd.command_id, cmd.cmd_type,
+                                [round(t, 3) for t in target])
+                else:
+                    logger.info("收到指令 commandId=%s cmdType=%s（无位置目标）",
+                                cmd.command_id, cmd.cmd_type)
             else:
-                logger.info("收到指令 commandId=%s cmdType=%s（无需发布位置或无 ROS 2）",
-                            cmd.command_id, cmd.cmd_type)
+                # 透传模式：直接转发到仿真端（故障时做容错补偿）
+                if target is not None and command_publisher is not None:
+                    if ftc is not None and ftc.requires_compensation:
+                        with state_lock:
+                            cur_state = latest_state['value']
+                        if cur_state is not None:
+                            task_goal = target if ftc.task_recovery else None
+                            target = ftc.compensate(cur_state, target, task_goal=task_goal)
+                            logger.info("容错补偿后目标: %s",
+                                        [round(t, 3) for t in target])
+                    command_publisher.publish_position(target)
+                    logger.info("已转发指令到仿真端 commandId=%s cmdType=%s", cmd.command_id, cmd.cmd_type)
+                else:
+                    logger.info("收到指令 commandId=%s cmdType=%s（无需发布位置或无 ROS 2）",
+                                cmd.command_id, cmd.cmd_type)
+            mqtt_client.publish_command_ack(robot_id, cmd.command_id, cmd.cmd_type,
+                                            'SUCCESS', 'accepted')
+        except Exception as e:
+            logger.error("处理云端指令失败 commandId=%s: %s", cmd.command_id, e)
+            mqtt_client.publish_command_ack(robot_id, cmd.command_id, cmd.cmd_type,
+                                            'FAILED', str(e))
 
     def on_config(runtime_cfg):
         cfg.update_runtime(runtime_cfg)
@@ -310,7 +387,81 @@ def main(args=None):
                 'mqtt', 'upstream_state_topic',
                 default='simulation/{simulation_id}/sim_state'))
         ),
+        # 双向 TLS（broker 仅开 8883，本机映射 8884）：路径相对 edge_config.yaml 解析
+        ca_certs=cfg.mqtt_tls_ca_certs,
+        certfile=cfg.mqtt_tls_certfile,
+        keyfile=cfg.mqtt_tls_keyfile,
+        tls_insecure=cfg.mqtt_tls_insecure,
+        # 优雅下线 OFFLINE 心跳与遗嘱使用真实 robotId
+        robot_id=robot_id,
     )
+    # ---- V2 实时实验事件上报 ----
+    def ensure_experiment_run() -> None:
+        if experiment_state['run_sent'] or not mqtt_client.is_connected:
+            return
+        mqtt_client.publish_experiment_run(build_live_run())
+        experiment_state['run_sent'] = True
+
+    def experiment_stamp():
+        now_ms = int(time.time() * 1000)
+        return now_ms, round((now_ms - experiment_started_ms) / 1000.0, 3)
+
+    def publish_fault_event(fault) -> None:
+        if fault is None or not mqtt_client.is_connected:
+            return
+        key = (fault.fault_type, fault.joint_index)
+        if key == experiment_state['last_fault']:
+            return
+        ensure_experiment_run()
+        stamp_ms, sim_s = experiment_stamp()
+        mqtt_client.publish_experiment_event({
+            'contract_version': '2.0.0',
+            'run_id': experiment_run_id,
+            'event_type': 'FAULT',
+            'timestamp': stamp_ms,
+            'sim_time_s': sim_s,
+            'fault_type': fault.fault_type,
+            'joint_index': fault.joint_index,
+            'action': None,
+            'reason': None,
+            'reachability_status': None,
+            'detail': fault.detail,
+        })
+        experiment_state['last_fault'] = key
+
+    def publish_decision_event() -> None:
+        if ftc is None or not mqtt_client.is_connected:
+            return
+        decision = ftc.last_recovery_decision
+        if decision is None:
+            return
+        key = (decision.action, decision.reason,
+               tuple(round(float(x), 4) for x in (decision.target_q or [])))
+        if key == experiment_state['last_decision']:
+            return
+        ensure_experiment_run()
+        stamp_ms, sim_s = experiment_stamp()
+        if decision.action == 'RECOVER':
+            reachability = 'REACHABLE'
+        elif decision.action == 'STOP':
+            reachability = 'NO_FEASIBLE_PLAN'
+        else:
+            reachability = 'NOT_ASSESSED'
+        mqtt_client.publish_experiment_event({
+            'contract_version': '2.0.0',
+            'run_id': experiment_run_id,
+            'event_type': 'DECISION',
+            'timestamp': stamp_ms,
+            'sim_time_s': sim_s,
+            'fault_type': 'JOINT_LOCKED',
+            'joint_index': next(iter(ftc.active_faults), None),
+            'action': decision.action,
+            'reason': decision.reason,
+            'reachability_status': reachability,
+            'detail': f"iterations={decision.iterations}",
+        })
+        experiment_state['last_decision'] = key
+
     mqtt_client.connect()
 
     # ---- 心跳线程（独立线程，不依赖 ROS 2 spin）----
@@ -348,6 +499,7 @@ def main(args=None):
                 with state_lock:
                     state: Optional[RobotState] = latest_state['value']
                 if state is not None and mqtt_client.is_connected:
+                    ensure_experiment_run()
                     # 通信超时在发布线程检出（非状态回调），发布前挂到本帧 faults
                     if cfg.publish_faults and timeout_fault is not None:
                         state.faults = [timeout_fault]
@@ -383,6 +535,7 @@ def main(args=None):
                         final_goal = task_goal if ftc.task_recovery else None
                         q_target = ftc.compensate(state, q_target, task_goal=final_goal)
                         log_task_recovery_decision()
+                        publish_decision_event()
                     command_publisher.publish_position(q_target)
             except Exception as e:
                 logger.error("控制循环失败: %s", e)
@@ -417,6 +570,7 @@ def main(args=None):
                             safe_target = ftc.compensate(
                                 state, q_target, task_goal=final_goal
                             )
+                            publish_decision_event()
                             mqtt_client.publish_safe_command(robot_id, target=safe_target)
                             if not safe_active:
                                 logger.warning("容错激活：下发安全目标 %s",
@@ -449,6 +603,12 @@ def main(args=None):
     except KeyboardInterrupt:
         logger.info("收到中断信号，正在退出...")
     finally:
+        try:
+            if mqtt_client.is_connected:
+                ensure_experiment_run()
+                mqtt_client.publish_experiment_run(build_live_run('INCOMPLETE'))
+        except Exception as e:
+            logger.warning("收尾实验 Run 状态失败: %s", e)
         mqtt_client.disconnect()
         if ros2_available and node is not None:
             node.destroy_node()

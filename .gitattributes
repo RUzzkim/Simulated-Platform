@@ -1,0 +1,2 @@
+# Shell 脚本在检出时保持 LF（本仓库 core.autocrlf=true）
+*.sh text eol=lf

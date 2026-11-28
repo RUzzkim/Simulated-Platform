@@ -1,0 +1,12 @@
+{
+  "contract_version": "2.0.0",
+  "event_type": "DECISION",
+  "timestamp": 1795660686657,
+  "sim_time_s": 0.64,
+  "fault_type": "JOINT_LOCKED",
+  "joint_index": 0,
+  "action": "RECOVER",
+  "reason": "TARGET_REACHED",
+  "reachability_status": "REACHABLE",
+  "detail": null
+}

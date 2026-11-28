@@ -6,6 +6,16 @@ edge:
   simulation_id: "SIM-001"     # 格式 ^SIM-\d{3}$
   robot_id: "ROBOT-001"        # 格式 ^ROBOT-\d{3}$
 
+# V2.0 实验运行记录（契约 2.0.0，字段见 docs/v2-experiment-contract.md）
+# run_id 留空时每次启动生成新的 32 位 uuid；需要固定追溯编号时填写
+experiment:
+  run_id: ""                    # EDGE_RUN_ID
+  scenario_id: "ONLINE-LOCK"    # EDGE_SCENARIO_ID
+  split: "online"               # EDGE_RUN_SPLIT（离线批次为 development/exploratory/validation）
+  seed: 0                       # EDGE_RUN_SEED
+  strategy: "v2"                # off / v1 / v2；EDGE_EXPERIMENT_STRATEGY
+  algorithm_version: "v2.0.0"   # EDGE_ALGORITHM_VERSION
+
 # ROS 2 通信
 ros2:
   joint_states_topic: "/simulation/{simulation_id}/joint_states"
@@ -27,6 +37,13 @@ mqtt:
   heartbeat_topic: "simulation/{simulation_id}/heartbeat"
   command_topic: "simulation/{simulation_id}/command"
   config_topic: "simulation/{simulation_id}/config"
+  # 双向 TLS：broker_url 用 ssl:// 时启用（本机 ssl://127.0.0.1:8884，生产 ssl://<云端>:8883）
+  # 路径相对本配置文件所在目录解析；username/password 在证书认证下留空
+  tls:
+    ca_certs: ""                # 如 certs/ca.crt
+    certfile: ""                # 如 certs/edge-SIM-001.crt
+    keyfile: ""                 # 如 certs/edge-SIM-001.key
+    insecure: false             # 仅联调可 true；生产必须校验服务端证书与主机名
 
 # 运行参数
 runtime:

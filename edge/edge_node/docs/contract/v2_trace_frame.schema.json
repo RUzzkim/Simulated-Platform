@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://simulated-platform.local/contract/v2_trace_frame.schema.json",
+  "title": "V2.0 单关节卡滞 TraceFrame 记录",
+  "description": "契约版本 2.0.0；每控制周期一条，与 Run 记录以 run_id 关联。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "run_id",
+    "step",
+    "timestamp_ms",
+    "sim_time_s",
+    "command_time_s",
+    "joints",
+    "end_effector",
+    "ee_error_m",
+    "fault_active",
+    "fault_type",
+    "fault_joint",
+    "action",
+    "reason"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "2.0.0"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$"
+    },
+    "step": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "timestamp_ms": {
+      "type": "integer",
+      "minimum": 1000000000000,
+      "maximum": 9999999999999
+    },
+    "sim_time_s": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "command_time_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "joints": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "position_rad", "velocity_rad_s", "torque_nm"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^J[0-5]$"
+          },
+          "position_rad": {
+            "type": "number"
+          },
+          "velocity_rad_s": {
+            "type": "number"
+          },
+          "torque_nm": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "end_effector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["position_m", "rpy_rad"],
+      "properties": {
+        "position_m": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": [
+            {"type": "number"},
+            {"type": "number"},
+            {"type": "number"}
+          ],
+          "additionalItems": false
+        },
+        "rpy_rad": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": [
+            {"type": "number"},
+            {"type": "number"},
+            {"type": "number"}
+          ],
+          "additionalItems": false
+        }
+      }
+    },
+    "ee_error_m": {
+      "type": "number",
+      "minimum": 0
+    },
+    "fault_active": {
+      "type": "boolean"
+    },
+    "fault_type": {
+      "enum": ["JOINT_LOCKED", null]
+    },
+    "fault_joint": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 5
+    },
+    "action": {
+      "enum": ["RECOVER", "STOP", null]
+    },
+    "reason": {
+      "type": ["string", "null"]
+    }
+  }
+}
