@@ -13,8 +13,8 @@
 """
 from __future__ import annotations
 
+import math
 import re
-import time
 
 import rclpy
 from rclpy.node import Node
@@ -46,6 +46,7 @@ class PlantNode(Node):
         self.declare_parameter("demo", False)      # 无边端时自娱自乐：周期切目标，RViz 能看到臂在动
         # 作业场景：'' / handling(搬运) / marking(喷号) / sorting(下料分拣)——循环下发预设路点
         self.declare_parameter("scenario", "")
+        self.declare_parameter("scenario_loop", True)
         # 故障/扰动注入（默认全关=正常工况），配合边端容错/云端健康分析演示
         self.declare_parameter("fault_sensor_drift", False)
         self.declare_parameter("fault_drift_rate", 0.02)      # rad/s，J1/J2 位置漂移
@@ -53,10 +54,19 @@ class PlantNode(Node):
         self.declare_parameter("fault_wear_gain", 0.6)        # J3 出力增益(<1)
         self.declare_parameter("fault_disturbance", False)
         self.declare_parameter("fault_disturbance_torque", 8.0)  # N·m，J2 外扰
+        self.declare_parameter("fault_lock_joint", "")
+        self.declare_parameter("fault_lock_at", 0.30)
         sim_id = self.get_parameter("sim_id").value
         ros_id = _ros2_safe_id(sim_id)
         self.rate_hz = float(self.get_parameter("rate_hz").value)
         self.dt = 1.0 / self.rate_hz
+        lock_joint = self.get_parameter("fault_lock_joint").value
+        lock_at = self.get_parameter("fault_lock_at").value
+        if lock_joint and (lock_joint not in JOINT_NAMES or not math.isfinite(lock_at) or lock_at < 0):
+            raise ValueError("卡滞参数须指定 joint_1 至 joint_6 之一及非负有限注入时间")
+        self._lock_index = JOINT_NAMES.index(lock_joint) if lock_joint else None
+        self._lock_tick = math.ceil(lock_at * self.rate_hz - 1e-9) if lock_joint else None
+        self._tick = 0
 
         self.plant = RealtimePlant(HOME)
         self._configure_faults()
@@ -65,14 +75,15 @@ class PlantNode(Node):
             Float64MultiArray, f"/simulation/{ros_id}/joint_command", self.on_command, 10)
         self.timer = self.create_timer(self.dt, self.on_tick)
         self._scenario = str(self.get_parameter("scenario").value or "").strip()
+        self._scenario_loop = self.get_parameter("scenario_loop").value
+        self._wp = None
         if self._scenario and self._scenario in SCENARIOS:
             self._wp = SCENARIOS[self._scenario]
             self._wp_i = 0
-            self._wp_t0 = time.time()
+            self._wp_started = 0
             self.plant.set_target(self._wp[0][1])
-            self.create_timer(0.1, self._scenario_tick)
             self.get_logger().info(
-                f"作业场景模式 scenario={self._scenario}（{len(self._wp)} 路点循环下发）")
+                f"作业场景模式 scenario={self._scenario}（{len(self._wp)} 路点）")
         elif self._scenario:
             self.get_logger().warn(
                 f"未知 scenario={self._scenario}，可选 {sorted(SCENARIOS)}；忽略")
@@ -110,11 +121,22 @@ class PlantNode(Node):
             self.get_logger().warn("故障注入已启用：" + "；".join(active))
 
     def _scenario_tick(self) -> None:
-        # 到达当前路点停留时长后切下一个，循环往复
-        if time.time() - self._wp_t0 >= self._wp[self._wp_i][2]:
-            self._wp_i = (self._wp_i + 1) % len(self._wp)
-            self.plant.set_target(self._wp[self._wp_i][1])
-            self._wp_t0 = time.time()
+        _, target, min_time = self._wp[self._wp_i]
+        elapsed = (self._tick - self._wp_started) * self.dt
+        if elapsed < min_time:
+            return
+        settled = max(abs(a - b) for a, b in zip(self.plant.q, target)) < 0.025
+        settled = settled and max(abs(v) for v in self.plant.qd) < 0.05
+        if not settled and elapsed < min_time + 2.0:
+            return
+        next_index = self._wp_i + 1
+        if next_index == len(self._wp) and not self._scenario_loop:
+            self._wp = None
+            self.get_logger().info("场景播放完成，保持最后目标")
+            return
+        self._wp_i = next_index % len(self._wp)
+        self.plant.set_target(self._wp[self._wp_i][1])
+        self._wp_started = self._tick
 
     def _demo_tick(self) -> None:
         self._demo_i = 1 - self._demo_i
@@ -131,7 +153,13 @@ class PlantNode(Node):
             self.get_logger().warn(f"joint_command 非法：{e}，忽略")
 
     def on_tick(self) -> None:
+        if self._tick == self._lock_tick:
+            self.plant.lock_joint(self._lock_index)
+            self.get_logger().info(f"{JOINT_NAMES[self._lock_index]} 在 {self._tick * self.dt:.2f} s 卡滞")
         self.plant.step(self.dt)
+        self._tick += 1
+        if self._wp is not None:
+            self._scenario_tick()
         q, qd, tau = self.plant.state()
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()

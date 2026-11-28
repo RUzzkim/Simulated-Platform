@@ -156,6 +156,16 @@ class RealtimePlant:
         self._target = list(home)
         self._ref = RefFollower(home, v_max, a_max)
         self.faults = FaultInjector()   # 故障/扰动注入（默认全关）
+        self._locked_joint: Optional[int] = None
+
+    def lock_joint(self, joint_index: int) -> None:
+        """在当前位置锁定一个关节，索引 0 对应 joint_1。"""
+        if not 0 <= joint_index < N:
+            raise ValueError("关节索引须为 0 至 5")
+        if self._locked_joint is not None and self._locked_joint != joint_index:
+            raise ValueError("仿真仅支持单关节卡滞")
+        self._locked_joint = joint_index
+        self.qd[joint_index] = 0.0
 
     def set_target(self, target: List[float]) -> None:
         """收到新关节目标：参考从当前参考点起限速/限加速度平滑逼近（可流式下发）。"""
@@ -200,7 +210,16 @@ class RealtimePlant:
                 c = self.coupling[k]
                 tau_net[k] -= c * math.sin(self.q[k] - self.q[k + 1]) * self.qd[k + 1] ** 2
                 tau_net[k + 1] += c * math.sin(self.q[k] - self.q[k + 1]) * self.qd[k] ** 2
-            qdd = _solve(self._mass_matrix(), tau_net)
+            mass = self._mass_matrix()
+            locked = self._locked_joint
+            if locked is not None:
+                # 固定轴的加速度为零，其余轴按约束后的惯量矩阵求解。
+                for row in mass:
+                    row[locked] = 0.0
+                mass[locked] = [0.0] * N
+                mass[locked][locked] = 1.0
+                tau_net[locked] = 0.0
+            qdd = _solve(mass, tau_net)
             for i in range(N):
                 self.qd[i] = _clamp(self.qd[i] + qdd[i] * h, -self.v_limit, self.v_limit)
                 self.q[i] += self.qd[i] * h
