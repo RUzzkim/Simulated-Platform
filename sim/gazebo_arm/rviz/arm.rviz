@@ -6,39 +6,48 @@ Visualization Manager:
   Displays:
     - Class: rviz_default_plugins/Grid
       Name: Grid
-      Enabled: true
+      Enabled: false
       Plane Cell Count: 10
     - Class: rviz_default_plugins/TF
       Name: TF
-      Enabled: true
+      Enabled: false
     - Class: rviz_default_plugins/RobotModel
       Name: RobotModel
       Enabled: true
       Description Topic:
         Value: /robot_description
       Visual Enabled: true
+      Collision Enabled: false
     - Class: rviz_default_plugins/MarkerArray
       Name: Scene
-      Enabled: true
+      Enabled: false
       Topic:
         Value: /scene
         Durability Policy: Transient Local
         Depth: 1
+    - Class: rviz_default_plugins/MarkerArray
+      Name: End Effector Trajectory
+      Enabled: true
+      Topic:
+        Value: /arm_trajectory
+        Durability Policy: Volatile
+        Depth: 5
   Global Options:
     Fixed Frame: base_link
-    Background Color: 48; 48; 48
+    Frame Rate: 30
+    Background Color: 140; 140; 145
   Tools:
     - Class: rviz_default_plugins/MoveCamera
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
       Name: Current View
-      Distance: 3.0
+      Distance: 2.45
       Focal Point:
-        X: 0.2
+        X: 0.37
         Y: 0.0
-        Z: 0.3
-      Pitch: 0.4
+        Z: 0.28
+      Pitch: 0.36
       Yaw: 0.8
 Window Geometry:
   Height: 720

@@ -1,0 +1,7 @@
+{
+  "normal_render_and_encode_seconds": 448.48,
+  "lock_render_and_encode_seconds": 421.8,
+  "stills_render_seconds": 5.31,
+  "final_animation_wall_seconds": 871.3,
+  "wall_to_media_and_decode_validation_seconds": 1250.41
+}

@@ -1,0 +1,240 @@
+[
+  {
+    "round": 1,
+    "image": "reference_round_01.png",
+    "parameters": {
+      "floor_gray": 0.66,
+      "floor_roughness": 0.82
+    },
+    "change": null,
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 207.47957148375093,
+      "highlight_pct": 1.301340775344294,
+      "subject_mean_luma": 154.7448248198559,
+      "background_mean_luma": 226.51354291926407,
+      "contrast_luma": -71.76871809940818,
+      "reflection": {
+        "detected": false,
+        "coverage_pct_at_2_luma": 0.0,
+        "mean_signed_darkening_luma": -0.042625044091710994,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 25.55313674338267,
+    "histogram_similarity_pct": 74.44686325661733,
+    "highlight_delta_pp": 1.082933931929867,
+    "contrast_delta_luma": -78.04847711323924,
+    "thresholds_pass": false
+  },
+  {
+    "round": 2,
+    "image": "reference_round_02.png",
+    "parameters": {
+      "floor_gray": 0.235,
+      "floor_roughness": 0.82
+    },
+    "change": {
+      "setting": "floor_gray",
+      "before": 0.66,
+      "after": 0.235
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 187.69555602944453,
+      "highlight_pct": 1.2952739185827824,
+      "subject_mean_luma": 152.40640010675205,
+      "background_mean_luma": 200.43275167953323,
+      "contrast_luma": -48.02635157278118,
+      "reflection": {
+        "detected": false,
+        "coverage_pct_at_2_luma": 0.0,
+        "mean_signed_darkening_luma": -0.16295174603174617,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 17.802302947104536,
+    "histogram_similarity_pct": 82.19769705289546,
+    "highlight_delta_pp": 1.0768670751683553,
+    "contrast_delta_luma": -54.30611058661225,
+    "thresholds_pass": false
+  },
+  {
+    "round": 3,
+    "image": "reference_round_03.png",
+    "parameters": {
+      "floor_gray": 0.038,
+      "floor_roughness": 0.82
+    },
+    "change": {
+      "setting": "floor_gray",
+      "before": 0.235,
+      "after": 0.038
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 144.86546881433395,
+      "highlight_pct": 1.2952739185827824,
+      "subject_mean_luma": 150.90963005070722,
+      "background_mean_luma": 142.6839016389382,
+      "contrast_luma": 8.225728411769012,
+      "reflection": {
+        "detected": false,
+        "coverage_pct_at_2_luma": 0.0,
+        "mean_signed_darkening_luma": -1.3271130864197533,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 3.187518611966617,
+    "histogram_similarity_pct": 96.81248138803338,
+    "highlight_delta_pp": 1.0768670751683553,
+    "contrast_delta_luma": 1.9459693979379438,
+    "thresholds_pass": false
+  },
+  {
+    "round": 4,
+    "image": "reference_round_04.png",
+    "parameters": {
+      "floor_gray": 0.038,
+      "floor_roughness": 0.27
+    },
+    "change": {
+      "setting": "floor_roughness",
+      "before": 0.82,
+      "after": 0.27
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 123.05116425205769,
+      "highlight_pct": 1.294262775789197,
+      "subject_mean_luma": 150.78556670860496,
+      "background_mean_luma": 113.04076584238122,
+      "contrast_luma": 37.74480086622374,
+      "reflection": {
+        "detected": false,
+        "coverage_pct_at_2_luma": 0.0,
+        "mean_signed_darkening_luma": -16.21948,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 8.2631659713573,
+    "histogram_similarity_pct": 91.7368340286427,
+    "highlight_delta_pp": 1.0758559323747698,
+    "contrast_delta_luma": 31.465041852392673,
+    "thresholds_pass": false
+  },
+  {
+    "round": 5,
+    "image": "reference_round_05.png",
+    "parameters": {
+      "floor_gray": 0.038,
+      "floor_roughness": 0.27,
+      "glossy_world_strength": 0.35
+    },
+    "change": {
+      "setting": "glossy_world_strength",
+      "before": 0.065,
+      "after": 0.35
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 136.77046178689153,
+      "highlight_pct": 1.3033630609314648,
+      "subject_mean_luma": 162.40201963475545,
+      "background_mean_luma": 127.51905980266689,
+      "contrast_luma": 34.88295983208856,
+      "reflection": {
+        "detected": false,
+        "coverage_pct_at_2_luma": 4.5855379188712515,
+        "mean_signed_darkening_luma": -8.47487597883598,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 4.055693745070678,
+    "histogram_similarity_pct": 95.94430625492932,
+    "highlight_delta_pp": 1.0849562175170377,
+    "contrast_delta_luma": 28.60320081825749,
+    "thresholds_pass": false
+  },
+  {
+    "round": 6,
+    "image": "reference_round_06.png",
+    "parameters": {
+      "floor_gray": 0.038,
+      "floor_roughness": 0.27,
+      "glossy_world_strength": 0.6
+    },
+    "change": {
+      "setting": "glossy_world_strength",
+      "before": 0.35,
+      "after": 0.6
+    },
+    "reference": {
+      "mean_luma": 142.32846477178506,
+      "highlight_pct": 0.218406843414427,
+      "subject_mean_luma": 146.46823674559374,
+      "background_mean_luma": 140.18847773176267,
+      "contrast_luma": 6.279759013831068,
+      "floor_below_base_mean_luma": 149.73242,
+      "reflection_status": "A single image does not isolate reflection from shadow"
+    },
+    "render": {
+      "mean_luma": 146.01274950959575,
+      "highlight_pct": 1.310441060486562,
+      "subject_mean_luma": 169.61822170117048,
+      "background_mean_luma": 137.49263873178384,
+      "contrast_luma": 32.12558296938664,
+      "reflection": {
+        "detected": true,
+        "coverage_pct_at_2_luma": 14.497354497354497,
+        "mean_signed_darkening_luma": -3.3194564373897717,
+        "method": "paired Cycles render with robot glossy-ray visibility disabled"
+      }
+    },
+    "histogram_deviation_pct": 2.0348277230769356,
+    "histogram_similarity_pct": 97.96517227692307,
+    "highlight_delta_pp": 1.0920342170721349,
+    "contrast_delta_luma": 25.845823955555574,
+    "thresholds_pass": true
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "clip": "lock_event",
+  "scene_sha256": "e5f6070c7dbdd1e3128434c662bac202d58313d56ef80ba01ee4acf9e1f1e5b4",
+  "decoded_frame_count": 300,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 10.0,
+  "sequential_presentation_timestamps": true,
+  "all_frames_matched": true,
+  "minimum_ssim": 0.996862,
+  "sampled_frame_ssim": {
+    "16": 0.997162,
+    "85": 0.997542,
+    "270": 0.998575
+  },
+  "joint_2_lock_drift_rad": 0.0
+}

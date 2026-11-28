@@ -1,0 +1,144 @@
+{
+  "environment": {
+    "image": "studio_small_09_4k.hdr",
+    "size": [
+      4096,
+      2048
+    ],
+    "packed": true,
+    "strength": 0.800000011920929,
+    "links": [
+      [
+        "Background",
+        "Background",
+        "World Output",
+        "Surface"
+      ],
+      [
+        "Texture Coordinate",
+        "Normal",
+        "Vector Rotate",
+        "Vector"
+      ],
+      [
+        "Vector Rotate",
+        "Vector",
+        "Environment Texture",
+        "Vector"
+      ],
+      [
+        "Environment Texture",
+        "Color",
+        "Background",
+        "Color"
+      ]
+    ]
+  },
+  "gripper": {
+    "finger_left": {
+      "projected_tip": [
+        0.10900120437145233,
+        0.43188706040382385,
+        3.3719980716705322
+      ],
+      "visuals": [
+        {
+          "name": "finger_left flat gripping face",
+          "mesh": "finger_left flat gripping face",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "material": "Grip pad rubber"
+        },
+        {
+          "name": "finger_left slider shoe",
+          "mesh": "finger_left slider shoe",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "material": "Satin gunmetal joints and rails"
+        },
+        {
+          "name": "finger_left \u00b7 00 finger",
+          "mesh": "finger",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "material": "Machined steel"
+        },
+        {
+          "name": "finger_left \u00b7 02 graphite_block",
+          "mesh": "graphite_block",
+          "scale": [
+            0.032999999821186066,
+            0.014000000432133675,
+            0.04899999871850014
+          ],
+          "material": "Grip pad rubber"
+        }
+      ]
+    },
+    "finger_right": {
+      "projected_tip": [
+        0.08726426959037781,
+        0.5617114305496216,
+        3.210184335708618
+      ],
+      "visuals": [
+        {
+          "name": "finger_right flat gripping face",
+          "mesh": "finger_right flat gripping face",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "material": "Grip pad rubber"
+        },
+        {
+          "name": "finger_right slider shoe",
+          "mesh": "finger_right slider shoe",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "material": "Satin gunmetal joints and rails"
+        },
+        {
+          "name": "finger_right \u00b7 00 finger",
+          "mesh": "finger",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "material": "Machined steel"
+        },
+        {
+          "name": "finger_right \u00b7 02 graphite_block",
+          "mesh": "graphite_block",
+          "scale": [
+            0.032999999821186066,
+            0.014000000432133675,
+            0.04899999871850014
+          ],
+          "material": "Grip pad rubber"
+        }
+      ]
+    }
+  },
+  "camera": "Overview 45\u00b0",
+  "guides": [
+    "Linear jaw guide +1",
+    "Linear jaw guide -1"
+  ],
+  "signed_view_dot_tool_forward": -0.5883482756821472,
+  "cast_roughness": 0.30000001192092896
+}

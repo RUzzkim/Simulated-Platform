@@ -1,0 +1,15 @@
+{
+  "urdf": "C:\\Users\\hj\\orca\\projects\\Simulated-Platform\\sim\\gazebo_arm\\urdf\\hydraulic_arm.urdf",
+  "home_joint_angles_rad": [
+    0.0,
+    0.35,
+    -0.72,
+    0.2,
+    0.0,
+    0.0
+  ],
+  "links": 15,
+  "visual_instances": 40,
+  "position_error_m": 7.598131170262075e-08,
+  "rotation_max_component_error": 7.549790470519408e-08
+}

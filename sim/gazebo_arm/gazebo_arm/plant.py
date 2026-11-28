@@ -21,6 +21,11 @@ N = 6
 V_EPS = 0.01          # 库仑摩擦平滑尺度 (rad/s)
 V_S = 0.05            # Stribeck 特征速度 (rad/s)
 
+JOINT_LOCK_MODE_CONFLICT = (
+    "joint lock mode conflict: fault_lock_joint (A fixed-step) and "
+    "fault_joint_lock (B edge detection) cannot be enabled together"
+)
+
 
 def parse_joint_positions(value: str) -> List[float]:
     """解析 6 个逗号分隔的初始关节角（弧度）。"""
@@ -219,6 +224,18 @@ class RealtimePlant:
         self._target = list(home)
         self._ref = RefFollower(home, v_max, a_max)
         self.faults = FaultInjector()   # 故障/扰动注入（默认全关）
+        self._locked_joint: Optional[int] = None
+
+    def lock_joint(self, joint_index: int) -> None:
+        """Freeze an axis at a fixed-step boundary with its actuator effort intact."""
+        if not 0 <= joint_index < N:
+            raise ValueError("关节索引须为 0 至 5")
+        if self.faults.joint_lock_enabled:
+            raise ValueError(JOINT_LOCK_MODE_CONFLICT)
+        if self._locked_joint is not None and self._locked_joint != joint_index:
+            raise ValueError("仿真仅支持单关节卡滞")
+        self._locked_joint = joint_index
+        self.qd[joint_index] = 0.0
 
     def set_target(self, target: List[float]) -> None:
         """收到新关节目标：参考从当前参考点起限速/限加速度平滑逼近（可流式下发）。"""
@@ -242,8 +259,10 @@ class RealtimePlant:
         """推进一个发布 tick（内部 SUB 个子步）。"""
         h = dt / self.SUB
         fi = self.faults
+        if self._locked_joint is not None and fi.joint_lock_enabled:
+            raise ValueError(JOINT_LOCK_MODE_CONFLICT)
         for substep in range(self.SUB):
-            lock_index = None
+            lock_index = self._locked_joint
             lock_position = fi.locked_joint_position(
                 self.q, substep * h,
             )

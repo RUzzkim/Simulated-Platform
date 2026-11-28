@@ -1,0 +1,27 @@
+{
+  "run_id": "point-to-point-shoulder-lock-25d80a6e39bb485ba11daa0624be0b68",
+  "scenario": "point-to-point-shoulder-lock",
+  "step_s": 0.01,
+  "steps": 800,
+  "initial_position_rad": [
+    0.0,
+    0.35,
+    -0.72,
+    0.2,
+    0.0,
+    0.0
+  ],
+  "target_position_rad": [
+    0.8,
+    0.6,
+    -0.5,
+    0.4,
+    0.3,
+    0.2
+  ],
+  "reference_max_velocity_rad_s": 0.6,
+  "lock_joint": "joint_2",
+  "lock_tick": 30,
+  "end_effector_frame": "link_6",
+  "pose_reference_frame": "base_link"
+}

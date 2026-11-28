@@ -1,0 +1,2 @@
+run_id,event,tick,sim_time_s,joint,position_rad
+point-to-point-shoulder-lock-25d80a6e39bb485ba11daa0624be0b68,joint_locked,30,0.30,joint_2,0.35131841120386753

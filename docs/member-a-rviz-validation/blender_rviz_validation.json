@@ -1,0 +1,42 @@
+{
+  "poses": 111,
+  "parts": 108,
+  "kinematics_changed": false,
+  "intersection_pairs": [],
+  "triangles_before": {
+    "base_link": 5120,
+    "link_1": 6656,
+    "link_2": 8576,
+    "link_3": 3456,
+    "link_4": 1024,
+    "link_5": 1024,
+    "link_6": 1024,
+    "gripper_base": 1024,
+    "finger_right": 1664,
+    "finger_left": 1664
+  },
+  "triangles_after": {
+    "base_link": 10752,
+    "link_1": 19376,
+    "link_2": 12128,
+    "link_3": 7520,
+    "link_4": 4864,
+    "link_5": 4224,
+    "link_6": 3584,
+    "gripper_base": 3712,
+    "finger_right": 1280,
+    "finger_left": 1280
+  },
+  "ratios": {
+    "base_link": 2.1,
+    "link_1": 2.9110576923076925,
+    "link_2": 1.414179104477612,
+    "link_3": 2.175925925925926,
+    "link_4": 4.75,
+    "link_5": 4.125,
+    "link_6": 3.5,
+    "gripper_base": 3.625,
+    "finger_right": 0.7692307692307693,
+    "finger_left": 0.7692307692307693
+  }
+}

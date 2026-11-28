@@ -1,0 +1,155 @@
+{
+  "run_root": "%LOCALAPPDATA%/SimPlatformROS/member-a-workspace/scenario-runs",
+  "comparison_excludes": [
+    "run_id"
+  ],
+  "hardware_scope": "lightweight offline joint-space simulation",
+  "migrated": {
+    "handling": {
+      "generated_run": "point-to-point-normal-49f8e21937ab4251a9e77c4932b87c9a",
+      "state_rows": 800,
+      "state_columns": 33,
+      "first_time_s": 0.01,
+      "last_time_s": 8.0,
+      "events": [],
+      "against_current_dh_baseline": {
+        "path": "member-a-delivery/runs-dh-verified/point-to-point-normal-fa908ea857014556a1cff3f45e4ee94d",
+        "states_max_abs_diff": {
+          "tick": 0.0,
+          "sim_time_s": 0.0,
+          "joint_target_rad": 0.0,
+          "joint_position_rad": 0.0,
+          "joint_velocity_rad_s": 0.0,
+          "joint_effort_Nm": 0.0,
+          "ee_xyz_m": 0.0,
+          "ee_rpy_rad": 0.0
+        },
+        "matching_events": true
+      },
+      "against_original_archive": {
+        "path": "member-a-delivery/runs/point-to-point-normal-95ef64c016994260b7ba18861c59da67",
+        "states_max_abs_diff": {
+          "tick": 0.0,
+          "sim_time_s": 0.0,
+          "joint_target_rad": 0.0,
+          "joint_position_rad": 0.0,
+          "joint_velocity_rad_s": 0.0,
+          "joint_effort_Nm": 0.0,
+          "ee_xyz_m": 0.6590253622417609,
+          "ee_rpy_rad": 1.632838904231428
+        },
+        "matching_events": true
+      },
+      "against_pre_migration_runner": {
+        "run_id": "point-to-point-normal-81d91c30ed414ff5a47571fdcefc9596",
+        "states_max_abs_diff": {
+          "tick": 0.0,
+          "sim_time_s": 0.0,
+          "joint_target_rad": 0.0,
+          "joint_position_rad": 0.0,
+          "joint_velocity_rad_s": 0.0,
+          "joint_effort_Nm": 0.0,
+          "ee_xyz_m": 0.0,
+          "ee_rpy_rad": 0.0
+        },
+        "matching_events": true
+      }
+    },
+    "lock": {
+      "generated_run": "point-to-point-shoulder-lock-67b9b17ae7e74da3a9273ea23a49f79d",
+      "state_rows": 800,
+      "state_columns": 33,
+      "first_time_s": 0.01,
+      "last_time_s": 8.0,
+      "events": [
+        {
+          "event": "joint_locked",
+          "tick": "30",
+          "sim_time_s": "0.30",
+          "joint": "joint_2",
+          "position_rad": "0.35131841120386753"
+        }
+      ],
+      "against_current_dh_baseline": {
+        "path": "member-a-delivery/runs-dh-verified/point-to-point-shoulder-lock-38cec0f2888a4cc7ae20b82f33ce1a43",
+        "states_max_abs_diff": {
+          "tick": 0.0,
+          "sim_time_s": 0.0,
+          "joint_target_rad": 0.0,
+          "joint_position_rad": 0.0,
+          "joint_velocity_rad_s": 0.0,
+          "joint_effort_Nm": 0.0,
+          "ee_xyz_m": 0.0,
+          "ee_rpy_rad": 0.0
+        },
+        "matching_events": true
+      },
+      "against_original_archive": {
+        "path": "member-a-delivery/runs/point-to-point-shoulder-lock-25d80a6e39bb485ba11daa0624be0b68",
+        "states_max_abs_diff": {
+          "tick": 0.0,
+          "sim_time_s": 0.0,
+          "joint_target_rad": 0.0,
+          "joint_position_rad": 0.0,
+          "joint_velocity_rad_s": 0.0,
+          "joint_effort_Nm": 0.0,
+          "ee_xyz_m": 0.6961944216933176,
+          "ee_rpy_rad": 1.2430724827850488
+        },
+        "matching_events": true
+      },
+      "against_pre_migration_runner": {
+        "run_id": "point-to-point-shoulder-lock-88d2feef994e4e1697065869668d9f01",
+        "states_max_abs_diff": {
+          "tick": 0.0,
+          "sim_time_s": 0.0,
+          "joint_target_rad": 0.0,
+          "joint_position_rad": 0.0,
+          "joint_velocity_rad_s": 0.0,
+          "joint_effort_Nm": 0.0,
+          "ee_xyz_m": 0.0,
+          "ee_rpy_rad": 0.0
+        },
+        "matching_events": true
+      },
+      "joint_2_max_lock_drift_rad": 0.0
+    }
+  },
+  "elbow_grasp": {
+    "generated_run": "elbow-grasp-a24f93c288234b139ef58199e820dba6",
+    "state_rows": 1050,
+    "last_time_s": 10.5,
+    "event_rows": 0,
+    "minimum_joint_3_rad": -1.565170623949282,
+    "minimum_joint_3_deg": -89.67767097015155,
+    "joint_3_at_end_of_grasp_waypoint_rad": -1.5650137788197254,
+    "end_effector_z_at_approach_m": 0.23143208755067077,
+    "end_effector_z_at_grasp_m": 0.1771245489959184,
+    "end_effector_z_at_retreat_m": 0.3100566261077948,
+    "max_final_home_angle_error_rad": 0.006129201407798268
+  },
+  "unchanged_protected_files_verified_by_sha256": 59,
+  "verification": {
+    "colcon_build": "passed",
+    "member_a_pytest": {
+      "passed": 4,
+      "subtests_passed": 14
+    },
+    "plant_smoke": "passed",
+    "cli_scene_listing": [
+      "elbow_grasp",
+      "handling",
+      "lock"
+    ],
+    "legacy_flags": [
+      "--output",
+      "--lock --output"
+    ],
+    "ros_live_handling_and_lock_samples_each": 650,
+    "ros_valid_command_and_invalid_length": "passed",
+    "ros_elbow_grasp_replay_samples": 1050,
+    "ros_elbow_grasp_replay_max_position_error_rad": 0.0,
+    "module_document_headings": 6,
+    "module_document_links_verified": 17
+  }
+}

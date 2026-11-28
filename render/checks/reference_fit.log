@@ -1,0 +1,1186 @@
+Blender 4.5.5 LTS (hash 836beaaf597a built 2025-11-18 01:33:26)
+Read blend: "C:\Users\hj\orca\projects\Simulated-Platform\render\checks\studio.blend"
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_1 · 01 graphite_disc
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_2 · 03 line_cover
+Fra:1 Mem:18.03M (Peak 18.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_6 · 01 graphite_disc
+Fra:1 Mem:18.03M (Peak 18.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:18.08M (Peak 18.08M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:18.12M (Peak 18.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Machined face strip
+Fra:1 Mem:18.12M (Peak 18.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Rim strip
+Fra:1 Mem:18.12M (Peak 18.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fill softbox
+Fra:1 Mem:18.12M (Peak 18.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Key softbox
+Fra:1 Mem:18.12M (Peak 18.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Seamless studio floor
+Fra:1 Mem:18.21M (Peak 18.21M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:18.96M (Peak 18.96M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:18.98M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:18.98M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:18.90M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:18.93M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:18.90M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:18.93M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:18.97M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:18.93M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:18.95M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:19.00M (Peak 19.00M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:19.06M (Peak 19.06M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:19.09M (Peak 19.09M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:19.18M (Peak 19.18M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:19.21M (Peak 19.21M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:19.16M (Peak 19.21M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:19.18M (Peak 19.21M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:19.25M (Peak 19.25M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:19.33M (Peak 19.33M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:19.38M (Peak 19.38M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:19.42M (Peak 19.43M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:19.44M (Peak 19.44M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:19.50M (Peak 19.50M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:19.59M (Peak 19.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:19.61M (Peak 19.61M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll pin
+Fra:1 Mem:19.79M (Peak 19.79M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:19.82M (Peak 19.82M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:19.85M (Peak 19.85M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:20.03M (Peak 20.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:20.12M (Peak 20.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:20.25M (Peak 20.25M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:20.34M (Peak 20.34M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:20.30M (Peak 20.34M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:20.48M (Peak 20.48M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:20.48M (Peak 20.48M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:20.42M (Peak 20.48M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:20.52M (Peak 20.52M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:20.40M (Peak 20.52M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:1 Mem:20.40M (Peak 20.52M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:20.40M (Peak 20.52M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:20.40M (Peak 20.52M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:20.40M (Peak 20.52M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Procedurals
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:20.75M (Peak 48.51M) | Time:00:00.13 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:22.63M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:22.75M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.14 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.30M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Loading denoising kernels (may take a few minutes the first time)
+Fra:1 Mem:27.70M (Peak 48.51M) | Time:00:00.15 | Mem:354.31M, Peak:354.31M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.16 | Remaining:00:00.69 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.25 | Remaining:00:00.28 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.28 | Remaining:00:00.12 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.30 | Remaining:00:00.05 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.39 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.39 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\checks\reference_round_01.png'
+Time: 00:00.49 (Saving: 00:00.09)
+
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 02 shoulder_cheek
+Fra:1 Mem:56.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 05 graphite_disc
+Fra:1 Mem:56.42M (Peak 56.42M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right · 02 graphite_block
+Fra:1 Mem:56.47M (Peak 56.47M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:56.53M (Peak 56.53M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:56.95M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:57.04M (Peak 57.04M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:56.99M (Peak 57.04M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:57.08M (Peak 57.08M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:56.91M (Peak 57.08M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:56.89M (Peak 57.08M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:56.90M (Peak 57.08M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:56.96M (Peak 57.08M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:56.99M (Peak 57.08M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:57.04M (Peak 57.08M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:57.13M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:56.89M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:56.95M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:56.91M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:56.91M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:56.94M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:56.90M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end -1
+Fra:1 Mem:56.78M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:56.87M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:56.92M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:56.86M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:56.87M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:56.69M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:56.75M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:56.84M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:56.92M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:56.91M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:57.02M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:57.02M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:57.05M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:57.00M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:57.08M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:57.13M (Peak 57.13M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:57.20M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:57.20M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:57.13M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:56.39M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Initializing
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:55.39M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:55.39M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:55.39M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:55.39M (Peak 57.20M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:53.20M (Peak 57.20M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:53.20M (Peak 57.20M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:53.44M (Peak 57.20M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:53.43M (Peak 57.20M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:53.43M (Peak 57.20M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:55.32M (Peak 57.20M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:55.45M (Peak 57.20M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:55.41M (Peak 57.20M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:55.41M (Peak 57.20M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.02 | Remaining:00:00.48 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.09 | Remaining:00:00.25 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.12 | Remaining:00:00.10 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 57.20M) | Time:00:00.14 | Remaining:00:00.04 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.18 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.18 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\work\reference\round_01_without_reflection.png'
+Time: 00:00.20 (Saving: 00:00.02)
+
+Fra:1 Mem:56.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Seamless studio floor
+Fra:1 Mem:56.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Initializing
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:55.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:55.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:55.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:55.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:53.20M (Peak 56.39M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:53.20M (Peak 56.39M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:53.44M (Peak 56.39M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:53.43M (Peak 56.39M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:53.44M (Peak 56.39M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:55.32M (Peak 56.39M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:55.45M (Peak 56.39M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:55.41M (Peak 56.39M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:55.41M (Peak 56.39M) | Time:00:00.00 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.00 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.01 | Remaining:00:00.26 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.04 | Remaining:00:00.10 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.06 | Remaining:00:00.05 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.39M) | Time:00:00.08 | Remaining:00:00.02 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.13 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.13 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\work\reference\subject_mask.png'
+Time: 00:00.14 (Saving: 00:00.01)
+
+{"round": 1, "image": "reference_round_01.png", "parameters": {"floor_gray": 0.66, "floor_roughness": 0.82}, "change": null, "reference": {"mean_luma": 142.32846477178506, "highlight_pct": 0.218406843414427, "subject_mean_luma": 146.46823674559374, "background_mean_luma": 140.18847773176267, "contrast_luma": 6.279759013831068, "floor_below_base_mean_luma": 149.73242, "reflection_status": "A single image does not isolate reflection from shadow"}, "render": {"mean_luma": 207.47957148375093, "highlight_pct": 1.301340775344294, "subject_mean_luma": 154.7448248198559, "background_mean_luma": 226.51354291926407, "contrast_luma": -71.76871809940818, "reflection": {"detected": false, "coverage_pct_at_2_luma": 0.0, "mean_signed_darkening_luma": -0.042625044091710994, "method": "paired Cycles render with robot glossy-ray visibility disabled"}}, "histogram_deviation_pct": 25.55313674338267, "histogram_similarity_pct": 74.44686325661733, "highlight_delta_pp": 1.082933931929867, "contrast_delta_luma": -78.04847711323924, "thresholds_pass": false}
+Info: Saved as "round_01.blend"
+
+Blender quit
+Blender 4.5.5 LTS (hash 836beaaf597a built 2025-11-18 01:33:26)
+Read blend: "C:\Users\hj\orca\projects\Simulated-Platform\render\checks\studio.blend"
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_1 · 02 shoulder_cheek
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_2 · 03 line_cover
+Fra:1 Mem:18.03M (Peak 18.03M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_6 · 01 graphite_disc
+Fra:1 Mem:18.04M (Peak 18.04M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:18.04M (Peak 18.04M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:18.11M (Peak 18.11M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Machined face strip
+Fra:1 Mem:18.12M (Peak 18.12M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Rim strip
+Fra:1 Mem:18.13M (Peak 18.13M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fill softbox
+Fra:1 Mem:18.14M (Peak 18.14M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Key softbox
+Fra:1 Mem:18.14M (Peak 18.14M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Seamless studio floor
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:18.17M (Peak 18.17M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:18.22M (Peak 18.22M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:18.70M (Peak 18.70M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:18.82M (Peak 18.82M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:18.94M (Peak 18.94M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:19.04M (Peak 19.04M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:19.04M (Peak 19.04M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:19.01M (Peak 19.04M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:19.02M (Peak 19.04M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:19.05M (Peak 19.05M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:19.06M (Peak 19.06M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:18.94M (Peak 19.06M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:18.97M (Peak 19.06M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:19.03M (Peak 19.06M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow shaft end -1
+Fra:1 Mem:19.06M (Peak 19.06M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:19.05M (Peak 19.06M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:19.09M (Peak 19.09M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:19.16M (Peak 19.16M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:19.25M (Peak 19.25M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:19.25M (Peak 19.25M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:19.30M (Peak 19.30M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:19.39M (Peak 19.39M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:19.48M (Peak 19.48M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:19.60M (Peak 19.60M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:19.62M (Peak 19.62M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:19.67M (Peak 19.67M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:19.73M (Peak 19.73M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:19.79M (Peak 19.80M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:19.82M (Peak 19.82M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:20.05M (Peak 20.05M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:20.26M (Peak 20.26M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:20.30M (Peak 20.30M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:20.38M (Peak 20.38M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:20.52M (Peak 20.52M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:20.59M (Peak 20.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:20.40M (Peak 20.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:1 Mem:20.40M (Peak 20.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:20.40M (Peak 20.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:20.40M (Peak 20.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:20.40M (Peak 20.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Procedurals
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:20.75M (Peak 48.51M) | Time:00:00.12 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.12 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.12 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:22.63M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:22.75M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.13 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.30M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.13 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Loading denoising kernels (may take a few minutes the first time)
+Fra:1 Mem:27.70M (Peak 48.51M) | Time:00:00.14 | Mem:354.31M, Peak:354.31M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.15 | Remaining:00:00.68 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.24 | Remaining:00:00.28 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.27 | Remaining:00:00.12 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.29 | Remaining:00:00.04 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.37 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.37 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\checks\reference_round_02.png'
+Time: 00:00.47 (Saving: 00:00.09)
+
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 02 service_cover
+Fra:1 Mem:56.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 04 graphite_disc
+Fra:1 Mem:56.40M (Peak 56.41M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_6 · 01 graphite_disc
+Fra:1 Mem:56.43M (Peak 56.43M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right · 00 finger
+Fra:1 Mem:56.56M (Peak 56.56M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 00 finger
+Fra:1 Mem:57.05M (Peak 57.04M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:57.21M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:57.10M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:57.05M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:56.99M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:57.05M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:56.99M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:57.04M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:56.90M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:56.76M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:56.65M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:56.65M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:56.68M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:56.63M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:56.54M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:56.58M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:56.70M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:56.72M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:56.70M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:56.73M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:56.76M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:56.83M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:56.87M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:56.88M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:56.92M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:56.91M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:57.02M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:56.76M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:56.81M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:56.80M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:56.39M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Initializing
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:55.39M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:55.39M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:55.39M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:55.39M (Peak 57.21M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:53.20M (Peak 57.21M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:53.20M (Peak 57.21M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:53.44M (Peak 57.21M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:53.43M (Peak 57.21M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:53.43M (Peak 57.21M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:55.32M (Peak 57.21M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:55.45M (Peak 57.21M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:55.41M (Peak 57.21M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:55.41M (Peak 57.21M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.02 | Remaining:00:00.45 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.09 | Remaining:00:00.24 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.11 | Remaining:00:00.10 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 57.21M) | Time:00:00.12 | Remaining:00:00.03 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.17 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.17 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\work\reference\round_02_without_reflection.png'
+Time: 00:00.19 (Saving: 00:00.01)
+
+{"round": 2, "image": "reference_round_02.png", "parameters": {"floor_gray": 0.235, "floor_roughness": 0.82}, "change": {"setting": "floor_gray", "before": 0.66, "after": 0.235}, "reference": {"mean_luma": 142.32846477178506, "highlight_pct": 0.218406843414427, "subject_mean_luma": 146.46823674559374, "background_mean_luma": 140.18847773176267, "contrast_luma": 6.279759013831068, "floor_below_base_mean_luma": 149.73242, "reflection_status": "A single image does not isolate reflection from shadow"}, "render": {"mean_luma": 187.69555602944453, "highlight_pct": 1.2952739185827824, "subject_mean_luma": 152.40640010675205, "background_mean_luma": 200.43275167953323, "contrast_luma": -48.02635157278118, "reflection": {"detected": false, "coverage_pct_at_2_luma": 0.0, "mean_signed_darkening_luma": -0.16295174603174617, "method": "paired Cycles render with robot glossy-ray visibility disabled"}}, "histogram_deviation_pct": 17.802302947104536, "histogram_similarity_pct": 82.19769705289546, "highlight_delta_pp": 1.0768670751683553, "contrast_delta_luma": -54.30611058661225, "thresholds_pass": false}
+Info: Saved as "round_02.blend"
+
+Blender quit
+Blender 4.5.5 LTS (hash 836beaaf597a built 2025-11-18 01:33:26)
+Read blend: "C:\Users\hj\orca\projects\Simulated-Platform\render\checks\studio.blend"
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_1 · 01 graphite_disc
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_2 · 04 graphite_disc
+Fra:1 Mem:16.03M (Peak 16.03M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_6 · 00 steel_disc
+Fra:1 Mem:18.04M (Peak 18.04M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left · 00 finger
+Fra:1 Mem:18.05M (Peak 18.05M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:18.13M (Peak 18.13M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Machined face strip
+Fra:1 Mem:18.14M (Peak 18.14M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Rim strip
+Fra:1 Mem:18.14M (Peak 18.14M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fill softbox
+Fra:1 Mem:18.14M (Peak 18.14M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Key softbox
+Fra:1 Mem:18.14M (Peak 18.14M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Seamless studio floor
+Fra:1 Mem:18.15M (Peak 18.15M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:18.15M (Peak 18.15M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:18.18M (Peak 18.18M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:18.28M (Peak 18.28M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:18.44M (Peak 18.44M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:18.48M (Peak 18.48M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:18.79M (Peak 18.79M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:19.03M (Peak 19.03M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:19.07M (Peak 19.07M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:19.13M (Peak 19.13M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:19.19M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:19.14M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:19.14M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:19.07M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:19.13M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:19.04M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:19.10M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:19.12M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:19.12M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow shaft end -1
+Fra:1 Mem:19.17M (Peak 19.19M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:19.28M (Peak 19.28M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:19.37M (Peak 19.37M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:19.39M (Peak 19.39M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:19.48M (Peak 19.48M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:19.53M (Peak 19.53M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll pin
+Fra:1 Mem:19.50M (Peak 19.53M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:19.55M (Peak 19.55M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:19.68M (Peak 19.68M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:19.75M (Peak 19.75M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:19.80M (Peak 19.80M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:19.71M (Peak 19.80M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:19.77M (Peak 19.80M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:19.77M (Peak 19.80M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:20.03M (Peak 20.03M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:20.09M (Peak 20.09M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:20.11M (Peak 20.11M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:20.29M (Peak 20.29M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Procedurals
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.12 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.12 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:20.75M (Peak 48.51M) | Time:00:00.12 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.12 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.12 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:22.63M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:22.75M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.13 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.13 | Mem:2.22M, Peak:2.30M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Loading denoising kernels (may take a few minutes the first time)
+Fra:1 Mem:27.70M (Peak 48.51M) | Time:00:00.14 | Mem:354.31M, Peak:354.31M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.15 | Remaining:00:00.64 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.23 | Remaining:00:00.27 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.26 | Remaining:00:00.12 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.29 | Remaining:00:00.04 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.37 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.37 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\checks\reference_round_03.png'
+Time: 00:00.47 (Saving: 00:00.09)
+
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 04 graphite_disc
+Fra:1 Mem:56.40M (Peak 56.40M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 00 finger
+Fra:1 Mem:56.41M (Peak 56.41M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:57.29M (Peak 57.29M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:57.34M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:57.14M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:57.07M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:57.04M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:57.05M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:56.99M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:57.03M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:57.04M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:57.00M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:56.99M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:56.70M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:56.63M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:56.67M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end -1
+Fra:1 Mem:56.60M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:56.63M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:56.70M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:56.51M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:56.54M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:56.59M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:56.63M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:56.62M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:56.63M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:56.72M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:56.86M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:56.83M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:56.87M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:56.81M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:57.07M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:56.70M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:56.39M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Initializing
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:55.39M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:55.39M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:55.39M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:55.39M (Peak 57.34M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:53.20M (Peak 57.34M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:53.20M (Peak 57.34M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:53.44M (Peak 57.34M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:53.43M (Peak 57.34M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:53.43M (Peak 57.34M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:55.32M (Peak 57.34M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:55.45M (Peak 57.34M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:55.41M (Peak 57.34M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:55.41M (Peak 57.34M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.01 | Remaining:00:00.42 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.09 | Remaining:00:00.23 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.11 | Remaining:00:00.09 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 57.34M) | Time:00:00.12 | Remaining:00:00.03 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.17 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.17 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\work\reference\round_03_without_reflection.png'
+Time: 00:00.18 (Saving: 00:00.01)
+
+{"round": 3, "image": "reference_round_03.png", "parameters": {"floor_gray": 0.038, "floor_roughness": 0.82}, "change": {"setting": "floor_gray", "before": 0.235, "after": 0.038}, "reference": {"mean_luma": 142.32846477178506, "highlight_pct": 0.218406843414427, "subject_mean_luma": 146.46823674559374, "background_mean_luma": 140.18847773176267, "contrast_luma": 6.279759013831068, "floor_below_base_mean_luma": 149.73242, "reflection_status": "A single image does not isolate reflection from shadow"}, "render": {"mean_luma": 144.86546881433395, "highlight_pct": 1.2952739185827824, "subject_mean_luma": 150.90963005070722, "background_mean_luma": 142.6839016389382, "contrast_luma": 8.225728411769012, "reflection": {"detected": false, "coverage_pct_at_2_luma": 0.0, "mean_signed_darkening_luma": -1.3271130864197533, "method": "paired Cycles render with robot glossy-ray visibility disabled"}}, "histogram_deviation_pct": 3.187518611966617, "histogram_similarity_pct": 96.81248138803338, "highlight_delta_pp": 1.0768670751683553, "contrast_delta_luma": 1.9459693979379438, "thresholds_pass": false}
+Info: Saved as "round_03.blend"
+
+Blender quit
+Blender 4.5.5 LTS (hash 836beaaf597a built 2025-11-18 01:33:26)
+Read blend: "C:\Users\hj\orca\projects\Simulated-Platform\render\checks\studio.blend"
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_1 · 00 steel_disc
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_2 · 02 service_cover
+Fra:1 Mem:16.03M (Peak 16.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_2 · 05 graphite_disc
+Fra:1 Mem:18.03M (Peak 18.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right · 00 finger
+Fra:1 Mem:18.04M (Peak 18.04M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:18.05M (Peak 18.05M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Machined face strip
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Rim strip
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fill softbox
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Key softbox
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Seamless studio floor
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:18.17M (Peak 18.17M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:18.21M (Peak 18.21M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:18.65M (Peak 18.65M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:18.76M (Peak 18.76M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:18.93M (Peak 18.93M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:18.92M (Peak 18.93M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:18.98M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:18.97M (Peak 18.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:18.99M (Peak 18.99M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:19.07M (Peak 19.07M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:19.08M (Peak 19.08M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:18.95M (Peak 19.08M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:19.08M (Peak 19.08M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:19.05M (Peak 19.08M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:19.05M (Peak 19.08M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:19.07M (Peak 19.08M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow shaft end -1
+Fra:1 Mem:19.09M (Peak 19.09M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:19.20M (Peak 19.20M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:19.18M (Peak 19.20M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:19.37M (Peak 19.37M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:19.55M (Peak 19.55M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:19.64M (Peak 19.64M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:19.69M (Peak 19.69M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:19.79M (Peak 19.79M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll pin
+Fra:1 Mem:19.93M (Peak 19.93M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:19.89M (Peak 19.93M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:19.89M (Peak 19.93M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:20.00M (Peak 20.00M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:20.08M (Peak 20.08M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:20.13M (Peak 20.13M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:20.07M (Peak 20.13M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:20.07M (Peak 20.13M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:20.24M (Peak 20.24M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:20.24M (Peak 20.24M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Procedurals
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:20.75M (Peak 48.51M) | Time:00:00.13 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:22.63M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:22.75M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.14 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.30M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Loading denoising kernels (may take a few minutes the first time)
+Fra:1 Mem:27.70M (Peak 48.51M) | Time:00:00.15 | Mem:354.31M, Peak:354.31M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.16 | Remaining:00:00.62 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.23 | Remaining:00:00.25 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.26 | Remaining:00:00.11 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.29 | Remaining:00:00.04 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.38 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.38 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\checks\reference_round_04.png'
+Time: 00:00.47 (Saving: 00:00.09)
+
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 01 pedestal
+Fra:1 Mem:56.39M (Peak 56.39M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 03 graphite_disc
+Fra:1 Mem:56.42M (Peak 56.42M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 05 graphite_disc
+Fra:1 Mem:56.47M (Peak 56.47M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 02 service_cover
+Fra:1 Mem:56.86M (Peak 56.86M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 03 line_cover
+Fra:1 Mem:56.86M (Peak 56.86M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 04 graphite_disc
+Fra:1 Mem:56.87M (Peak 56.87M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 05 graphite_disc
+Fra:1 Mem:56.88M (Peak 56.88M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_6 · 00 steel_disc
+Fra:1 Mem:56.83M (Peak 56.88M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_6 · 01 graphite_disc
+Fra:1 Mem:56.83M (Peak 56.88M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right · 00 finger
+Fra:1 Mem:56.93M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right · 02 graphite_block
+Fra:1 Mem:56.92M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 00 finger
+Fra:1 Mem:56.82M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:56.84M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:56.87M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:56.77M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:56.78M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:56.79M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:56.80M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:56.81M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:56.83M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:56.83M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:56.83M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:56.65M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:56.65M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:56.66M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:56.49M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:56.50M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:56.53M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end -1
+Fra:1 Mem:56.60M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:56.65M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:56.65M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:56.69M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:56.70M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:56.71M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:56.73M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:56.67M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:56.67M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll pin
+Fra:1 Mem:56.70M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:56.75M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:56.72M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:56.75M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:56.83M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:56.77M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:56.73M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:56.83M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:56.69M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:56.73M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:56.75M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:56.82M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:56.98M (Peak 56.98M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:56.98M (Peak 56.98M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:56.99M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:56.39M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Initializing
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:55.39M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:55.39M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:55.39M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:55.39M (Peak 56.99M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:53.20M (Peak 56.99M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:53.20M (Peak 56.99M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:53.44M (Peak 56.99M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:53.43M (Peak 56.99M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:53.43M (Peak 56.99M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:55.32M (Peak 56.99M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:55.45M (Peak 56.99M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:55.41M (Peak 56.99M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:55.41M (Peak 56.99M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.01 | Remaining:00:00.41 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.08 | Remaining:00:00.22 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.10 | Remaining:00:00.09 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.99M) | Time:00:00.11 | Remaining:00:00.03 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.16 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.16 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\work\reference\round_04_without_reflection.png'
+Time: 00:00.18 (Saving: 00:00.02)
+
+{"round": 4, "image": "reference_round_04.png", "parameters": {"floor_gray": 0.038, "floor_roughness": 0.27}, "change": {"setting": "floor_roughness", "before": 0.82, "after": 0.27}, "reference": {"mean_luma": 142.32846477178506, "highlight_pct": 0.218406843414427, "subject_mean_luma": 146.46823674559374, "background_mean_luma": 140.18847773176267, "contrast_luma": 6.279759013831068, "floor_below_base_mean_luma": 149.73242, "reflection_status": "A single image does not isolate reflection from shadow"}, "render": {"mean_luma": 123.05116425205769, "highlight_pct": 1.294262775789197, "subject_mean_luma": 150.78556670860496, "background_mean_luma": 113.04076584238122, "contrast_luma": 37.74480086622374, "reflection": {"detected": false, "coverage_pct_at_2_luma": 0.0, "mean_signed_darkening_luma": -16.21948, "method": "paired Cycles render with robot glossy-ray visibility disabled"}}, "histogram_deviation_pct": 8.2631659713573, "histogram_similarity_pct": 91.7368340286427, "highlight_delta_pp": 1.0758559323747698, "contrast_delta_luma": 31.465041852392673, "thresholds_pass": false}
+Info: Saved as "round_04.blend"
+
+Blender quit
+Blender 4.5.5 LTS (hash 836beaaf597a built 2025-11-18 01:33:26)
+Read blend: "C:\Users\hj\orca\projects\Simulated-Platform\render\checks\studio.blend"
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_2 · 03 line_cover
+Fra:1 Mem:18.02M (Peak 18.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right · 00 finger
+Fra:1 Mem:18.03M (Peak 18.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:18.04M (Peak 18.04M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:18.15M (Peak 18.15M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Machined face strip
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Rim strip
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fill softbox
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Key softbox
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Seamless studio floor
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:18.16M (Peak 18.16M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:18.17M (Peak 18.17M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:18.20M (Peak 18.20M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:18.25M (Peak 18.25M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:18.26M (Peak 18.26M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:18.60M (Peak 18.60M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:18.94M (Peak 18.94M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:18.86M (Peak 18.94M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:19.11M (Peak 19.11M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:19.04M (Peak 19.11M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:19.07M (Peak 19.11M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:19.10M (Peak 19.11M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:19.10M (Peak 19.11M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:19.10M (Peak 19.11M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:19.20M (Peak 19.20M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:19.00M (Peak 19.20M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:19.04M (Peak 19.20M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:19.11M (Peak 19.20M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:19.14M (Peak 19.20M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:19.28M (Peak 19.29M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:19.37M (Peak 19.37M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:19.44M (Peak 19.44M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:19.57M (Peak 19.57M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:19.74M (Peak 19.74M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll pin
+Fra:1 Mem:19.81M (Peak 19.81M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:20.03M (Peak 20.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:19.97M (Peak 20.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:19.98M (Peak 20.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:20.07M (Peak 20.07M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:20.12M (Peak 20.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:20.08M (Peak 20.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:20.06M (Peak 20.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:20.11M (Peak 20.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:20.25M (Peak 20.25M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:20.19M (Peak 20.25M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:20.21M (Peak 20.25M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:20.29M (Peak 20.29M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:20.40M (Peak 20.40M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Procedurals
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:20.75M (Peak 48.51M) | Time:00:00.13 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:22.63M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:22.75M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.14 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.30M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Loading denoising kernels (may take a few minutes the first time)
+Fra:1 Mem:27.70M (Peak 48.51M) | Time:00:00.15 | Mem:354.31M, Peak:354.31M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.16 | Remaining:00:00.66 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.24 | Remaining:00:00.26 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.26 | Remaining:00:00.11 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.28 | Remaining:00:00.04 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.37 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.37 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\checks\reference_round_05.png'
+Time: 00:00.47 (Saving: 00:00.09)
+
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 01 pedestal
+Fra:1 Mem:56.40M (Peak 56.40M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 01 graphite_disc
+Fra:1 Mem:56.40M (Peak 56.40M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 02 shoulder_cheek
+Fra:1 Mem:56.44M (Peak 56.44M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 04 shoulder_cheek
+Fra:1 Mem:56.72M (Peak 56.72M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 05 graphite_disc
+Fra:1 Mem:56.79M (Peak 56.79M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 02 service_cover
+Fra:1 Mem:56.66M (Peak 56.79M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 03 line_cover
+Fra:1 Mem:56.66M (Peak 56.79M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 04 graphite_disc
+Fra:1 Mem:56.68M (Peak 56.79M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 05 graphite_disc
+Fra:1 Mem:56.93M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_6 · 00 steel_disc
+Fra:1 Mem:56.71M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_6 · 01 graphite_disc
+Fra:1 Mem:56.71M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right · 00 finger
+Fra:1 Mem:56.68M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right · 02 graphite_block
+Fra:1 Mem:56.68M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 00 finger
+Fra:1 Mem:56.76M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:56.77M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:56.78M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:56.66M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:56.67M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:56.69M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:56.71M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:56.70M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:56.72M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:56.64M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:56.64M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:56.65M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:56.68M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:56.68M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:56.64M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:56.56M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:56.57M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:56.60M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end -1
+Fra:1 Mem:56.62M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:56.68M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:56.77M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:56.79M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:56.82M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:56.84M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:56.87M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll pin
+Fra:1 Mem:56.92M (Peak 56.93M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:56.94M (Peak 56.94M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:56.92M (Peak 56.94M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:57.01M (Peak 57.01M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:57.04M (Peak 57.04M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:57.07M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:57.00M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:57.02M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:56.91M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:56.94M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:57.05M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:56.96M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:56.96M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:56.97M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:56.39M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Initializing
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:55.39M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:55.39M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:55.39M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:55.39M (Peak 57.07M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:53.20M (Peak 57.07M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:53.20M (Peak 57.07M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:53.44M (Peak 57.07M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:53.43M (Peak 57.07M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:53.44M (Peak 57.07M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:55.32M (Peak 57.07M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:55.45M (Peak 57.07M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:55.41M (Peak 57.07M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:55.41M (Peak 57.07M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.02 | Remaining:00:00.41 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.08 | Remaining:00:00.22 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.10 | Remaining:00:00.09 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 57.07M) | Time:00:00.11 | Remaining:00:00.03 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.15 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.15 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\work\reference\round_05_without_reflection.png'
+Time: 00:00.18 (Saving: 00:00.02)
+
+{"round": 5, "image": "reference_round_05.png", "parameters": {"floor_gray": 0.038, "floor_roughness": 0.27, "glossy_world_strength": 0.35}, "change": {"setting": "glossy_world_strength", "before": 0.065, "after": 0.35}, "reference": {"mean_luma": 142.32846477178506, "highlight_pct": 0.218406843414427, "subject_mean_luma": 146.46823674559374, "background_mean_luma": 140.18847773176267, "contrast_luma": 6.279759013831068, "floor_below_base_mean_luma": 149.73242, "reflection_status": "A single image does not isolate reflection from shadow"}, "render": {"mean_luma": 136.77046178689153, "highlight_pct": 1.3033630609314648, "subject_mean_luma": 162.40201963475545, "background_mean_luma": 127.51905980266689, "contrast_luma": 34.88295983208856, "reflection": {"detected": false, "coverage_pct_at_2_luma": 4.5855379188712515, "mean_signed_darkening_luma": -8.47487597883598, "method": "paired Cycles render with robot glossy-ray visibility disabled"}}, "histogram_deviation_pct": 4.055693745070678, "histogram_similarity_pct": 95.94430625492932, "highlight_delta_pp": 1.0849562175170377, "contrast_delta_luma": 28.60320081825749, "thresholds_pass": false}
+Info: Saved as "round_05.blend"
+
+Blender quit
+Blender 4.5.5 LTS (hash 836beaaf597a built 2025-11-18 01:33:26)
+Read blend: "C:\Users\hj\orca\projects\Simulated-Platform\render\checks\studio.blend"
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_1 · 03 graphite_disc
+Fra:1 Mem:16.02M (Peak 16.02M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | link_2 · 04 graphite_disc
+Fra:1 Mem:18.03M (Peak 18.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right · 00 finger
+Fra:1 Mem:18.04M (Peak 18.04M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:18.04M (Peak 18.04M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:18.11M (Peak 18.11M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Machined face strip
+Fra:1 Mem:18.12M (Peak 18.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Rim strip
+Fra:1 Mem:18.13M (Peak 18.13M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fill softbox
+Fra:1 Mem:18.13M (Peak 18.13M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Key softbox
+Fra:1 Mem:18.13M (Peak 18.13M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Seamless studio floor
+Fra:1 Mem:18.24M (Peak 18.24M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:18.35M (Peak 18.35M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:18.62M (Peak 18.63M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:18.87M (Peak 18.87M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:18.94M (Peak 18.93M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:18.88M (Peak 18.93M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:18.86M (Peak 18.93M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:19.03M (Peak 19.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:18.83M (Peak 19.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:18.82M (Peak 19.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:18.88M (Peak 19.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:18.93M (Peak 19.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:18.94M (Peak 19.03M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:19.04M (Peak 19.04M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:19.08M (Peak 19.10M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:19.07M (Peak 19.10M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:19.03M (Peak 19.10M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:19.09M (Peak 19.10M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow shaft end -1
+Fra:1 Mem:19.26M (Peak 19.26M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:19.31M (Peak 19.31M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:19.47M (Peak 19.47M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:19.57M (Peak 19.57M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:19.78M (Peak 19.78M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:19.72M (Peak 19.78M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:19.74M (Peak 19.78M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist roll pin
+Fra:1 Mem:19.71M (Peak 19.78M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:19.66M (Peak 19.78M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:19.79M (Peak 19.79M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:19.97M (Peak 19.97M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/-0.065
+Fra:1 Mem:19.98M (Peak 19.98M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:20.12M (Peak 20.12M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:20.15M (Peak 20.15M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:20.23M (Peak 20.23M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:20.58M (Peak 20.58M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:20.64M (Peak 20.64M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist pitch rotating bearing
+Fra:1 Mem:20.66M (Peak 20.66M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:20.72M (Peak 20.72M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:20.40M (Peak 20.72M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:1 Mem:20.40M (Peak 20.72M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:20.40M (Peak 20.72M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:20.40M (Peak 20.72M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:20.40M (Peak 20.72M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Procedurals
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:20.49M (Peak 48.51M) | Time:00:00.13 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:20.50M (Peak 48.51M) | Time:00:00.13 | Mem:0.02M, Peak:0.02M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:20.75M (Peak 48.51M) | Time:00:00.13 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:20.74M (Peak 48.51M) | Time:00:00.13 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:22.63M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:22.75M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.14 | Mem:0.26M, Peak:0.26M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:22.72M (Peak 48.51M) | Time:00:00.14 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:1.25M, Peak:1.25M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.22M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:23.69M (Peak 48.51M) | Time:00:00.14 | Mem:2.30M, Peak:2.30M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.22M, Peak:2.30M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:23.70M (Peak 48.51M) | Time:00:00.14 | Mem:2.31M, Peak:2.31M | Scene, ViewLayer | Loading denoising kernels (may take a few minutes the first time)
+Fra:1 Mem:27.70M (Peak 48.51M) | Time:00:00.15 | Mem:354.31M, Peak:354.31M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.16 | Remaining:00:00.62 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.24 | Remaining:00:00.26 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.26 | Remaining:00:00.11 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.29 | Remaining:00:00.04 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.37 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.45M (Peak 86.57M) | Time:00:00.37 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\checks\reference_round_06.png'
+Time: 00:00.46 (Saving: 00:00.09)
+
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 00 pedestal_foot
+Fra:1 Mem:56.38M (Peak 56.38M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | base_link · 01 pedestal
+Fra:1 Mem:56.40M (Peak 56.40M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 00 steel_disc
+Fra:1 Mem:56.58M (Peak 56.58M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 01 graphite_disc
+Fra:1 Mem:56.57M (Peak 56.58M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 02 shoulder_cheek
+Fra:1 Mem:56.77M (Peak 56.77M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right slider shoe
+Fra:1 Mem:56.75M (Peak 56.77M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 03 graphite_disc
+Fra:1 Mem:56.63M (Peak 56.77M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 04 shoulder_cheek
+Fra:1 Mem:56.70M (Peak 56.77M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_1 · 05 graphite_disc
+Fra:1 Mem:56.77M (Peak 56.77M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 02 service_cover
+Fra:1 Mem:56.81M (Peak 56.81M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 03 line_cover
+Fra:1 Mem:56.87M (Peak 56.87M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left slider shoe
+Fra:1 Mem:56.95M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 04 graphite_disc
+Fra:1 Mem:56.81M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_2 · 05 graphite_disc
+Fra:1 Mem:56.83M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_6 · 00 steel_disc
+Fra:1 Mem:56.86M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/+0.065
+Fra:1 Mem:56.87M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener +0.014/-0.065
+Fra:1 Mem:56.87M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide +1
+Fra:1 Mem:56.84M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | link_6 · 01 graphite_disc
+Fra:1 Mem:56.79M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right · 00 finger
+Fra:1 Mem:56.74M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_right · 02 graphite_block
+Fra:1 Mem:56.78M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 00 finger
+Fra:1 Mem:56.68M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | finger_left · 02 graphite_block
+Fra:1 Mem:56.74M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 1
+Fra:1 Mem:56.58M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Guide cover fastener -0.014/+0.065
+Fra:1 Mem:56.64M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 1
+Fra:1 Mem:56.65M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 1
+Fra:1 Mem:56.68M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Linear jaw guide -1
+Fra:1 Mem:56.72M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 2
+Fra:1 Mem:56.72M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 2
+Fra:1 Mem:56.75M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 2
+Fra:1 Mem:56.77M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 3
+Fra:1 Mem:56.72M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 3
+Fra:1 Mem:56.76M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 3
+Fra:1 Mem:56.70M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor washer 4
+Fra:1 Mem:56.72M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Recessed anchor head 4
+Fra:1 Mem:56.66M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Enclosed gripper drive
+Fra:1 Mem:56.55M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Anchor socket floor 4
+Fra:1 Mem:56.56M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Fixed swivel dust seal
+Fra:1 Mem:56.63M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder rotating bearing housing
+Fra:1 Mem:56.57M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Shoulder pin
+Fra:1 Mem:56.51M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Upper arm with elbow fork seat
+Fra:1 Mem:56.56M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek -1
+Fra:1 Mem:56.54M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed cheek +1
+Fra:1 Mem:56.69M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow shaft end +1
+Fra:1 Mem:56.76M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow fixed shaft
+Fra:1 Mem:56.73M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Elbow rotating bearing housing
+Fra:1 Mem:56.78M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Forearm clear of fixed elbow cheeks
+Fra:1 Mem:56.73M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll fixed collar
+Fra:1 Mem:56.77M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist roll pin
+Fra:1 Mem:56.76M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke rear flange
+Fra:1 Mem:56.78M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek -1
+Fra:1 Mem:56.79M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap -1
+Fra:1 Mem:56.71M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist yoke cheek +1
+Fra:1 Mem:56.73M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin cap +1
+Fra:1 Mem:56.74M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist pitch pin
+Fra:1 Mem:56.78M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Synchronizing object | Wrist output casing
+Fra:1 Mem:56.39M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Initializing
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:55.39M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:55.39M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:55.39M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:55.39M (Peak 56.95M) | Time:00:00.00 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:53.20M (Peak 56.95M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:53.20M (Peak 56.95M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:53.44M (Peak 56.95M) | Time:00:00.00 | Mem:380.79M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:53.43M (Peak 56.95M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:53.44M (Peak 56.95M) | Time:00:00.00 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:55.32M (Peak 56.95M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH triangles and strands
+Fra:1 Mem:55.45M (Peak 56.95M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Packing BVH nodes
+Fra:1 Mem:55.41M (Peak 56.95M) | Time:00:00.01 | Mem:381.02M, Peak:382.98M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:55.41M (Peak 56.95M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.01M, Peak:382.98M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 0/64
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.01 | Remaining:00:00.41 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 1/64
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.08 | Remaining:00:00.21 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 16/64
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.09 | Remaining:00:00.08 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 32/64
+Fra:1 Mem:56.38M (Peak 56.95M) | Time:00:00.11 | Remaining:00:00.03 | Mem:382.98M, Peak:382.98M | Scene, ViewLayer | Sample 48/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.15 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Sample 64/64
+Fra:1 Mem:68.46M (Peak 86.57M) | Time:00:00.15 | Mem:382.98M, Peak:392.04M | Scene, ViewLayer | Finished
+Saved: 'C:\Users\hj\orca\projects\Simulated-Platform\render\work\reference\round_06_without_reflection.png'
+Time: 00:00.17 (Saving: 00:00.02)
+
+{"round": 6, "image": "reference_round_06.png", "parameters": {"floor_gray": 0.038, "floor_roughness": 0.27, "glossy_world_strength": 0.6}, "change": {"setting": "glossy_world_strength", "before": 0.35, "after": 0.6}, "reference": {"mean_luma": 142.32846477178506, "highlight_pct": 0.218406843414427, "subject_mean_luma": 146.46823674559374, "background_mean_luma": 140.18847773176267, "contrast_luma": 6.279759013831068, "floor_below_base_mean_luma": 149.73242, "reflection_status": "A single image does not isolate reflection from shadow"}, "render": {"mean_luma": 146.01274950959575, "highlight_pct": 1.310441060486562, "subject_mean_luma": 169.61822170117048, "background_mean_luma": 137.49263873178384, "contrast_luma": 32.12558296938664, "reflection": {"detected": true, "coverage_pct_at_2_luma": 14.497354497354497, "mean_signed_darkening_luma": -3.3194564373897717, "method": "paired Cycles render with robot glossy-ray visibility disabled"}}, "histogram_deviation_pct": 2.0348277230769356, "histogram_similarity_pct": 97.96517227692307, "highlight_delta_pp": 1.0920342170721349, "contrast_delta_luma": 25.845823955555574, "thresholds_pass": true}
+Info: Saved as "round_06.blend"
+
+Blender quit

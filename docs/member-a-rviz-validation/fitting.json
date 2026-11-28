@@ -1,0 +1,22 @@
+{
+  "replaced_at_interfaces": [
+    "Elbow fixed shaft",
+    "Elbow rotating bearing housing",
+    "Fixed swivel dust seal",
+    "Forearm clear of fixed elbow cheeks",
+    "Shoulder pin",
+    "Shoulder rotating bearing housing",
+    "Upper arm with elbow fork seat",
+    "Wrist output casing",
+    "Wrist pitch pin",
+    "Wrist pitch rotating bearing",
+    "Wrist roll fixed collar",
+    "Wrist roll pin",
+    "link_1 · 00 steel_disc",
+    "link_1 · 01 graphite_disc",
+    "link_1 · 03 graphite_disc",
+    "link_1 · 05 graphite_disc"
+  ],
+  "retained_components": 42,
+  "visual_elements": 85
+}
