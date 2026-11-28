@@ -183,7 +183,7 @@ public class ExperimentService {
         }
     }
 
-    public Page<ExperimentRun> page(int page, int size, Long deviceId, String status, String runId) {
+    public Page<ExperimentRun> page(int page, int size, Long deviceId, String status, String runId, String split) {
         int safePage = Math.max(page, 0);
         int safeSize = Math.min(Math.max(size, 1), MAX_PAGE_SIZE);
         Pageable pageable = PageRequest.of(safePage, safeSize,
@@ -199,6 +199,10 @@ public class ExperimentService {
         if (runId != null && !runId.isBlank()) {
             String needle = "%" + runId.trim().toLowerCase() + "%";
             spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("runId")), needle));
+        }
+        if (split != null && !split.isBlank()) {
+            String normalized = split.trim().toLowerCase();
+            spec = spec.and((root, query, cb) -> cb.equal(cb.lower(root.get("splitName")), normalized));
         }
         return runRepository.findAll(spec, pageable);
     }

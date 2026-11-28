@@ -36,8 +36,9 @@ public class ExperimentController {
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) Long deviceId,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) String runId) {
-        Page<ExperimentRun> result = service.page(page, size, deviceId, status, runId);
+            @RequestParam(required = false) String runId,
+            @RequestParam(required = false) String split) {
+        Page<ExperimentRun> result = service.page(page, size, deviceId, status, runId, split);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("items", result.getContent().stream().map(service::runView).toList());
         body.put("total", result.getTotalElements());

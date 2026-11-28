@@ -18,6 +18,12 @@ describe('experiment API', () => {
     expect(get).toHaveBeenCalledWith('/experiments/runs', { params })
   })
 
+  it('透传数据分组 split 筛选参数', () => {
+    const params = { page: 0, size: 20, split: 'validation' }
+    getExperimentRuns(params)
+    expect(get).toHaveBeenCalledWith('/experiments/runs', { params })
+  })
+
   it('按 run_id 查询 Run 详情', () => {
     getExperimentRun('a'.repeat(32))
     expect(get).toHaveBeenCalledWith(`/experiments/runs/${'a'.repeat(32)}`)

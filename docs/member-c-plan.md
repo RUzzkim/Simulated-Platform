@@ -58,8 +58,8 @@
 | G-5 | ✅ 已完成：三策略对照结论（见 4.4） | 见 4.4；另发现 seed/onset 混淆，已提请 B 确认 | — | `docs/v2-strategy-comparison.md` |
 | G-6 | 系统指标缺失 | 无控制周期/丢包/稳定性数据 | 边端采集并汇总 | 报告含指标分布 |
 | G-7 | 组件级/UI 测试缺 | 仅 API 与服务层单测 | 补详情页与导出断言 | 用例可回归 |
-| G-8 | `database-schema.sql` 末尾无换行 | 末字节为 `;` | 小修 | diff 干净 |
-| G-9 | 演示数据混杂 | 8 条中 6 条为 online 演示/实时残留（含 1 条 IN_PROGRESS） | 清理或打标 | 正式批次与演示可区分 |
+| G-8 | ✅ 已修复：末尾补换行 | 见 4.4 | — | diff 干净 |
+| G-9 | ✅ 已完成：新增 split 过滤区分正式/演示 | 见 4.4 | — | 页面可按 split 筛选 |
 
 优先级：**P0 = G-1、G-2、G-3**；P1 = G-4、G-5、C-17 准备；P2 = G-6、G-7、G-8、G-9、C-16、C-02。
 
@@ -76,8 +76,10 @@ C-01 Docker 链路、C-03 MQTT、C-04 `run_id` 贯通、C-05 事件贯通、C-06
 | G-4 | ✅ 完成 | 曲线取数口径写入契约 §8.1：窗 = `[started_at, +duration_s]`、limit 默认 800/上限 2000、downsample 分桶语义；实测 validation Run 默认 800 点 span 8s，`limit=200` 截断为 200 点 2s。说明实时/中断 Run 点数<800 为预期行为 |
 | G-5 | ✅ 完成 | 三策略对照：恢复率 off 45.8% → v1 79.2% → v2 87.5%；云端 51/18/3 与本地一致。**另发现 `fault_onset_s` 与 `seed` 完全混淆，已在 `docs/v2-strategy-comparison.md` §0 与请求单 §6 标注，请 B 确认** |
 | 修复 | 回放脚本 | 云端只订阅 `simulation/{id}/state`；遥测入库读 `timestamp`。脚本补 `timestamp` 字段并把默认主题改为 `/state` |
+| G-8 | ✅ 完成 | `docs/database-schema.sql` 末尾补 CRLF 换行，无其它改动 |
+| G-9 | ✅ 完成 | 列表接口与页面新增 `split` 过滤（对 `split_name` 大小写不敏感精确匹配）。实测：无过滤 78、`validation` 72、`online` 6、`ONLINE`/`Validation` 大小写等价、`unknown` 0、`split=validation&status=FAILED`=18。正式（72）与演示（6）可区分，未删数据 |
 
-剩余：G-1（推送已完成，PR 待开）、G-6、G-7、G-8、G-9；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）、C-17（报告定稿）。
+剩余：G-1（推送已完成，PR 待开）、G-6、G-7；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）、C-17（报告定稿）。
 
 ## 5. 阶段路线
 

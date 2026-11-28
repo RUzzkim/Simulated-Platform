@@ -25,7 +25,7 @@
     <Card>
       <CardHeader>
         <CardTitle>筛选条件</CardTitle>
-        <CardDescription>运行 ID 支持前缀匹配，状态按任务结果过滤；设备 ID 可从设备详情跳转带入</CardDescription>
+        <CardDescription>运行 ID 支持前缀匹配，状态按任务结果过滤；数据分组区分正式批次与在线演示；设备 ID 可从设备详情跳转带入</CardDescription>
       </CardHeader>
       <CardContent>
         <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -60,6 +60,20 @@
               placeholder="如 1"
               @keyup.enter="reload"
             />
+          </div>
+          <div class="grid gap-2">
+            <Label for="experiment-split">数据分组</Label>
+            <Select :model-value="filters.split || ALL" @update:model-value="onSplitChange">
+              <SelectTrigger id="experiment-split" class="w-full">
+                <SelectValue placeholder="全部分组" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem :value="ALL">全部分组</SelectItem>
+                <SelectItem v-for="opt in splitOptions" :key="opt" :value="opt">
+                  {{ splitText(opt) }} ({{ opt }})
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </CardContent>
@@ -310,6 +324,9 @@ const ALL = '__all__'
 const PAGE_SIZE = 20
 // 契约 2.0.0 的任务状态枚举
 const statusOptions = ['RECOVERED', 'SAFE_STOPPED', 'FAILED', 'NOT_APPLICABLE', 'IN_PROGRESS', 'INCOMPLETE']
+const splitOptions = ['validation', 'online']
+const SPLIT_TEXT = { validation: '正式批次', online: '在线演示' }
+const splitText = (s) => SPLIT_TEXT[s] || s || '-'
 
 const STATUS_TEXT = {
   RECOVERED: '已恢复',
@@ -363,6 +380,7 @@ const lastUpdated = ref('')
 const filters = reactive({
   runId: '',
   status: '',
+  split: '',
   deviceId: route.query.deviceId ? String(route.query.deviceId) : ''
 })
 
@@ -527,6 +545,7 @@ const buildParams = () => {
   const params = { page: page.value, size: PAGE_SIZE }
   if (filters.runId.trim()) params.runId = filters.runId.trim()
   if (filters.status) params.status = filters.status
+  if (filters.split) params.split = filters.split
   // 后端 deviceId 为 Long，非数字输入不下发，避免 400
   if (/^\d+$/.test(filters.deviceId.trim())) params.deviceId = filters.deviceId.trim()
   return params
@@ -557,12 +576,17 @@ const reload = () => {
 const reset = () => {
   filters.runId = ''
   filters.status = ''
+  filters.split = ''
   filters.deviceId = ''
   reload()
 }
 
 const onStatusChange = (value) => {
   filters.status = value === ALL ? '' : value
+  reload()
+}
+const onSplitChange = (value) => {
+  filters.split = value === ALL ? '' : value
   reload()
 }
 
