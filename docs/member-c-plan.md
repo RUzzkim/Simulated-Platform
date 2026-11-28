@@ -51,7 +51,7 @@
 
 | 编号 | 问题 | 当前证据 | 动作 | 验收 |
 |---|---|---|---|---|
-| G-1 | 19 个提交已推送（PR 待开） | `origin/develop-C = d71a176` | 开 PR 并跟进 CI | PR 含全部提交 |
+| G-1 | ✅ 已完成：PR #2 已开（见 4.4） | `origin/develop-C = 6de3722`，已合并 `origin/develop` 对齐基线 | 开 PR 并跟进 CI | PR #2 含全部提交 |
 | G-2 | ✅ 已补齐：72 条 validation Run 入库 | 见 4.4 | — | 72 条全部可查 |
 | G-3 | ✅ 已完成三方核对 | 见 4.4 | — | 72/72 一致 |
 | G-4 | ✅ 已完成：曲线取数口径写入契约 §8.1 | 见 4.4 | — | `docs/v2-experiment-contract.md` §8.1 |
@@ -77,12 +77,13 @@ C-01 Docker 链路、C-03 MQTT、C-04 `run_id` 贯通、C-05 事件贯通、C-06
 | G-5 | ✅ 完成 | 三策略对照：恢复率 off 45.8% → v1 79.2% → v2 87.5%；云端 51/18/3 与本地一致。**另发现 `fault_onset_s` 与 `seed` 完全混淆，已在 `docs/v2-strategy-comparison.md` §0 与请求单 §6 标注，请 B 确认** |
 | G-6 | ✅ 完成 | 新增 `analyze_metrics.py` 汇总 72 条原始 trace（57,600 帧）：仿真控制周期 p50/p95/max 均 10ms，`step` 缺帧 0（0.0000%），72/72 Run 全程有界；报告含峰值速度/力矩与末 1 秒速度 RMS 的 p50/p95/max。明确轨迹缺帧≠MQTT 网络丢包、仿真周期≠墙钟调度 |
 | C-17 | ✅ 报告定稿 | B 24 场景汇总已到位（`member-b-validation-frozen-r1.json`），与 C 侧 G-5 复现数字一致。生成 `docs/v2-final-report.md`（10 节填实）：恢复率 off 45.8%→v1 79.2%→v2 87.5%、v2 恢复耗时 p50 1.11s、3 例 J0 STOP 逐 run_id 列出、系统指标引自 G-6。交付骨架 §2/§4 状态同步更新。PPT 仍待生成 |
+| G-1 | ✅ 完成 | 推送 develop-C（ae7d916→6de3722）并核验远端 SHA 一致；开 PR 前发现 develop-C 落后 origin/develop 6 个提交（B 的 PR #1 等），先合并同步基线，解决 `config_manager.py` / `main.py` 两处冲突取并集，py_compile 与 14 例契约/配置测试通过，PR diff 无 B 文件删除。**PR #2 已开**：develop-C → develop，https://github.com/RUzzkim/Simulated-Platform/pull/2 |
 | 修复 | 回放脚本 | 云端只订阅 `simulation/{id}/state`；遥测入库读 `timestamp`。脚本补 `timestamp` 字段并把默认主题改为 `/state` |
 | G-8 | ✅ 完成 | `docs/database-schema.sql` 末尾补 CRLF 换行，无其它改动 |
 | G-9 | ✅ 完成 | 列表接口与页面新增 `split` 过滤（对 `split_name` 大小写不敏感精确匹配）。实测：无过滤 78、`validation` 72、`online` 6、`ONLINE`/`Validation` 大小写等价、`unknown` 0、`split=validation&status=FAILED`=18。正式（72）与演示（6）可区分，未删数据 |
 | G-7 | ✅ 完成 | 新增 `Experiments.spec.js` 组件测试（@vue/test-utils + jsdom，stub reka-ui Dialog/Select、mock api/router/toast）：详情并发拉取运行/事件/曲线、元数据渲染、事件按仿真时间升序；导出 JSON/CSV 的文件名与下载触发。前端 11 例全过（API 7 + 组件 4） |
 
-剩余：G-1（推送已完成，PR 待开）、C-17（报告已定稿，PPT 待生成）；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）。
+剩余：C-17（报告已定稿，PPT 待生成）；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）、G-1 CI/审阅跟进（PR #2 待合并）。
 
 ## 5. 阶段路线
 
@@ -106,7 +107,7 @@ C-01 Docker 链路、C-03 MQTT、C-04 `run_id` 贯通、C-05 事件贯通、C-06
 
 ## 7. 完成定义（DoD）
 
-- [ ] 提交已推送，PR 可见全部改动
+- [x] 提交已推送，PR #2 可见全部改动
 - [ ] 72 条 validation Run 全部入库，schema 校验通过
 - [ ] `manifest ↔ DB ↔ sha256` 三方核对 72/72
 - [ ] off / v1 / v2 三策略各有可查 Run
