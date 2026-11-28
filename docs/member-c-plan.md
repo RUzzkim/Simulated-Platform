@@ -83,7 +83,7 @@ C-01 Docker 链路、C-03 MQTT、C-04 `run_id` 贯通、C-05 事件贯通、C-06
 | G-8 | ✅ 完成 | `docs/database-schema.sql` 末尾补 CRLF 换行，无其它改动 |
 | G-9 | ✅ 完成 | 列表接口与页面新增 `split` 过滤（对 `split_name` 大小写不敏感精确匹配）。实测：无过滤 78、`validation` 72、`online` 6、`ONLINE`/`Validation` 大小写等价、`unknown` 0、`split=validation&status=FAILED`=18。正式（72）与演示（6）可区分，未删数据 |
 | G-7 | ✅ 完成 | 新增 `Experiments.spec.js` 组件测试（@vue/test-utils + jsdom，stub reka-ui Dialog/Select、mock api/router/toast）：详情并发拉取运行/事件/曲线、元数据渲染、事件按仿真时间升序；导出 JSON/CSV 的文件名与下载触发。前端 11 例全过（API 7 + 组件 4） |
-| G-10 | ✅ 完成 | 新增 `.github/workflows/ci.yml`：backend（JDK 21 + `mvn -B test`）、edge（Python 3.12 + pytest，排除依赖真实 broker 的 `test_status_e2e` / `test_graceful_exit_e2e`）、frontend（Node 20 + `npm ci` + `vitest run`）三 job 并行，push `develop`/`develop-C` 与对 `develop` 的 PR 触发。本地复跑同命令：后端 8/8、边端 162 passed + 26 subtests、前端 11 passed；YAML 解析校验通过 |
+| G-10 | ✅ 完成 | 新增 `.github/workflows/ci.yml`：backend（JDK 21 + `mvn -B test`）、edge（Python 3.12 + pytest，排除依赖真实 broker 的 `test_status_e2e` / `test_graceful_exit_e2e`）、frontend（Node 22 + `npm ci` + `vitest run`）三 job 并行，push `develop`/`develop-C` 与对 `develop` 的 PR 触发。首轮 CI：后端/边端通过，前端在 Node 20 失败（jsdom 31 要求 node `^22.14.0 || >=24`，undici 在 Node 20 下崩）；改用 Node 22 后 Docker 复现前端 11 passed。本地复跑：后端 8/8、边端 162 passed + 26 subtests；YAML 解析校验通过 |
 
 剩余：C-17（报告已定稿，PPT 待生成）；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）、G-1 CI/审阅跟进（PR #2 待合并）。
 
