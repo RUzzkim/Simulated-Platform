@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * V2 实验 Run/Event 的入库、查询与曲线窗口解析。
@@ -28,6 +29,9 @@ public class ExperimentService {
 
     private static final int MAX_PAGE_SIZE = 100;
     private static final String RUN_ID_PATTERN = "^[0-9a-f]{32}$";
+    /** 完成态（终态）任务状态；写入后不允许被迟到的部分快照降级。 */
+    private static final Set<String> TERMINAL_TASK_STATUSES =
+            Set.of("RECOVERED", "SAFE_STOPPED", "FAILED", "NOT_APPLICABLE");
 
     private final ExperimentRunRepository runRepository;
     private final ExperimentEventRepository eventRepository;
@@ -60,8 +64,10 @@ public class ExperimentService {
         JsonNode trace = json.path("trace");
 
         ExperimentRun run = runRepository.findByRunId(runId).orElseGet(ExperimentRun::new);
+        boolean isNew = run.getId() == null;
+        String priorStatus = run.getStatus();
         LocalDateTime now = LocalDateTime.now();
-        if (run.getId() == null) {
+        if (isNew) {
             run.setCreatedAt(now);
         }
         run.setRunId(runId);
@@ -73,17 +79,28 @@ public class ExperimentService {
         run.setSplitName(Payloads.text(scenario, "split", null));
         run.setSeed(integerOrNull(scenario, "seed"));
         run.setStrategy(Payloads.text(json, "strategy", null));
-        run.setStatus(Payloads.text(task, "status", "UNKNOWN"));
+
+        String incomingStatus = Payloads.text(task, "status", "UNKNOWN");
+        // 实时边端会重复上报同一 run_id 的部分 Run（IN_PROGRESS → INCOMPLETE），
+        // 且 MQTT QoS1 可能重投；这些部分快照里 fault/decision/reachability、task 指标、
+        // 时间窗与 payload 都是空的，不能覆盖已完成（终态）Run 的数据，否则 status 会回退、
+        // 指标被清空、按 run_id 查曲线的时间窗被改写。
+        boolean liveSnapshot = "IN_PROGRESS".equals(incomingStatus) || "INCOMPLETE".equals(incomingStatus);
+        // 终态一旦写入，不允许被迟到的部分快照降级。
+        if (!(priorStatus != null && TERMINAL_TASK_STATUSES.contains(priorStatus) && liveSnapshot)) {
+            run.setStatus(incomingStatus);
+        }
+        // 已存在的 Run 收到部分快照时，保留已有的详情（指标/时间窗/payload/trace）。
+        boolean preserveDetails = liveSnapshot && !isNew && priorStatus != null;
 
         long startedMs = json.path("started_at_ms").asLong(0L);
         LocalDateTime startedAt = startedMs > 0 ? Payloads.fromEpoch(startedMs) : now;
         double durationS = simulation.path("duration_s").asDouble(8.0);
-        run.setStartedAt(startedAt);
-        run.setWindowEndAt(startedAt.plusNanos((long) (Math.max(durationS, 0.1) * 1_000_000_000L)));
+        if (!preserveDetails) {
+            run.setStartedAt(startedAt);
+            run.setWindowEndAt(startedAt.plusNanos((long) (Math.max(durationS, 0.1) * 1_000_000_000L)));
+        }
 
-        // 实时边端会重复上报同一 run_id 的部分 Run（IN_PROGRESS → INCOMPLETE），
-        // 快照里 fault/decision/reachability 始终为空，不能覆盖已由事件写入的索引列
-        boolean liveSnapshot = "IN_PROGRESS".equals(run.getStatus()) || "INCOMPLETE".equals(run.getStatus());
         String faultType = Payloads.text(fault, "type", null);
         if (!liveSnapshot || faultType != null) {
             run.setFaultType(faultType);
@@ -104,15 +121,17 @@ public class ExperimentService {
             run.setDecisionReason(Payloads.text(decision, "reason", null));
             run.setDecisionAtS(doubleOrNull(decision, "at_s"));
         }
-        run.setFinalEeErrorM(doubleOrNull(task, "final_ee_error_m"));
-        run.setRecoveryTimeS(doubleOrNull(task, "recovery_time_s"));
-        run.setStopTimeS(doubleOrNull(task, "stop_time_s"));
-        run.setPeakFaultJointTorqueNm(doubleOrNull(task, "peak_fault_joint_torque_nm"));
-        run.setMaxJointSpeedRadS(doubleOrNull(task, "max_joint_speed_rad_s"));
-        run.setMaxJointTorqueNm(doubleOrNull(task, "max_joint_torque_nm"));
-        run.setTracePath(Payloads.text(trace, "path", null));
-        run.setTraceSha256(Payloads.text(trace, "sha256", null));
-        run.setPayload(json.toString());
+        if (!preserveDetails) {
+            run.setFinalEeErrorM(doubleOrNull(task, "final_ee_error_m"));
+            run.setRecoveryTimeS(doubleOrNull(task, "recovery_time_s"));
+            run.setStopTimeS(doubleOrNull(task, "stop_time_s"));
+            run.setPeakFaultJointTorqueNm(doubleOrNull(task, "peak_fault_joint_torque_nm"));
+            run.setMaxJointSpeedRadS(doubleOrNull(task, "max_joint_speed_rad_s"));
+            run.setMaxJointTorqueNm(doubleOrNull(task, "max_joint_torque_nm"));
+            run.setTracePath(Payloads.text(trace, "path", null));
+            run.setTraceSha256(Payloads.text(trace, "sha256", null));
+            run.setPayload(json.toString());
+        }
         run.setUpdatedAt(now);
 
         String deviceCode = Payloads.text(simulation, "robot_id",
@@ -142,8 +161,17 @@ public class ExperimentService {
         if (eventRepository.existsByEventKey(eventKey)) {
             return;
         }
-        ExperimentRun run = runRepository.findByRunId(runId)
-                .orElseThrow(() -> new IllegalArgumentException("unknown run_id for event: " + runId));
+        // experiment_run 与 experiment_event 走不同 topic，MQTT QoS1 不保证跨 topic 顺序，
+        // 事件可能先于 Run 到达。先落一条占位 Run，避免事件被丢弃；
+        // 正式 Run 快照随后到达时由 ingestRun 覆盖补齐。
+        ExperimentRun run = runRepository.findByRunId(runId).orElseGet(() -> {
+            ExperimentRun placeholder = new ExperimentRun();
+            placeholder.setRunId(runId);
+            placeholder.setStatus("UNKNOWN");
+            placeholder.setCreatedAt(LocalDateTime.now());
+            placeholder.setUpdatedAt(LocalDateTime.now());
+            return runRepository.save(placeholder);
+        });
 
         ExperimentEvent event = new ExperimentEvent();
         event.setEventKey(eventKey);

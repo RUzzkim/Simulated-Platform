@@ -12,8 +12,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -139,6 +141,37 @@ class ExperimentServiceIngestTest {
 
         verify(eventRepository, never()).save(any(ExperimentEvent.class));
         verify(runRepository, never()).save(any(ExperimentRun.class));
+    }
+
+    @Test
+    void latePartialSnapshotDoesNotDowngradeTerminalRun() throws Exception {
+        ExperimentRun existing = existingRun("RECOVERED");
+        existing.setRecoveryTimeS(1.11);
+        existing.setFinalEeErrorM(0.004);
+        existing.setPayload("{\"run_id\":\"" + RUN_ID + "\","
+                + "\"scenario\":{\"scenario_id\":\"LOCK-J0#s1T1\",\"split\":\"validation\"}}");
+        when(runRepository.findByRunId(RUN_ID)).thenReturn(Optional.of(existing));
+
+        // QoS1 重投：终态 Run 之后又到达一条 IN_PROGRESS 部分快照
+        ExperimentRun saved = service.ingestRun(snapshot("IN_PROGRESS"));
+
+        assertEquals("RECOVERED", saved.getStatus());
+        assertEquals(1.11, saved.getRecoveryTimeS(), 1e-9);
+        assertEquals(0.004, saved.getFinalEeErrorM(), 1e-9);
+        assertTrue(saved.getPayload().contains("LOCK-J0#s1T1"));
+    }
+
+    @Test
+    void eventForUnknownRunCreatesPlaceholderInsteadOfDropping() throws Exception {
+        when(runRepository.findByRunId(RUN_ID)).thenReturn(Optional.empty());
+        when(eventRepository.existsByEventKey(anyString())).thenReturn(false);
+
+        // 事件先于 Run 到达：不能抛异常丢弃，应落占位 Run 并保存事件
+        service.ingestEvent(event("FAULT",
+                "\"fault_type\":\"JOINT_LOCKED\",\"joint_index\":0,\"sim_time_s\":2.107,"));
+
+        verify(runRepository, atLeastOnce()).save(any(ExperimentRun.class));
+        verify(eventRepository).save(any(ExperimentEvent.class));
     }
 
     private ExperimentRun existingRun(String status) {

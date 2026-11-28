@@ -57,6 +57,12 @@ def decision_reason(rows, action):
 
 def build_run(summary, run, trace_path, started_at_ms, simulation_id, robot_id):
     rows = load_rows(trace_path)
+    if not run.get('fault_injected'):
+        # v2_run 契约要求 fault 必填且固定为 JOINT_LOCKED；无故障 Run 无法表示为完成态 Run，
+        # 直接拒绝而不是误标为故障。
+        raise SystemExit(
+            f"run {run['run_id']} 未注入故障；v2_run 契约要求 fault 必填且类型为 JOINT_LOCKED，"
+            "不能回放为完成态 Run")
     action = run.get('action')
     reason = decision_reason(rows, action)
     reach_status, reach_reason = reachability(action, reason)

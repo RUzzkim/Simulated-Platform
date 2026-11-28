@@ -254,6 +254,9 @@ def main(args=None):
                 if cfg.publish_faults:
                     state.faults = [fault]
                 publish_fault_event(fault)
+            else:
+                # 故障清除后复位去重状态，允许同关节同类型故障再次上报
+                experiment_state['last_fault'] = None
             with state_lock:
                 latest_state['value'] = state
                 latest_fault['value'] = fault
