@@ -57,7 +57,7 @@
 | G-4 | ✅ 已完成：曲线取数口径写入契约 §8.1 | 见 4.4 | — | `docs/v2-experiment-contract.md` §8.1 |
 | G-5 | ✅ 已完成：三策略对照结论（见 4.4） | 见 4.4；另发现 seed/onset 混淆，已提请 B 确认 | — | `docs/v2-strategy-comparison.md` |
 | G-6 | 系统指标缺失 | 无控制周期/丢包/稳定性数据 | 边端采集并汇总 | 报告含指标分布 |
-| G-7 | 组件级/UI 测试缺 | 仅 API 与服务层单测 | 补详情页与导出断言 | 用例可回归 |
+| G-7 | ✅ 已完成：详情页与导出组件测试 | 见 4.4 | — | 用例可回归 |
 | G-8 | ✅ 已修复：末尾补换行 | 见 4.4 | — | diff 干净 |
 | G-9 | ✅ 已完成：新增 split 过滤区分正式/演示 | 见 4.4 | — | 页面可按 split 筛选 |
 
@@ -78,8 +78,9 @@ C-01 Docker 链路、C-03 MQTT、C-04 `run_id` 贯通、C-05 事件贯通、C-06
 | 修复 | 回放脚本 | 云端只订阅 `simulation/{id}/state`；遥测入库读 `timestamp`。脚本补 `timestamp` 字段并把默认主题改为 `/state` |
 | G-8 | ✅ 完成 | `docs/database-schema.sql` 末尾补 CRLF 换行，无其它改动 |
 | G-9 | ✅ 完成 | 列表接口与页面新增 `split` 过滤（对 `split_name` 大小写不敏感精确匹配）。实测：无过滤 78、`validation` 72、`online` 6、`ONLINE`/`Validation` 大小写等价、`unknown` 0、`split=validation&status=FAILED`=18。正式（72）与演示（6）可区分，未删数据 |
+| G-7 | ✅ 完成 | 新增 `Experiments.spec.js` 组件测试（@vue/test-utils + jsdom，stub reka-ui Dialog/Select、mock api/router/toast）：详情并发拉取运行/事件/曲线、元数据渲染、事件按仿真时间升序；导出 JSON/CSV 的文件名与下载触发。前端 11 例全过（API 7 + 组件 4） |
 
-剩余：G-1（推送已完成，PR 待开）、G-6、G-7；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）、C-17（报告定稿）。
+剩余：G-1（推送已完成，PR 待开）、G-6；外部：B 确认 seed/onset 混淆、C-02（ROS 2）、C-16（录屏）、C-17（报告定稿）。
 
 ## 5. 阶段路线
 
