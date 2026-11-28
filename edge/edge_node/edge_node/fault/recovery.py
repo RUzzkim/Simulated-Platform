@@ -5,8 +5,10 @@ import math
 from dataclasses import dataclass
 from typing import List, Sequence
 
-from edge_node.fault.kinematics import compute_jacobian, forward_kinematics
+from edge_node.fault.kinematics import DH_PARAMS, compute_jacobian, forward_kinematics
 from edge_node.fault.kinematics import compute_pose
+
+POSITION_SCORE_TOLERANCE_M = 0.05
 
 
 @dataclass(frozen=True)
@@ -16,13 +18,14 @@ class RecoveryDecision:
     target_q: List[float]
     position_error: float
     iterations: int
+    position_error_lower_bound: float | None = None
 
 
 class RecoveryPlanner:
     """搜索锁定故障关节后的末端位置解，搜索失败时生成制动目标。
 
-    迭代搜索未找到解时只报告 NO_FEASIBLE_PLAN，不据此声称目标几何上不可达。
-    本规划器评价末端位置，不评价目标姿态。
+    符合当前 DH 几何证明条件的 J0 锁定目标会先做位置误差下界检查。
+    其他目标继续数值搜索，搜索失败不代表目标几何上不可达。规划器评价末端位置，不评价目标姿态。
     """
 
     def __init__(
@@ -71,6 +74,22 @@ class RecoveryPlanner:
             raise ValueError("invalid locked joint index")
 
         target_position = pose[:3]
+        j0_lower_bound = self._locked_j0_position_error_lower_bound(
+            target_position, q[0], locked
+        )
+        if (
+            j0_lower_bound is not None
+            and j0_lower_bound > POSITION_SCORE_TOLERANCE_M
+        ):
+            return RecoveryDecision(
+                "STOP",
+                "GEOMETRICALLY_UNREACHABLE",
+                self._braking_target(q, qd, locked),
+                self._position_error(q, target_position),
+                0,
+                j0_lower_bound,
+            )
+
         seeds = [list(q)]
         if preferred_q is not None:
             preferred = self._validate_vector(preferred_q, 6, "preferred_q")
@@ -89,7 +108,10 @@ class RecoveryPlanner:
             if seed_error < best_error:
                 best_q, best_error = q_candidate, seed_error
             if seed_error <= self.position_tolerance:
-                return RecoveryDecision("RECOVER", "TARGET_REACHED", q_candidate, seed_error, 0)
+                return RecoveryDecision(
+                    "RECOVER", "TARGET_REACHED", q_candidate, seed_error, 0,
+                    j0_lower_bound,
+                )
 
             damping = self.damping
             for iteration in range(1, self.max_iterations + 1):
@@ -101,13 +123,46 @@ class RecoveryPlanner:
                 if candidate_error < best_error:
                     best_q, best_error = q_candidate, candidate_error
                 if candidate_error <= self.position_tolerance:
-                    return RecoveryDecision("RECOVER", "TARGET_REACHED", q_candidate, candidate_error, total_iterations)
+                    return RecoveryDecision(
+                        "RECOVER", "TARGET_REACHED", q_candidate,
+                        candidate_error, total_iterations, j0_lower_bound,
+                    )
                 if not improved and damping > 10.0:
                     break
 
         return RecoveryDecision(
-            "STOP", "NO_FEASIBLE_PLAN", self._braking_target(q, qd, locked), best_error, total_iterations
+            "STOP", "NO_FEASIBLE_PLAN", self._braking_target(q, qd, locked),
+            best_error, total_iterations, j0_lower_bound,
         )
+
+    @staticmethod
+    def _locked_j0_position_error_lower_bound(
+        target_position: Sequence[float], locked_angle: float, locked: set[int]
+    ) -> float | None:
+        if locked != {0}:
+            return None
+        if abs(DH_PARAMS[0][0]) > 1e-12:
+            return None
+
+        expected_alpha = (math.pi / 2.0, 0.0, 0.0, math.pi / 2.0)
+        if any(
+            not math.isclose(DH_PARAMS[index][3], expected, abs_tol=1e-12)
+            for index, expected in enumerate(expected_alpha)
+        ):
+            return None
+        if any(abs(DH_PARAMS[index][0]) > 1e-12 for index in range(6)):
+            return None
+        if any(abs(DH_PARAMS[index][1]) > 1e-12 for index in (1, 2, 3)):
+            return None
+        if any(abs(DH_PARAMS[index][2]) > 1e-12 for index in (3, 4, 5)):
+            return None
+
+        x, y, _ = target_position
+        base_angle = locked_angle + DH_PARAMS[0][0]
+        tangential_distance = abs(
+            -math.sin(base_angle) * x + math.cos(base_angle) * y
+        )
+        return max(0.0, tangential_distance - abs(DH_PARAMS[5][1]))
 
     def _search_from_seed(self, q_candidate, target_position, locked, damping):
         jacobian = compute_jacobian(q_candidate)[:3]

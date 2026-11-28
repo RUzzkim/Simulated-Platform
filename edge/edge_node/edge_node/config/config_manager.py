@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import os
+import re
 from typing import Any, Dict, Optional
 
 import yaml
@@ -353,6 +354,10 @@ class ConfigManager:
     @property
     def mqtt_tls_insecure(self) -> bool:
         return bool(self.get('mqtt', 'tls', 'insecure', default=False))
+
+    def render_ros2_topic(self, pattern: str) -> str:
+        ros_id = re.sub(r'[^0-9A-Za-z_]', '_', self.simulation_id)
+        return pattern.replace('{simulation_id}', ros_id)
 
     # ---- 动态配置（云端 config topic 下发）----
     def update_runtime(self, config: EdgeConfig) -> None:
